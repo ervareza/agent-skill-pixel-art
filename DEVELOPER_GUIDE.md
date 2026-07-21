@@ -1,54 +1,33 @@
-# PixelForge Studio Developer Guide
+# PixelMatrix Engine Developer Guide
 
-Technical design doc and module internals reference for maintainers and engine developers.
+Developer documentation for extending and building upon the **PixelMatrix Engine** pipeline.
 
----
+## System Architecture
 
-## Code Base Layout
+The engine is built with 5 decoupled core Python modules:
 
+1. **`canvas_initializer.py` (`MatrixCanvasInitializer`)**:
+   Sets up workspace structures (`source_rasters/`, `compiled_atlases/`, `lut_palettes/`, `spec_manifests/`) and asset contract manifests.
+
+2. **`lut_synthesizer.py` (`PaletteLUTSynthesizer`)**:
+   Performs 3D RGB Euclidean color distance calculations, extracts palettes, and maps rasters to target LUTs.
+
+3. **`spec_inspector.py` (`RasterSpecInspector`)**:
+   Verifies image grid bounds, checks color palette counts, detects semi-transparent pixels (anti-aliasing artifacts), and flags orphan pixels.
+
+4. **`atlas_compiler.py` (`SpriteAtlasCompiler`)**:
+   Packs sprite frames into grid texture atlases and exports JSON metadata containing frame bounds and UV coordinates.
+
+5. **`raster_processor.py` (`PixelRasterPostProcessor`)**:
+   Applies alpha thresholding, orphan pixel cleaning, color quantization, and indexed 8-bit PNG export.
+
+## Running Tests & Verification
+
+Execute all script CLI modules to ensure working state:
+```bash
+python3 skills/pixelmatrix-engine/scripts/canvas_initializer.py --json
+python3 skills/pixelmatrix-engine/scripts/lut_synthesizer.py --json
+python3 skills/pixelmatrix-engine/scripts/spec_inspector.py --image index.html --json || true
+python3 skills/pixelmatrix-engine/scripts/atlas_compiler.py --help
+python3 skills/pixelmatrix-engine/scripts/raster_processor.py --help
 ```
-.
-├── CHANGELOG.md                   # Semantic version history
-├── CONTRIBUTING.md                # Contribution guidelines
-├── DEVELOPER_GUIDE.md             # Developer & architectural manual
-├── LICENSE                        # MIT License
-├── README.md                      # Primary project overview
-├── SECURITY.md                    # Security standards & policy
-├── .env.example                   # Environment variable template
-├── index.html                     # Web showcase & interactive dashboard
-└── skills/
-    └── pixelforge-studio/         # Skill & core engine codebase
-        ├── SKILL.md               # AI Agent skill entry point
-        ├── requirements.txt       # Dependencies
-        ├── scripts/
-        │   ├── atlas_packer.py    # SpriteAtlasPacker class
-        │   ├── asset_inspector.py # PixelAssetInspector class
-        │   ├── chroma_analyzer.py # ChromaPaletteAnalyzer class
-        │   ├── forge_workspace.py # ForgeWorkspaceManager class
-        │   └── post_processor.py  # AssetPostProcessor class
-        ├── references/            # Pipeline reference guidelines
-        ├── templates/             # JSON indices & markdown templates
-        └── workflows/             # Standalone synthesis guides
-```
-
----
-
-## Module Architectural Design
-
-### 1. `ForgeWorkspaceManager` (`forge_workspace.py`)
-Responsible for setup, structure creation, source importing, and contract validation (`spec_lock.md`).
-
-### 2. `ChromaPaletteAnalyzer` (`chroma_analyzer.py`)
-Performs RGB frequency quantization, color clustering, Euclidean color space distance computation ($\Delta E_{RGB}$), and contract adherence checks.
-
-### 3. `PixelAssetInspector` (`asset_inspector.py`)
-Inspects PNG files for canvas dimension multiples, per-sprite color budgets, and semi-transparent alpha channel pixels (anti-aliasing defects).
-
-### 4. `SpriteAtlasPacker` (`atlas_packer.py`)
-Packs frame image sequences into 2D grid sheets and outputs structured JSON metadata manifests (`manifest.json`).
-
-### 5. `AssetPostProcessor` (`post_processor.py`)
-Executes 3 post-processing algorithms:
-- Nearest-neighbor color quantization to declared palette.
-- 4-neighborhood isolated orphan pixel removal.
-- RGBA to 8-bit indexed PNG color table conversion.

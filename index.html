@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PixelForge Studio — Autonomous 2D Pixel Art Engine</title>
-  <meta name="description" content="Next-Generation Autonomous 2D Pixel Art & Sprite Synthesis Engine for Game Developers and AI Agents." />
+  <title>PixelMatrix Engine v2.0.0 — Next-Gen 2D Pixel Art AI Agent Skill</title>
+  <meta name="description" content="Next-Generation Autonomous 2D Pixel Art, Tilemap, Character Matrix, and Palette LUT Synthesis Engine for Claude Code, Codex, and Antigravity IDE." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -12,18 +12,18 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg: #0b0f19;
-      --bg-alt: #111827;
-      --card-bg: rgba(17, 24, 39, 0.7);
-      --surface: #1e293b;
-      --border: #334155;
+      --bg: #07090e;
+      --bg-alt: #0e131f;
+      --card-bg: rgba(14, 19, 31, 0.75);
+      --surface: #172033;
+      --border: #263552;
       --border-glow: #06b6d4;
       --text: #f8fafc;
       --muted: #94a3b8;
       --emerald: #10b981;
-      --emerald-glow: rgba(16, 185, 129, 0.2);
       --cyan: #06b6d4;
       --purple: #8b5cf6;
+      --amber: #f59e0b;
       --sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       --mono: 'JetBrains Mono', monospace;
     }
@@ -42,34 +42,34 @@
     /* Ambient background glows */
     .glow-orb-1 {
       position: fixed;
-      top: -100px;
-      left: 20%;
-      width: 500px;
-      height: 500px;
-      background: radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, rgba(0,0,0,0) 70%);
+      top: -120px;
+      left: 15%;
+      width: 550px;
+      height: 550px;
+      background: radial-gradient(circle, rgba(6, 182, 212, 0.15) 0%, rgba(0,0,0,0) 70%);
       pointer-events: none;
       z-index: 0;
     }
 
     .glow-orb-2 {
       position: fixed;
-      top: 40%;
+      top: 45%;
       right: -100px;
-      width: 600px;
-      height: 600px;
-      background: radial-gradient(circle, rgba(6, 182, 212, 0.12) 0%, rgba(0,0,0,0) 70%);
+      width: 650px;
+      height: 650px;
+      background: radial-gradient(circle, rgba(139, 92, 246, 0.12) 0%, rgba(0,0,0,0) 70%);
       pointer-events: none;
       z-index: 0;
     }
 
     .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
 
-    /* Nav */
+    /* Navigation */
     nav {
       position: sticky;
       top: 0;
       z-index: 100;
-      background: rgba(11, 15, 25, 0.85);
+      background: rgba(7, 9, 14, 0.85);
       backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--border);
     }
@@ -78,14 +78,14 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      height: 64px;
+      height: 68px;
     }
 
     .nav-brand {
       display: flex;
       align-items: center;
-      gap: 10px;
-      font-size: 1.15rem;
+      gap: 12px;
+      font-size: 1.2rem;
       font-weight: 800;
       letter-spacing: -0.02em;
       color: var(--text);
@@ -93,179 +93,78 @@
     }
 
     .brand-badge {
-      background: linear-gradient(135deg, var(--emerald), var(--cyan));
+      background: linear-gradient(135deg, var(--cyan), var(--purple));
       color: #000;
-      font-size: 0.7rem;
-      font-weight: 700;
-      padding: 2px 8px;
-      border-radius: 6px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 4px;
       text-transform: uppercase;
     }
 
     .nav-links {
       display: flex;
-      gap: 24px;
       align-items: center;
+      gap: 24px;
+      list-style: none;
     }
 
     .nav-links a {
       color: var(--muted);
       text-decoration: none;
-      font-size: 0.9rem;
+      font-size: 0.92rem;
       font-weight: 500;
       transition: color 0.2s;
     }
 
     .nav-links a:hover, .nav-links a.active {
-      color: var(--emerald);
+      color: var(--cyan);
     }
 
-    /* Hero */
+    /* Hero Section */
     .hero {
-      padding: 96px 0 64px;
+      padding: 90px 0 60px;
       text-align: center;
-      max-width: 900px;
-      margin: 0 auto;
     }
 
-    .hero-badge {
+    .hero-pill {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      background: rgba(16, 185, 129, 0.1);
-      border: 1px solid rgba(16, 185, 129, 0.3);
-      padding: 6px 16px;
-      border-radius: 99px;
-      font-size: 0.82rem;
+      background: rgba(6, 182, 212, 0.1);
+      border: 1px solid rgba(6, 182, 212, 0.3);
+      color: var(--cyan);
+      font-size: 0.85rem;
       font-weight: 600;
-      color: var(--emerald);
+      padding: 6px 16px;
+      border-radius: 999px;
       margin-bottom: 24px;
     }
 
     .hero h1 {
-      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-size: 3.5rem;
       font-weight: 800;
       line-height: 1.15;
       letter-spacing: -0.03em;
       margin-bottom: 20px;
-    }
-
-    .hero h1 span {
-      background: linear-gradient(135deg, var(--emerald) 0%, var(--cyan) 100%);
+      background: linear-gradient(135deg, #ffffff 30%, var(--cyan) 70%, var(--purple) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
     .hero p {
-      font-size: 1.15rem;
+      font-size: 1.2rem;
       color: var(--muted);
-      max-width: 680px;
+      max-width: 760px;
       margin: 0 auto 36px;
-      line-height: 1.7;
     }
 
-    .hero-btns {
-      display: flex;
-      gap: 16px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 12px 24px;
-      border-radius: 8px;
-      font-weight: 600;
-      font-size: 0.95rem;
-      text-decoration: none;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, var(--emerald), #059669);
-      color: #000;
-      box-shadow: 0 4px 20px var(--emerald-glow);
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 24px rgba(16, 185, 129, 0.35);
-    }
-
-    .btn-secondary {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      color: var(--text);
-    }
-
-    .btn-secondary:hover {
-      border-color: var(--cyan);
-      color: var(--cyan);
-    }
-
-    /* Terminal Code Box */
-    .code-box {
-      margin-top: 48px;
-      background: #090d16;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      text-align: left;
-      overflow: hidden;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-    }
-
-    .code-header {
-      background: #111827;
-      padding: 12px 18px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .code-dots { display: flex; gap: 6px; }
-    .code-dot { width: 10px; height: 10px; border-radius: 50%; }
-    .dot-red { background: #ef4444; }
-    .dot-yellow { background: #f59e0b; }
-    .dot-green { background: #10b981; }
-
-    .code-body {
-      padding: 20px;
-      font-family: var(--mono);
-      font-size: 0.9rem;
-      color: #e2e8f0;
-      overflow-x: auto;
-    }
-
-    .code-line { margin-bottom: 6px; }
-    .code-cmd { color: var(--emerald); }
-    .code-arg { color: var(--cyan); }
-    .code-comment { color: var(--muted); }
-
-    /* Features Grid */
-    .section { padding: 80px 0; }
-    .section-title {
-      text-align: center;
-      margin-bottom: 48px;
-    }
-    .section-title h2 {
-      font-size: 2.2rem;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-    }
-    .section-title p {
-      color: var(--muted);
-      font-size: 1.05rem;
-      margin-top: 8px;
-    }
-
-    .grid-5 {
+    /* Card Grids */
+    .card-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+      margin: 40px 0;
     }
 
     .card {
@@ -273,93 +172,65 @@
       border: 1px solid var(--border);
       border-radius: 12px;
       padding: 24px;
-      transition: all 0.3s;
+      backdrop-filter: blur(12px);
+      transition: transform 0.2s, border-color 0.2s;
     }
 
     .card:hover {
-      border-color: var(--emerald);
       transform: translateY(-4px);
+      border-color: var(--cyan);
     }
 
-    .card-icon {
-      width: 44px;
-      height: 44px;
-      border-radius: 10px;
-      background: rgba(16, 185, 129, 0.1);
-      color: var(--emerald);
+    .card h3 {
+      font-size: 1.25rem;
+      margin-bottom: 12px;
+      color: var(--text);
       display: flex;
       align-items: center;
-      justify-content: center;
-      font-size: 1.3rem;
-      margin-bottom: 16px;
+      gap: 8px;
     }
 
-    .card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; }
-    .card p { font-size: 0.88rem; color: var(--muted); line-height: 1.6; }
-
-    /* Interactive Tab Section (Overview vs Changelog) */
-    .tab-nav {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-      margin-bottom: 32px;
+    .card p {
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.5;
     }
 
-    .tab-btn {
-      padding: 10px 20px;
+    /* CLI Block */
+    .code-block {
+      background: #05070a;
+      border: 1px solid var(--border);
       border-radius: 8px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      color: var(--muted);
-      font-weight: 600;
-      font-size: 0.9rem;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .tab-btn.active {
-      background: var(--emerald);
-      color: #000;
-      border-color: var(--emerald);
-    }
-
-    .tab-content { display: none; }
-    .tab-content.active { display: block; }
-
-    /* Changelog Card */
-    .changelog-box {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 32px;
-      max-width: 800px;
-      margin: 0 auto;
-    }
-
-    .version-tag {
-      display: inline-block;
-      background: var(--emerald);
-      color: #000;
-      font-weight: 700;
-      padding: 4px 10px;
-      border-radius: 6px;
-      font-size: 0.85rem;
-    }
-
-    .version-date {
-      color: var(--muted);
+      padding: 16px;
+      font-family: var(--mono);
       font-size: 0.88rem;
-      margin-left: 12px;
+      color: #38bdf8;
+      overflow-x: auto;
+      margin-top: 12px;
     }
 
-    .changelog-section { margin-top: 20px; }
-    .changelog-section h4 { color: var(--cyan); margin-bottom: 8px; }
-    .changelog-section ul { list-style: disc; margin-left: 20px; color: var(--muted); font-size: 0.92rem; }
+    /* Palette LUT Preview Swatches */
+    .palette-swatches {
+      display: flex;
+      gap: 4px;
+      margin-top: 14px;
+    }
 
-    /* Footer */
+    .swatch {
+      width: 24px;
+      height: 24px;
+      border-radius: 4px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    /* View Switcher */
+    .view-section { display: none; }
+    .view-section.active { display: block; }
+
     footer {
       border-top: 1px solid var(--border);
       padding: 40px 0;
+      margin-top: 80px;
       text-align: center;
       color: var(--muted);
       font-size: 0.9rem;
@@ -370,151 +241,186 @@
   <div class="glow-orb-1"></div>
   <div class="glow-orb-2"></div>
 
-  <!-- Navigation -->
   <nav>
     <div class="container">
-      <a href="#" class="nav-brand">
-        ⚡ PixelForge Studio <span class="brand-badge">v1.0.0</span>
+      <a href="#" class="nav-brand" onclick="switchView('dashboard')">
+        PixelMatrix Engine <span class="brand-badge">v2.0.0</span>
       </a>
-      <div class="nav-links">
-        <a href="#features" onclick="switchTab('overview')">Features</a>
-        <a href="#pipeline">Pipeline</a>
-        <a href="#changelog" onclick="switchTab('changelog')">Changelog</a>
-        <a href="https://github.com/your-username/pixelforge-studio" target="_blank">GitHub</a>
-      </div>
+      <ul class="nav-links">
+        <li><a href="#dashboard" id="nav-dashboard" class="active" onclick="switchView('dashboard')">Dashboard</a></li>
+        <li><a href="#luts" id="nav-luts" onclick="switchView('luts')">Palette LUTs</a></li>
+        <li><a href="#specs" id="nav-specs" onclick="switchView('specs')">Canvas Specs</a></li>
+        <li><a href="#changelog" id="nav-changelog" onclick="switchView('changelog')">Changelog</a></li>
+      </ul>
     </div>
   </nav>
 
-  <!-- Hero Section -->
-  <header class="hero container">
-    <div class="hero-badge">✨ Next-Gen 2D Pixel Synthesis Engine</div>
-    <h1>Transform Game Specs Into <span>Pixel Art Masterpieces</span></h1>
-    <p>Autonomous Python engine and AI skill workflow. Extract color palettes, enforce lock contracts, audit hard-edge compliance, and pack sprite atlases seamlessly.</p>
-    <div class="hero-btns">
-      <a href="#quickstart" class="btn btn-primary">Get Started</a>
-      <a href="#changelog" onclick="switchTab('changelog')" class="btn btn-secondary">View v1.0.0 Changelog</a>
-    </div>
+  <main class="container">
+    <!-- DASHBOARD VIEW -->
+    <section id="view-dashboard" class="view-section active">
+      <header class="hero">
+        <div class="hero-pill">✨ Next-Generation AI Agent Skill Architecture</div>
+        <h1>Autonomous 2D Pixel Art & Raster Matrix Engine</h1>
+        <p>Decoupled raster compiler engineering for Claude Code, OpenAI Codex, and Antigravity IDE. Zero anti-aliasing artifacts, hardware LUT enforcement, and structured texture atlases.</p>
+      </header>
 
-    <div class="code-box">
-      <div class="code-header">
-        <div class="code-dots">
-          <div class="code-dot dot-red"></div>
-          <div class="code-dot dot-yellow"></div>
-          <div class="code-dot dot-green"></div>
-        </div>
-        <span style="font-size: 0.78rem; color: var(--muted); font-family: var(--mono);">bash — pixelforge</span>
-      </div>
-      <div class="code-body">
-        <div class="code-line"><span class="code-comment"># 1. Initialize project workspace</span></div>
-        <div class="code-line"><span class="code-cmd">python3</span> skills/pixelforge-studio/scripts/forge_workspace.py init hero_sprite <span class="code-arg">--size 64x64 --palette default</span></div>
-        <div class="code-line" style="margin-top: 12px;"><span class="code-comment"># 2. Inspect asset quality compliance</span></div>
-        <div class="code-line"><span class="code-cmd">python3</span> skills/pixelforge-studio/scripts/asset_inspector.py projects/hero_sprite_64x64_20260722</div>
-        <div class="code-line" style="margin-top: 12px;"><span class="code-comment"># 3. Post-process & Pack Sprite Sheet Atlas</span></div>
-        <div class="code-line"><span class="code-cmd">python3</span> skills/pixelforge-studio/scripts/post_processor.py projects/hero_sprite_64x64_20260722 <span class="code-arg">--all</span></div>
-        <div class="code-line"><span class="code-cmd">python3</span> skills/pixelforge-studio/scripts/atlas_packer.py projects/hero_sprite_64x64_20260722 <span class="code-arg">--by-category</span></div>
-      </div>
-    </div>
-  </header>
-
-  <!-- Interactive Section Tabs -->
-  <section class="section container">
-    <div class="tab-nav">
-      <button class="tab-btn active" id="btn-overview" onclick="switchTab('overview')">Engine Features</button>
-      <button class="tab-btn" id="btn-changelog" onclick="switchTab('changelog')">Version Changelog</button>
-    </div>
-
-    <!-- Overview Tab -->
-    <div class="tab-content active" id="tab-overview">
-      <div class="section-title">
-        <h2>Core Engine Utilities</h2>
-        <p>Five high-performance Python modules designed for modular asset synthesis</p>
-      </div>
-
-      <div class="grid-5" id="features">
+      <div class="card-grid">
         <div class="card">
-          <div class="card-icon">🏗️</div>
-          <h3>Forge Workspace</h3>
-          <p>Initializes standardized project folder structures, imports reference media, and validates contract locks.</p>
+          <h3>⚡ MatrixCanvasInitializer</h3>
+          <p>Automates workspace directory creation and asset contract specification manifests.</p>
+          <div class="code-block">python3 scripts/canvas_initializer.py --preset standard_sprite_32</div>
         </div>
         <div class="card">
-          <div class="card-icon">🎨</div>
-          <h3>Chroma Analyzer</h3>
-          <p>Extracts dominant palettes using Euclidean distance clustering ($\Delta E_{RGB}$) and enforces color budgets.</p>
+          <h3>🎨 PaletteLUTSynthesizer</h3>
+          <p>Extracts colors, computes 3D RGB distance metrics, and maps to target hardware LUTs.</p>
+          <div class="code-block">python3 scripts/lut_synthesizer.py --image raw.png</div>
         </div>
         <div class="card">
-          <div class="card-icon">🔍</div>
-          <h3>Asset Inspector</h3>
-          <p>Scans asset PNGs for canvas boundary multiples, semi-transparent pixels, and palette breaches.</p>
+          <h3>🔍 RasterSpecInspector</h3>
+          <p>Performs quality control inspections, verifying grid alignment, AA artifacts, and orphan pixels.</p>
+          <div class="code-block">python3 scripts/spec_inspector.py --image sprite.png</div>
         </div>
         <div class="card">
-          <div class="card-icon">📦</div>
-          <h3>Atlas Packer</h3>
-          <p>Packs individual PNG frames into 2D sprite sheets paired with structured JSON metadata manifests.</p>
-        </div>
-        <div class="card">
-          <div class="card-icon">🧹</div>
-          <h3>Post-Processor</h3>
-          <p>Executes palette quantization, 4-neighborhood stray orphan pixel removal, and 8-bit indexed PNG conversion.</p>
+          <h3>📦 SpriteAtlasCompiler</h3>
+          <p>Packs multiple sprite animation frames into texture atlases with JSON metadata manifests.</p>
+          <div class="code-block">python3 scripts/atlas_compiler.py --frames-dir ./frames/</div>
         </div>
       </div>
-    </div>
+    </section>
 
-    <!-- Changelog Tab -->
-    <div class="tab-content" id="tab-changelog">
-      <div class="changelog-box" id="changelog">
-        <div style="display: flex; align-items: center; justify-content: space-between;">
-          <div>
-            <span class="version-tag">v1.0.0</span>
-            <span class="version-date">Released on 2026-07-22</span>
+    <!-- PALETTE LUTS VIEW -->
+    <section id="view-luts" class="view-section">
+      <header class="hero" style="padding-bottom: 30px;">
+        <h1>Palette Look-Up Tables (LUTs)</h1>
+        <p>Hardware-accurate and modern aesthetic color palettes built into PixelMatrix Engine.</p>
+      </header>
+
+      <div class="card-grid">
+        <div class="card">
+          <h3>NES Classic 54</h3>
+          <p>Hardware palette of the Nintendo Entertainment System.</p>
+          <div class="palette-swatches">
+            <div class="swatch" style="background:#7C7C7C"></div>
+            <div class="swatch" style="background:#0000FC"></div>
+            <div class="swatch" style="background:#940084"></div>
+            <div class="swatch" style="background:#F83800"></div>
+            <div class="swatch" style="background:#00B800"></div>
+            <div class="swatch" style="background:#F8F8F8"></div>
           </div>
-          <span style="font-size: 0.8rem; color: var(--emerald); font-weight: 600;">Latest Release</span>
         </div>
 
-        <div class="changelog-section">
-          <h4>✨ Added</h4>
-          <ul>
-            <li>Initial public release of <strong>PixelForge Studio</strong> engine.</li>
-            <li>Introduced <code>ForgeWorkspaceManager</code>, <code>ChromaPaletteAnalyzer</code>, <code>PixelAssetInspector</code>, <code>SpriteAtlasPacker</code>, and <code>AssetPostProcessor</code>.</li>
-            <li>Full AI skill package integration at <code>skills/pixelforge-studio</code>.</li>
-            <li>Interactive web showcase with live CLI documentation.</li>
-          </ul>
+        <div class="card">
+          <h3>GameBoy DMG-01</h3>
+          <p>4-color monochrome palette of the original GameBoy.</p>
+          <div class="palette-swatches">
+            <div class="swatch" style="background:#0F380F"></div>
+            <div class="swatch" style="background:#306230"></div>
+            <div class="swatch" style="background:#8BAC0F"></div>
+            <div class="swatch" style="background:#9BBC0F"></div>
+          </div>
         </div>
 
-        <div class="changelog-section">
-          <h4>🛠️ Refactored & Enhanced</h4>
-          <ul>
-            <li>Rebuilt codebase with strict Python 3.10+ type hints and clean object-oriented architecture.</li>
-            <li>Enhanced tile generation standards enforcing 4-edge wrap tiling and Voronoi noise distribution.</li>
-          </ul>
+        <div class="card">
+          <h3>PICO-8 Fantasy 16</h3>
+          <p>Famous 16-color fantasy console palette.</p>
+          <div class="palette-swatches">
+            <div class="swatch" style="background:#000000"></div>
+            <div class="swatch" style="background:#FF004D"></div>
+            <div class="swatch" style="background:#FFA300"></div>
+            <div class="swatch" style="background:#00E436"></div>
+            <div class="swatch" style="background:#29ADFF"></div>
+            <div class="swatch" style="background:#FFF1E8"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Cyberpunk Neon 16</h3>
+          <p>Modern vibrant futuristic cyberpunk theme.</p>
+          <div class="palette-swatches">
+            <div class="swatch" style="background:#05050A"></div>
+            <div class="swatch" style="background:#FF0055"></div>
+            <div class="swatch" style="background:#00FF66"></div>
+            <div class="swatch" style="background:#00F0FF"></div>
+            <div class="swatch" style="background:#7000FF"></div>
+            <div class="swatch" style="background:#FFFFFF"></div>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Footer -->
+    <!-- SPECS VIEW -->
+    <section id="view-specs" class="view-section">
+      <header class="hero" style="padding-bottom: 30px;">
+        <h1>Grid Canvas Presets</h1>
+        <p>Pre-configured resolution bounds, grid snapping, and projection specs.</p>
+      </header>
+
+      <div class="card-grid">
+        <div class="card">
+          <h3>16x16 Micro Icon</h3>
+          <p>Inventory items, status icons, cursor glyphs. Max 8 colors.</p>
+        </div>
+        <div class="card">
+          <h3>32x32 Standard Sprite</h3>
+          <p>16-bit RPG characters, terrain tiles, object props. Max 16 colors.</p>
+        </div>
+        <div class="card">
+          <h3>48x48 Isometric Tile</h3>
+          <p>30° axonometric projection tiles, building blocks. Max 24 colors.</p>
+        </div>
+        <div class="card">
+          <h3>64x64 Boss Entity</h3>
+          <p>Large boss monsters, vehicle sprites, detailed hazards. Max 32 colors.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CHANGELOG VIEW -->
+    <section id="view-changelog" class="view-section">
+      <header class="hero" style="padding-bottom: 30px;">
+        <h1>Engine Changelog</h1>
+        <p>Release notes and version history for PixelMatrix Engine.</p>
+      </header>
+
+      <div class="card" style="max-width: 800px; margin: 0 auto;">
+        <h2 style="color: var(--cyan); margin-bottom: 8px;">[v2.0.0] - 2026-07-22</h2>
+        <p style="color: var(--amber); font-weight: 600; margin-bottom: 16px;">MAJOR RELEASE — Total Architecture Purge, Rebrand & Expansion</p>
+        <ul style="color: var(--muted); margin-left: 20px; line-height: 1.8;">
+          <li><strong>Rebranded Engine</strong>: Transformed from legacy state into <em>PixelMatrix Engine</em> (v2.0.0).</li>
+          <li><strong>Complete Legacy Purge</strong>: Removed old scripts, legacy paths, and obsolete terminology.</li>
+          <li><strong>New Compiler Modules</strong>: Built <code>MatrixCanvasInitializer</code>, <code>PaletteLUTSynthesizer</code>, <code>RasterSpecInspector</code>, <code>SpriteAtlasCompiler</code>, and <code>PixelRasterPostProcessor</code>.</li>
+          <li><strong>Extended Content Specs</strong>: Expanded grid presets (16x16 to 256x256), isometric (48x48) autotiling, 4/8-way directional character matrices, HUD 9-slice elements, and 8+ Palette LUTs.</li>
+          <li><strong>Multi-Agent Integration</strong>: Full instructions for Claude Code, OpenAI Codex, and Antigravity IDE.</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
   <footer>
     <div class="container">
-      <p>PixelForge Studio — Released under the MIT License.</p>
+      PixelMatrix Engine v2.0.0 — Licensed under MIT. Built for Autonomous AI Agent Systems.
     </div>
   </footer>
 
   <script>
-    function switchTab(tabName) {
-      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-      document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+    function switchView(viewName) {
+      document.querySelectorAll('.view-section').forEach(sec => sec.classList.remove('active'));
+      document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
 
-      if (tabName === 'overview') {
-        document.getElementById('btn-overview').classList.add('active');
-        document.getElementById('tab-overview').classList.add('active');
-      } else if (tabName === 'changelog') {
-        document.getElementById('btn-changelog').classList.add('active');
-        document.getElementById('tab-changelog').classList.active ? null : document.getElementById('tab-changelog').classList.add('active');
+      const targetSec = document.getElementById('view-' + viewName);
+      if (targetSec) targetSec.classList.add('active');
+
+      const targetNav = document.getElementById('nav-' + viewName);
+      if (targetNav) targetNav.classList.add('active');
+    }
+
+    // Check URL hash for routing
+    window.addEventListener('load', () => {
+      const hash = window.location.hash.replace('#', '');
+      if (hash && ['dashboard', 'luts', 'specs', 'changelog'].includes(hash)) {
+        switchView(hash);
       }
-    }
-
-    if (window.location.hash === '#changelog') {
-      switchTab('changelog');
-    }
+    });
   </script>
 </body>
 </html>

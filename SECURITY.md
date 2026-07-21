@@ -1,21 +1,9 @@
-# Security Policy — PixelForge Studio
+# Security Policy — PixelMatrix Engine
 
-## Supported Versions
-
-| Version | Supported          |
-| ------- | ------------------ |
-| v1.0.x  | :white_check_mark: |
-
----
-
-## Security Standards
-
-- **No Hardcoded Credentials**: API tokens and keys must be loaded via environment variables.
-- **Input Validation**: File paths and CLI arguments are strictly validated before execution.
-- **Dependency Management**: Dependencies are periodically checked for known CVEs.
-
----
+## Code Security Standards
+- NEVER hardcode credentials, API keys, tokens, secrets, or passwords.
+- ALWAYS validate and sanitize all CLI parameters before execution.
+- Ensure all connections use HTTPS.
 
 ## Reporting a Vulnerability
-
-If you discover a security vulnerability within PixelForge Studio, please report it via private email or security advisory on GitHub. We will address critical vulnerabilities promptly.
+If you discover a security vulnerability within PixelMatrix Engine, please report it via GitHub security advisories or contact the core maintainers.

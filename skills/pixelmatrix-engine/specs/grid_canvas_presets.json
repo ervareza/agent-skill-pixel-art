@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "engine": "PixelMatrix Engine",
+  "version": "2.0.0",
+  "description": "Grid canvas specifications, aspect ratios, and autotiling presets for 2D pixel art synthesis.",
+  "canvas_presets": {
+    "micro_icon_16": {
+      "name": "Micro Icon & Item Grid",
+      "width": 16,
+      "height": 16,
+      "aspect_ratio": "1:1",
+      "max_colors": 8,
+      "recommended_outline_px": 1,
+      "usage": "Inventory items, status icons, cursor glyphs, micro UI elements",
+      "grid_snapping": 1,
+      "transparency_required": true
+    },
+    "standard_sprite_32": {
+      "name": "Standard Character & Tile Grid",
+      "width": 32,
+      "height": 32,
+      "aspect_ratio": "1:1",
+      "max_colors": 16,
+      "recommended_outline_px": 1,
+      "usage": "16-bit RPG characters, standard terrain tiles, object props",
+      "grid_snapping": 2,
+      "transparency_required": true
+    },
+    "isometric_axonometric_48": {
+      "name": "Isometric Axonometric Tile Grid",
+      "width": 48,
+      "height": 48,
+      "aspect_ratio": "1:1",
+      "projection_angle_deg": 30,
+      "max_colors": 24,
+      "recommended_outline_px": 1,
+      "usage": "Isometric terrain blocks, building structures, 2.5D game view tiles",
+      "grid_snapping": 2,
+      "transparency_required": true,
+      "diamond_bounds": {
+        "top_vertex": [24, 0],
+        "right_vertex": [47, 12],
+        "bottom_vertex": [24, 24],
+        "left_vertex": [0, 12]
+      }
+    },
+    "boss_entity_64": {
+      "name": "Large Entity & Boss Grid",
+      "width": 64,
+      "height": 64,
+      "aspect_ratio": "1:1",
+      "max_colors": 32,
+      "recommended_outline_px": 1,
+      "usage": "Large boss monsters, vehicle sprites, complex environmental hazards",
+      "grid_snapping": 4,
+      "transparency_required": true
+    },
+    "scene_element_128": {
+      "name": "Scene Illustration & Portrait Grid",
+      "width": 128,
+      "height": 128,
+      "aspect_ratio": "1:1",
+      "max_colors": 48,
+      "recommended_outline_px": 1,
+      "usage": "Dialogue character cut-ins, victory banners, detailed scene props",
+      "grid_snapping": 4,
+      "transparency_required": false
+    },
+    "parallax_background_256": {
+      "name": "Parallax Background & Environment Splash",
+      "width": 256,
+      "height": 256,
+      "aspect_ratio": "1:1",
+      "max_colors": 64,
+      "recommended_outline_px": 0,
+      "usage": "Seamless looping background textures, skyboxes, distant mountain layers",
+      "grid_snapping": 8,
+      "transparency_required": false,
+      "seamless_looping": true
+    }
+  },
+  "autotiling_specs": {
+    "wang_2x2_corner_mask": {
+      "tile_count": 16,
+      "description": "Minimal 16-tile corner matching bitmask matrix for basic terrain autotiling"
+    },
+    "wang_3x3_blob_mask": {
+      "tile_count": 47,
+      "description": "Standard 47-tile blob autotile set covering all edge and inner/outer corner transitions"
+    }
+  },
+  "hud_frame_specs": {
+    "nine_slice_container_32": {
+      "tile_size": 10,
+      "margin_left": 10,
+      "margin_right": 10,
+      "margin_top": 10,
+      "margin_bottom": 10,
+      "description": "Retro dialogue and inventory 9-slice frame spec"
+    }
+  }
+}

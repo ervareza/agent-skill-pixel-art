@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "engine": "PixelMatrix Engine",
+  "version": "2.0.0",
+  "description": "Sprite matrix specifications, animation frame bounds, direction vectors, autotile Wang-masks, and particle specs.",
+  "animation_matrices": {
+    "character_4way_matrix": {
+      "name": "Standard 4-Way Character Animation Matrix",
+      "frame_dimensions": [32, 32],
+      "directions": ["SOUTH", "WEST", "EAST", "NORTH"],
+      "states": {
+        "idle": { "frame_count": 4, "fps": 6, "loop": true, "row_index": 0 },
+        "walk": { "frame_count": 8, "fps": 12, "loop": true, "row_index": 1 },
+        "run": { "frame_count": 6, "fps": 16, "loop": true, "row_index": 2 },
+        "melee_attack": { "frame_count": 6, "fps": 18, "loop": false, "row_index": 3 },
+        "ranged_attack": { "frame_count": 4, "fps": 12, "loop": false, "row_index": 4 },
+        "magic_cast": { "frame_count": 6, "fps": 10, "loop": false, "row_index": 5 },
+        "hit_stun": { "frame_count": 3, "fps": 10, "loop": false, "row_index": 6 },
+        "death_dissolve": { "frame_count": 8, "fps": 8, "loop": false, "row_index": 7 }
+      }
+    },
+    "character_8way_matrix": {
+      "name": "Advanced 8-Way Directional Character Matrix",
+      "frame_dimensions": [32, 32],
+      "directions": ["SOUTH", "SOUTH_WEST", "WEST", "NORTH_WEST", "NORTH", "NORTH_EAST", "EAST", "SOUTH_EAST"],
+      "states": {
+        "idle": { "frame_count": 4, "fps": 6, "loop": true },
+        "walk": { "frame_count": 8, "fps": 12, "loop": true },
+        "run": { "frame_count": 8, "fps": 16, "loop": true },
+        "attack": { "frame_count": 6, "fps": 18, "loop": false },
+        "death": { "frame_count": 8, "fps": 8, "loop": false }
+      }
+    }
+  },
+  "autotile_matrices": {
+    "isometric_terrain_48": {
+      "name": "Isometric Axonometric Terrain Autotile",
+      "tile_dimensions": [48, 48],
+      "projection": "30_degree_axonometric",
+      "tile_variations": 16,
+      "edge_masking": "wang_2x2_corner"
+    },
+    "topdown_dungeon_32": {
+      "name": "Top-Down Dungeon Tileset",
+      "tile_dimensions": [32, 32],
+      "projection": "orthographic_topdown",
+      "tile_variations": 47,
+      "edge_masking": "wang_3x3_blob"
+    },
+    "sidescroller_platform_16": {
+      "name": "Side-Scroller Parallax Platform Tileset",
+      "tile_dimensions": [16, 16],
+      "projection": "orthographic_side",
+      "tile_variations": 16,
+      "seamless_wrapping": "horizontal_x_axis"
+    }
+  },
+  "ui_hud_matrices": {
+    "retro_button_set": {
+      "frame_dimensions": [32, 16],
+      "states": ["normal", "hovered", "pressed", "disabled"]
+    },
+    "health_mana_bars": {
+      "frame_dimensions": [64, 12],
+      "elements": ["frame_border", "fill_segmented", "glow_overlay"]
+    },
+    "inventory_grid_9slice": {
+      "tile_dimensions": [16, 16],
+      "slice_margins": [4, 4, 4, 4]
+    },
+    "pixel_typography_5x7": {
+      "glyph_dimensions": [5, 7],
+      "character_map": "ASCII_32_to_126",
+      "monospaced": true
+    }
+  },
+  "vfx_particle_matrices": {
+    "explosion_plasma_8frame": {
+      "frame_dimensions": [32, 32],
+      "frame_count": 8,
+      "fps": 24,
+      "blend_mode": "additive",
+      "loop": false
+    },
+    "elemental_magic_aura": {
+      "frame_dimensions": [32, 32],
+      "frame_count": 6,
+      "fps": 12,
+      "elements": ["fire", "frost", "shock", "holy", "dark"],
+      "loop": true
+    },
+    "weather_particles": {
+      "frame_dimensions": [16, 16],
+      "elements": ["rain_drop_vector", "snow_flake_swirl", "fog_cloud_density"]
+    }
+  }
+}

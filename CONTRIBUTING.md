@@ -1,37 +1,19 @@
-# Contributing to PixelForge Studio
+# Contributing to PixelMatrix Engine
 
-Thank you for your interest in contributing to **PixelForge Studio**! We welcome bug reports, feature enhancements, documentation improvements, and new workflow suggestions.
+Thank you for your interest in contributing to **PixelMatrix Engine**!
 
----
+## Development Guidelines
 
-## Code of Conduct
+1. **Architecture & Standards**:
+   - Python modules in `skills/pixelmatrix-engine/scripts/` must be strictly typed (`typing`, `dataclasses`, `pathlib`).
+   - All scripts must expose a CLI interface with a `--json` output flag.
+   - Specification JSONs in `specs/` must strictly conform to standard JSON schema validation.
 
-Please maintain a respectful, welcoming, and collaborative environment.
+2. **Branch & Release Workflow**:
+   - Create semantic release branches (`v<MAJOR>.<MINOR>.<PATCH>`).
+   - Update `CHANGELOG.md` and `index.html` (/changelog route view) for any feature additions or fixes.
+   - Never push breaking changes directly to the `main` branch.
 
----
-
-## Development Setup
-
-1. Fork the repository on GitHub.
-2. Clone your fork locally:
-   ```bash
-   git clone https://github.com/your-username/pixelforge-studio.git
-   cd pixelforge-studio
-   ```
-3. Create a feature branch following semantic versioning or conventional naming (`feat/new-palette-extractor`, `fix/atlas-packer-alignment`).
-4. Install development dependencies:
-   ```bash
-   pip install -r skills/pixelforge-studio/requirements.txt
-   ```
-
----
-
-## Pull Request Guidelines
-
-- Ensure all Python scripts pass syntax compilation:
-  ```bash
-  python3 -m py_compile skills/pixelforge-studio/scripts/*.py
-  ```
-- Run CLI `--help` tests across all tools.
-- Update `CHANGELOG.md` following [Keep a Changelog](https://keepachangelog.com/).
-- Submit your pull request targeting the `main` or release branch.
+3. **Submitting Changes**:
+   - Run tests and CLI scripts to verify zero regressions.
+   - Create a Pull Request against the designated version branch.
