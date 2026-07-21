@@ -1,0 +1,203 @@
+{
+  "image": "cinematic_24frame_sheet.png",
+  "frame_width": 256,
+  "frame_height": 256,
+  "columns": 6,
+  "rows": 4,
+  "frame_count": 24,
+  "padding": 0,
+  "frames": [
+    {
+      "index": 0,
+      "filename": "cinematic_00.png",
+      "x": 0,
+      "y": 0,
+      "w": 256,
+      "h": 256
+    },
+    {
+      "index": 1,
+      "filename": "cinematic_01.png",
+      "x": 256,
+      "y": 0,
+      "w": 256,
+      "h": 256
+    },
+    {
+      "index": 2,
+      "filename": "cinematic_02.png",
+      "x": 512,
+      "y": 0,
+      "w": 256,
+      "h": 256
+    },
+    {
+      "index": 3,
+      "filename": "cinematic_03.png",
+      "x": 768,
+      "y": 0,
+      "w": 256,
+      "h": 256
+    },
+    {
+      "index": 4,
+      "filename": "cinematic_04.png",
+      "x": 1024,
+      "y": 0,
+      "w": 256,
+      "h": 256
+    },
+    {
+      "index": 5,
+      "filename": "cinematic_05.png",
+      "x": 1280,
+      "y": 0,
+      "w": 256,
+      "h": 256
+    },
+    {
+      "index": 6,
+      "filename": "cinematic_06.png",
+      "x": 0,
+      "y": 256,
+      "w": 256,
+      "h": 256
+    },
+    {
+      "index": 7,
+      "filename": "cinematic_07.png",
+      "x": 256,
+      "y": 256,
+      "w": 256,
+      "h": 256
+    },
+    {
+      "index": 8,
+      "filename": "cinematic_08.png",
+      "x": 512,
+      "y": 256,
+      "w": 256,
+      "h": 256
+    },
+    {
+      "index": 9,
+      "filename": "cinematic_09.png",
+      "x": 768,
+      "y": 256,
+      "w": 256,
+      "h": 256
+    },
+    {
+      "index": 10,
+      "filename": "cinematic_10.png",
+      "x": 1024,
+      "y": 256,
+      "w": 256,
+      "h": 256
+    },
+    {
+      "index": 11,
+      "filename": "cinematic_11.png",
+      "x": 1280,
+      "y": 256,
+      "w": 256,
+      "h": 256
+    },
+    {
+      "index": 12,
+      "filename": "cinematic_12.png",
+      "x": 0,
+      "y": 512,
+      "w": 256,
+      "h": 256
+    },
+    {
+      "index": 13,
+      "filename": "cinematic_13.png",
+      "x": 256,
+      "y": 512,
+      "w": 256,
+      "h": 256
+    },
+    {
+      "index": 14,
+      "filename": "cinematic_14.png",
+      "x": 512,
+      "y": 512,
+      "w": 256,
+      "h": 256
+    },
+    {
+      "index": 15,
+      "filename": "cinematic_15.png",
+      "x": 768,
+      "y": 512,
+      "w": 256,
+      "h": 256
+    },
+    {
+      "index": 16,
+      "filename": "cinematic_16.png",
+      "x": 1024,
+      "y": 512,
+      "w": 256,
+      "h": 256
+    },
+    {
+      "index": 17,
+      "filename": "cinematic_17.png",
+      "x": 1280,
+      "y": 512,
+      "w": 256,
+      "h": 256
+    },
+    {
+      "index": 18,
+      "filename": "cinematic_18.png",
+      "x": 0,
+      "y": 768,
+      "w": 256,
+      "h": 256
+    },
+    {
+      "index": 19,
+      "filename": "cinematic_19.png",
+      "x": 256,
+      "y": 768,
+      "w": 256,
+      "h": 256
+    },
+    {
+      "index": 20,
+      "filename": "cinematic_20.png",
+      "x": 512,
+      "y": 768,
+      "w": 256,
+      "h": 256
+    },
+    {
+      "index": 21,
+      "filename": "cinematic_21.png",
+      "x": 768,
+      "y": 768,
+      "w": 256,
+      "h": 256
+    },
+    {
+      "index": 22,
+      "filename": "cinematic_22.png",
+      "x": 1024,
+      "y": 768,
+      "w": 256,
+      "h": 256
+    },
+    {
+      "index": 23,
+      "filename": "cinematic_23.png",
+      "x": 1280,
+      "y": 768,
+      "w": 256,
+      "h": 256
+    }
+  ]
+}

@@ -4,7 +4,20 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [v4.3.0] - 2025-07-22
+
+### Added
+- **Exhaustive Multi-Resolution Test Suite (8x8 to 4K):** Complete generated examples from 8x8 micro icons to 4096x4096 4K Ultra HD Master Canvas.
+- **Exhaustive Animation Frame Coverage:** Tested & documented animations across 1-frame static, 2-frame micro, 3-frame idle, 4-frame walk, 6-frame run, 4-frame jump, 4-frame attack, 2-frame hurt, 5-frame die, 6-frame spell cast, 12-frame explosion VFX, up to 24-frame smooth 24 FPS cutscenes.
+- **Exhaustive Multi-Directional Layouts:** Included single-direction, side-only horizontal mirroring (East/West), 4-Directional, and 8-Directional master sheets.
+
+## [v4.2.0] - 2025-07-22
+
+### Changed
+- **SKILL.md Overhaul:** Added 7 style presets, 9 mandatory tile standards, shading & depth guidelines, per-sprite color budgets, and sprite template indexes.
+
 ## [v4.1.0] - 2025-07-22
+
 
 ### Added
 - **8 new CLI scripts:** `sprite_resize.py`, `gif_export.py`, `palette_extract.py`, `batch_audit.py`, `sprite_mirror.py`, `outline_generator.py`, `dither.py`, `noise_generator.py`
