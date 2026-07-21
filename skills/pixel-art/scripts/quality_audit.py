@@ -21,11 +21,17 @@ from PIL import Image
 
 def audit_antialiasing(img):
     """Check for semi-transparent pixels (0 < alpha < 255)."""
-    pixels = img.getdata()
-    bad = sum(1 for r, g, b, a in pixels if 0 < a < 255)
+    w, h = img.size
+    px = img.load()
+    bad = 0
+    for x in range(w):
+        for y in range(h):
+            a = px[x, y][3]
+            if 0 < a < 255:
+                bad += 1
     return {
         "semi_transparent_pixels": bad,
-        "total_pixels": len(pixels),
+        "total_pixels": w * h,
         "clean": bad == 0,
     }
 
@@ -59,11 +65,14 @@ def audit_orphan_pixels(img):
 
 def audit_palette(img, max_colors):
     """Check unique opaque color count against limit."""
-    pixels = img.getdata()
+    w, h = img.size
+    px = img.load()
     colors = set()
-    for r, g, b, a in pixels:
-        if a > 0:
-            colors.add((r, g, b))
+    for x in range(w):
+        for y in range(h):
+            r, g, b, a = px[x, y]
+            if a > 0:
+                colors.add((r, g, b))
     count = len(colors)
     return {
         "unique_colors": count,

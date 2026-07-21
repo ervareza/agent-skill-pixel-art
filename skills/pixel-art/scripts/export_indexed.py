@@ -20,15 +20,18 @@ def export_indexed(input_path: Path, output_path: Path, max_colors: int = 256) -
     original_w, original_h = img.size
 
     # Count unique opaque colors
-    pixels = img.getdata()
+    px = img.load()
     unique = set()
-    for r, g, b, a in pixels:
-        if a > 0:
-            unique.add((r, g, b))
+    for x in range(original_w):
+        for y in range(original_h):
+            r, g, b, a = px[x, y]
+            if a > 0:
+                unique.add((r, g, b))
     original_color_count = len(unique)
 
-    # Quantize to indexed palette
-    quantized = img.quantize(colors=min(max_colors, 256), method=Image.Quantize.MEDIANCUT)
+    # Convert to RGB for quantization (pixel art should have clean alpha)
+    rgb_img = img.convert("RGB")
+    quantized = rgb_img.quantize(colors=min(max_colors, 256), method=Image.Quantize.MEDIANCUT)
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
     quantized.save(output_path)
