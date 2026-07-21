@@ -286,6 +286,22 @@ python scripts/sprite_resize.py --input sheets/knight_walk.png --output exports/
 
 **Tools used:** `init_workspace` → `quality_audit` → `atlas_pack` → `gif_export` → `sprite_resize`
 
+#### 📸 Output Gallery
+
+**Individual Frames (4× zoom):**
+
+| Frame 0 | Frame 1 | Frame 2 | Frame 3 |
+|---|---|---|---|
+| ![Frame 0](examples/uc1_knight_walk/frame_00.png) | ![Frame 1](examples/uc1_knight_walk/frame_01.png) | ![Frame 2](examples/uc1_knight_walk/frame_02.png) | ![Frame 3](examples/uc1_knight_walk/frame_03.png) |
+
+**Sprite Sheet (4× zoom):**
+
+![Walk Sheet 4x](examples/uc1_knight_walk/walk_sheet_4x.png)
+
+**Animated GIF Preview (4× zoom):**
+
+![Walk Animation](examples/uc1_knight_walk/walk_animation_4x.gif)
+
 ---
 
 ### Example 2: Tileset → GameBoy Palette Remap → Indexed Export
@@ -375,6 +391,14 @@ python scripts/export_indexed.py --input tileset_gb.png --output tileset_gb_inde
 </details>
 
 **Tools used:** `quality_audit` → `palette_remap` → `export_indexed`
+
+#### 📸 Output Gallery
+
+**Original Tileset vs GameBoy Remap (4× zoom):**
+
+| Original (10 colors) | GameBoy Remap (4 colors) |
+|---|---|
+| ![Original](examples/uc2_tileset_gameboy/tileset_original_4x.png) | ![GameBoy](examples/uc2_tileset_gameboy/tileset_gameboy_4x.png) |
 
 ---
 
@@ -510,6 +534,20 @@ python scripts/quality_audit.py --image terrain.png --grid 8 --max-colors 16 --j
 
 **Tools used:** `palette_extract` → `noise_generator` → `dither` → `quality_audit`
 
+#### 📸 Output Gallery
+
+**Procedural Terrain (4× zoom) — colored with extracted palette:**
+
+![Terrain](examples/uc3_terrain_sky/terrain_4x.png)
+
+**Dithered Sky Gradient (4× zoom) — Bayer 4×4 matrix:**
+
+![Sky](examples/uc3_terrain_sky/sky_dither_4x.png)
+
+**Combined Scene (4× zoom) — sky + terrain:**
+
+![Scene](examples/uc3_terrain_sky/scene_combined_4x.png)
+
 ---
 
 ### Example 4: Batch QA → Outline → Resize → Palette Remap
@@ -629,6 +667,14 @@ python scripts/palette_remap.py --image outlined/walk_00.png --palette palettes/
 </details>
 
 **Tools used:** `batch_audit` → `outline_generator` → `sprite_resize` → `palette_remap`
+
+#### 📸 Output Gallery
+
+**Original → Outlined → PICO-8 Remap (4× zoom):**
+
+| Original (16×16) | With Outline (18×18) | PICO-8 Remap |
+|---|---|---|
+| ![Original](examples/uc4_outline_resize/knight_original_4x.png) | ![Outlined](examples/uc4_outline_resize/knight_outlined_4x.png) | ![PICO-8](examples/uc4_outline_resize/knight_pico8_4x.png) |
 
 ---
 
@@ -796,6 +842,20 @@ python scripts/batch_audit.py --dir ./west_frames/ --grid 16 --max-colors 16 --j
 </details>
 
 **Tools used:** `sprite_mirror` → `atlas_pack` ×2 → `gif_export` ×2 → `batch_audit` ×2
+
+#### 📸 Output Gallery
+
+**East-Facing Sheet vs West-Facing Sheet (4× zoom):**
+
+| East (drawn) | West (auto-mirrored) |
+|---|---|
+| ![East Sheet](examples/uc5_mirror_8way/east_sheet_4x.png) | ![West Sheet](examples/uc5_mirror_8way/west_sheet_4x.png) |
+
+**Animated GIF Previews (4× zoom):**
+
+| East Animation | West Animation |
+|---|---|
+| ![East Anim](examples/uc5_mirror_8way/east_anim_4x.gif) | ![West Anim](examples/uc5_mirror_8way/west_anim_4x.gif) |
 
 
 ---
