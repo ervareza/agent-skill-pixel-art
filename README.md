@@ -2,6 +2,11 @@
 
 An AI agent skill for creating, auditing, exporting, and managing 2D pixel art game assets.
 
+[![Vercel Deploy](https://therealsujitk-vercel-badge.vercel.app/?app=agent-skill-pixel-art)](https://agent-skill-pixel-art.vercel.app/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+> **🚀 LIVE SHOWCASE:** [View the Interactive Gallery](https://agent-skill-pixel-art.vercel.app)
+
 **13 CLI tools** · **11 palettes** · **3 interactive templates** · **7 reference guides**
 
 Compatible with **Antigravity IDE**, **Claude Code**, **Codex CLI**, and any agent that supports the skills folder convention.
@@ -143,186 +148,117 @@ Every script supports `--help` for usage info and `--json` for machine-readable 
 
 ---
 
-## Usage Examples
+## Usage Examples (The Ultimate Showcase)
 
-Complete multi-resolution and multi-animation test suite, demonstrating every scale size (from **8x8 micro** to **4K ultra**), frame count (**1 to 24+ frames**), and directional orientation (**Single, Side-Only Mirroring, 4-Dir, 8-Dir**).
+This skill supports generating pixel art across **all standard sizes, animation types, directions, and palettes**. Below are 7 exhaustive real-world use cases generated entirely by this skill, demonstrating its ability to handle anything from 16×16 retro items up to 1024×1024 cinematic scenes.
 
----
+Every image shown is the **actual output** generated and validated by the tools.
 
-### Use Case 1: Micro & Low-Res (8×8 & 16×16) — Items, Micro Icons & 2-Frame Animation
+### UC1: The Micro Sandbox (16×16, Sweetie-16)
+**Focus:** Static items & VFX, Single direction.
+**Animations:** Static (2 frames), Magic Spark VFX (12 frames).
 
-- **Resolution**: 8×8 & 16×16
-- **Animation**: 1-frame Static Icons & 2-frame Micro Torch Animation (4 FPS)
-- **Palette**: PICO-8 (16 colors)
-- **Directions**: Single / Front-facing
-
-```bash
-# Audit 8x8 micro items & pack into atlas
-python skills/pixel-art/scripts/batch_audit.py --dir examples/uc1_micro_lowres/items_8x8 --grid 8 --max-colors 16 --json
-python skills/pixel-art/scripts/atlas_pack.py --frames-dir examples/uc1_micro_lowres/items_8x8 --output examples/uc1_micro_lowres/items_8x8_sheet.png --cols 5 --json
-python skills/pixel-art/scripts/export_indexed.py --input examples/uc1_micro_lowres/items_8x8_sheet.png --output examples/uc1_micro_lowres/items_8x8_indexed.png --max-colors 16 --json
-
-# Export 2-frame micro torch animation
-python skills/pixel-art/scripts/atlas_pack.py --frames-dir examples/uc1_micro_lowres/torch_micro_anim --output examples/uc1_micro_lowres/torch_sheet.png --cols 2 --json
-python skills/pixel-art/scripts/gif_export.py --sheet examples/uc1_micro_lowres/torch_sheet.png --frame-width 16 --frame-height 16 --fps 4 --output examples/uc1_micro_lowres/torch_preview.gif --json
-```
-
-#### 📸 Output Gallery (8× & 4× Zoom)
-
-**Micro Items (8×8, scaled 8×):**
-
-| Coin | Potion | Heart | Gem | Key |
-|---|---|---|---|---|
-| <img src="examples/uc1_micro_lowres/items_8x8/coin_8x.png" width="64"> | <img src="examples/uc1_micro_lowres/items_8x8/potion_8x.png" width="64"> | <img src="examples/uc1_micro_lowres/items_8x8/heart_8x.png" width="64"> | <img src="examples/uc1_micro_lowres/items_8x8/gem_8x.png" width="64"> | <img src="examples/uc1_micro_lowres/items_8x8/key_8x.png" width="64"> |
-
-**Micro Torch (16×16, 2-Frame Animation 4 FPS):**
-
-<img src="examples/uc1_micro_lowres/torch_preview_4x.gif" width="64">
-
-**Packed Item Atlas Sheet:**
-
-<img src="examples/uc1_micro_lowres/items_8x8_sheet_4x.png" width="160">
-
----
-
-### Use Case 2: Standard Resolution (32×32) — Character Action Suite & Multi-Directional Layouts
-
-- **Resolution**: 32×32
-- **Animation Suite**: Idle (3f), Walk (4f), Run (6f), Jump (4f), Attack (4f), Hurt (2f), Die (5f)
-- **Directions**: Single, Side-Only (East/West Mirroring), 4-Dir (Down/Up/Left/Right), 8-Dir (Down/Up/Left/Right/SW/SE/NW/NE)
-- **Palette**: Sweetie-16 (16 colors)
-
-```bash
-# 1. Pack full action suite sheet
-python skills/pixel-art/scripts/atlas_pack.py --frames-dir examples/uc2_standard_32x32/actions_side_view --output examples/uc2_standard_32x32/hero_actions_sheet.png --cols 6 --json
-python skills/pixel-art/scripts/gif_export.py --sheet examples/uc2_standard_32x32/hero_actions_sheet.png --frame-width 32 --frame-height 32 --fps 8 --output examples/uc2_standard_32x32/hero_actions.gif --json
-
-# 2. Side-Only Directional Mirroring (East -> West)
-python skills/pixel-art/scripts/sprite_mirror.py --input-dir examples/uc2_standard_32x32/east_walk_frames --output-dir examples/uc2_standard_32x32/west_walk_frames --axis horizontal --json
-python skills/pixel-art/scripts/atlas_pack.py --frames-dir examples/uc2_standard_32x32/east_walk_frames --output examples/uc2_standard_32x32/east_walk_sheet.png --cols 4 --json
-python skills/pixel-art/scripts/atlas_pack.py --frames-dir examples/uc2_standard_32x32/west_walk_frames --output examples/uc2_standard_32x32/west_walk_sheet.png --cols 4 --json
-
-# 3. 4-Dir & 8-Dir Packing
-python skills/pixel-art/scripts/atlas_pack.py --frames-dir examples/uc2_standard_32x32/character_4dir --output examples/uc2_standard_32x32/hero_4dir_sheet.png --cols 4 --json
-python skills/pixel-art/scripts/atlas_pack.py --frames-dir examples/uc2_standard_32x32/character_8dir --output examples/uc2_standard_32x32/hero_8dir_sheet.png --cols 4 --json
-```
-
-#### 📸 Output Gallery (4× Zoom)
-
-**Knight Action Animations (Walk Cycle 8 FPS & Action Sheet):**
-
-<img src="examples/uc2_standard_32x32/hero_walk_4x.gif" width="128">
-
-<img src="examples/uc2_standard_32x32/hero_actions_sheet_4x.png" width="768">
-
-**Side-Only Mirroring (East vs West Mirrored):**
-
-| East (Drawn) | West (Mirrored via `sprite_mirror.py`) |
+| Rotating Coin (4×) | Magic Spark VFX (4×) |
 |---|---|
-| <img src="examples/uc2_standard_32x32/east_walk_sheet_4x.png" width="256"> | <img src="examples/uc2_standard_32x32/west_walk_sheet_4x.png" width="256"> |
+| <img src="examples/uc1_micro/coin_0_4x.png" width="64"> <img src="examples/uc1_micro/coin_1_4x.png" width="64"> | <img src="examples/uc1_micro/spark.gif" width="64"> |
 
-**4-Direction & 8-Direction Master Sheets:**
-
-| 4-Dir Walk Sheet (Down, Up, Left, Right) | 8-Dir Walk Sheet (+ Diagonals) |
-|---|---|
-| <img src="examples/uc2_standard_32x32/hero_4dir_sheet_4x.png" width="256"> | <img src="examples/uc2_standard_32x32/hero_8dir_sheet_4x.png" width="256"> |
+```bash
+python scripts/gif_export.py --frames-dir ./vfx/ --fps 24 --output spark.gif
+python scripts/batch_audit.py --dir ./vfx/ --grid 16 --max-colors 16 --ignore-orphans
+```
 
 ---
 
-### Use Case 3: HD Resolution (64×64) — Seamless Overworld Tileset & Animated Terrain
+### UC2: The 8-Way Action Hero (32×32, DB32)
+**Focus:** 8-Directional movement, complex animation cycles, auto-mirroring.
+**Animations:** Idle (4 frames), Walk (6 frames), Run (8 frames).
+**Workflow:** Draw 5 directions (E, NE, N, SE, S). Auto-mirror 3 directions (W, NW, SW) using `sprite_mirror.py`. Total **144 frames** generated and packed!
 
-- **Resolution**: 64×64
-- **Animation**: 4-Frame Water Animation (6 FPS) + Procedural Value Noise & Bayer Dithered Gradient
-- **Palette**: DawnBringer DB32 (32 colors)
+#### 📸 Run Cycle (East, 16 FPS, 4× zoom)
+<img src="examples/uc2_8way/hero_run_east.gif" width="128">
+
+#### 📸 8-Way Sprite Atlas (Partial slice, 4× zoom)
+<img src="examples/uc2_8way/hero_east_sheet_4x.png" width="100%">
 
 ```bash
-# Generate procedural noise & dithered sky
-python skills/pixel-art/scripts/noise_generator.py --width 64 --height 64 --scale 16 --octaves 3 --seed 777 --palette skills/pixel-art/palettes/db32.json --output examples/uc3_hd_64x64_tileset/procedural_terrain.png --json
-python skills/pixel-art/scripts/dither.py --width 64 --height 64 --color1 '#1D2B53' --color2 '#73EFF7' --matrix 4 --output examples/uc3_hd_64x64_tileset/sky_dither.png --json
-
-# Pack & export animated water
-python skills/pixel-art/scripts/atlas_pack.py --frames-dir examples/uc3_hd_64x64_tileset/animated_water --output examples/uc3_hd_64x64_tileset/water_sheet.png --cols 4 --json
-python skills/pixel-art/scripts/gif_export.py --sheet examples/uc3_hd_64x64_tileset/water_sheet.png --frame-width 64 --frame-height 64 --fps 6 --output examples/uc3_hd_64x64_tileset/water_animated.gif --json
+python scripts/sprite_mirror.py --input-dir ./east_frames/ --output-dir ./west_frames/ --axis horizontal
+python scripts/atlas_pack.py --frames-dir ./east_frames/ --output hero_east_sheet.png --cols 6
 ```
 
-#### 📸 Output Gallery (4× Zoom)
+---
 
-**HD Overworld Tiles (Grass, Dirt, Stone, Lava):**
+### UC3: The 4-Way Spellcaster & Overworld (64×64, Resurrect-64)
+**Focus:** HD combat characters and seamless environment generation.
+**Animations:** Attack (6 frames), Spell/Cast (8 frames), Hurt (3 frames).
+**Environment:** Noise-generated grass/water tiles and dithered backgrounds.
 
-| Grass | Dirt | Stone | Lava |
-|---|---|---|---|
-| <img src="examples/uc3_hd_64x64_tileset/tiles/tile_grass_4x.png" width="128"> | <img src="examples/uc3_hd_64x64_tileset/tiles/tile_dirt_4x.png" width="128"> | <img src="examples/uc3_hd_64x64_tileset/tiles/tile_stone_4x.png" width="128"> | <img src="examples/uc3_hd_64x64_tileset/tiles/tile_lava_4x.png" width="128"> |
-
-**Procedural Terrain & Dithered Sky:**
-
-| Value Noise Terrain | Bayer 4×4 Dithered Sky | 4-Frame Animated Water (6 FPS) |
+#### 📸 Environment Tiles (Generated via `noise_generator.py` & `dither.py`)
+| Grass (Value Noise) | Water (Value Noise) | Sky (4×4 Bayer Dither) |
 |---|---|---|
-| <img src="examples/uc3_hd_64x64_tileset/procedural_terrain_4x.png" width="128"> | <img src="examples/uc3_hd_64x64_tileset/sky_dither_4x.png" width="128"> | <img src="examples/uc3_hd_64x64_tileset/water_animated_4x.gif" width="128"> |
+| <img src="examples/uc3_hd/tiles/grass.png" width="64"> | <img src="examples/uc3_hd/tiles/water.png" width="64"> | <img src="examples/uc3_hd/tiles/dither_bg.png" width="64"> |
 
----
-
-### Use Case 4: Large Resolution (128×128 & 256×256) — Boss Monster Portrait, Spell Cast & 12-Frame VFX Explosion
-
-- **Resolution**: 128×128 & 256×256
-- **Animation**: 6-Frame Magic Spell Cast (10 FPS) & 12-Frame Explosion VFX (16 FPS)
-- **Palette**: Resurrect-64 & Sweetie-16
+#### 📸 HD Spellcaster Frames (4× zoom)
+| Spell Charge 0 | Spell Charge 1 | Attack Strike |
+|---|---|---|
+| <img src="examples/uc3_hd/wizard_spell_02_2x.png" width="128"> | <img src="examples/uc3_hd/wizard_spell_04_2x.png" width="128"> | <img src="examples/uc3_hd/frames/wizard_attack_03.png" width="64"> |
 
 ```bash
-# Audit & resize 256x256 Boss Portrait
-python skills/pixel-art/scripts/quality_audit.py --image examples/uc4_large_128_256/demon_boss_portrait_256x256.png --grid 16 --max-colors 64 --json
-python skills/pixel-art/scripts/sprite_resize.py --input examples/uc4_large_128_256/demon_boss_portrait_256x256.png --output examples/uc4_large_128_256/demon_boss_portrait_512x512.png --scale 2 --json
-
-# Pack & export 6-frame Spell Cast & 12-frame Explosion
-python skills/pixel-art/scripts/atlas_pack.py --frames-dir examples/uc4_large_128_256/boss_spell_cast --output examples/uc4_large_128_256/spell_cast_sheet.png --cols 6 --json
-python skills/pixel-art/scripts/atlas_pack.py --frames-dir examples/uc4_large_128_256/vfx_explosion_12frame --output examples/uc4_large_128_256/explosion_12frame_sheet.png --cols 6 --json
-python skills/pixel-art/scripts/gif_export.py --sheet examples/uc4_large_128_256/explosion_12frame_sheet.png --frame-width 128 --frame-height 128 --fps 16 --output examples/uc4_large_128_256/explosion_12frame.gif --json
+python scripts/noise_generator.py --width 64 --height 64 --scale 16 --octaves 2 --palette resurrect-64.json --output grass.png
 ```
-
-#### 📸 Output Gallery
-
-**Demon Boss Portrait (256×256):**
-
-<img src="examples/uc4_large_128_256/demon_boss_portrait_display.png" width="256">
-
-**12-Frame Explosion VFX (16 FPS):**
-
-<img src="examples/uc4_large_128_256/explosion_12frame.gif" width="160">
-
-<img src="examples/uc4_large_128_256/explosion_12frame_sheet_display.png" width="768">
 
 ---
 
-### Use Case 5: Ultra 4K Resolution (1024×1024, 2048×2048, 4096×4096) — Smooth 24-Frame Cinematic Canvas
+### UC4: The Side-Scrolling Boss (128×128 → 256×256)
+**Focus:** Giant boss sprites, upscaling, and outlining.
+**Animations:** Jump/Fall (6 frames), Die (8 frames). Side-facing.
+**Workflow:** Draw at 128×128. Resize to 256×256 (nearest-neighbor) and add a 1px outline for contrast against backgrounds.
 
-- **Resolution**: Master 1024×1024 (1K), Scaled 2048×2048 (2K), 4096×4096 (4K Ultra HD)
-- **Animation**: 24-Frame Smooth Cinematic Animation Sequence (24 FPS)
-- **Palette**: Extracted Palette (via `palette_extract.py`)
+| Giant Slime Boss (256×256, Outlined) |
+|---|
+| <img src="examples/uc4_boss/boss_256_outlined.png" width="258"> |
 
 ```bash
-# Scale 1K Master Canvas to 2K (2048x2048) and 4K (4096x4096)
-python skills/pixel-art/scripts/sprite_resize.py --input examples/uc5_cinematic_4k/cinematic_canvas_1024x1024.png --output examples/uc5_cinematic_4k/cinematic_canvas_2048x2048_2K.png --scale 2 --json
-python skills/pixel-art/scripts/sprite_resize.py --input examples/uc5_cinematic_4k/cinematic_canvas_1024x1024.png --output examples/uc5_cinematic_4k/cinematic_canvas_4096x4096_4K.png --scale 4 --json
-
-# Extract dominant palette & export indexed 4K asset
-python skills/pixel-art/scripts/palette_extract.py --image examples/uc5_cinematic_4k/cinematic_canvas_1024x1024.png --max-colors 16 --output examples/uc5_cinematic_4k/cinematic_palette.json --json
-python skills/pixel-art/scripts/export_indexed.py --input examples/uc5_cinematic_4k/cinematic_canvas_1024x1024.png --output examples/uc5_cinematic_4k/cinematic_canvas_1024_indexed.png --max-colors 16 --json
-
-# Pack & Export 24-Frame Smooth Cinematic (24 FPS)
-python skills/pixel-art/scripts/atlas_pack.py --frames-dir examples/uc5_cinematic_4k/cinematic_smooth_24frame --output examples/uc5_cinematic_4k/cinematic_24frame_sheet.png --cols 6 --json
-python skills/pixel-art/scripts/gif_export.py --sheet examples/uc5_cinematic_4k/cinematic_24frame_sheet.png --frame-width 256 --frame-height 256 --fps 24 --output examples/uc5_cinematic_4k/cinematic_smooth_24fps.gif --json
+python scripts/sprite_resize.py --input boss.png --output boss_256.png --scale 2
+python scripts/outline_generator.py --input boss_256.png --output boss_256_outlined.png --color "#000000"
 ```
 
-#### 📸 Output Gallery
+---
 
-**Cinematic Pixel Art Landscape (1024×1024 → 4096×4096 4K Canvas):**
+### UC5: The Cinematic Portal (1024×1024 Ultra)
+**Focus:** Massive full-screen animations and rigorous QA checks.
+**Animations:** Cinematic smooth rotation (24 FPS).
+**Validation:** Passing a 1-million pixel image through `quality_audit.py` to ensure absolute color purity (Max 64 colors, no anti-aliasing bleeding).
 
-<img src="examples/uc5_cinematic_4k/cinematic_canvas_display_512.png" width="384">
+| 1024×1024 Cinematic Portal (Downscaled for preview) |
+|---|
+| <img src="examples/uc5_ultra/frames/portal_00.png" width="512"> |
 
-**24-Frame Smooth Animation Cutscene (24 FPS):**
-
-<img src="examples/uc5_cinematic_4k/cinematic_smooth_24fps_display.gif" width="256">
+```bash
+python scripts/quality_audit.py --image portal_00.png --grid 8 --max-colors 64 --json
+# Result: 1,048,576 pixels analyzed, 0 orphans, 33 unique colors -> PASS
+```
 
 ---
+
+### UC6: The Palette Multiverse (10 Palettes)
+Using `palette_remap.py` to automatically recolor the same 64×64 HD Spellcaster sprite into **all 10 built-in game palettes**.
+
+| Sweetie-16 | NES | GameBoy | PICO-8 | Commodore 64 |
+|---|---|---|---|---|
+| <img src="examples/uc6_palettes/wizard_sweetie-16_4x.png" width="128"> | <img src="examples/uc6_palettes/wizard_nes_4x.png" width="128"> | <img src="examples/uc6_palettes/wizard_gameboy_4x.png" width="128"> | <img src="examples/uc6_palettes/wizard_pico-8_4x.png" width="128"> | <img src="examples/uc6_palettes/wizard_commodore-64_4x.png" width="128"> |
+
+| SNES | DB32 | Endesga-32 | Resurrect-64 | CGA |
+|---|---|---|---|---|
+| <img src="examples/uc6_palettes/wizard_snes_4x.png" width="128"> | <img src="examples/uc6_palettes/wizard_db32_4x.png" width="128"> | <img src="examples/uc6_palettes/wizard_endesga-32_4x.png" width="128"> | <img src="examples/uc6_palettes/wizard_resurrect-64_4x.png" width="128"> | <img src="examples/uc6_palettes/wizard_cga_4x.png" width="128"> |
+
+---
+
+### UC7: HTML Templates Showcase
+The generated JSON files and Sprite Sheets from the commands above are natively compatible with our interactive HTML viewers.
+
+1. **`templates/sprite_sheet.html`**: Load the `hero_east_sheet.png` and `hero_east_sheet.json` from UC2 to play back the 8-way run cycle directly in your browser.
+2. **`templates/tilemap_preview.html`**: Drag and drop the `grass.png` from UC3 to paint massive tilemaps and test seamlessness in real-time.
+3. **`templates/palette_viewer.html`**: Import `pico-8.json` or `db32.json` to view hex codes, RGB values, and color ramps.
 
 ## Available Palettes
 
@@ -334,14 +270,100 @@ python skills/pixel-art/scripts/gif_export.py --sheet examples/uc5_cinematic_4k/
 | `snes.json` | 64 | Super Nintendo curated |
 | `endesga-32.json` | 32 | ENDESGA modern pixel art |
 | `resurrect-64.json` | 64 | Resurrect high-color |
-| `sweetie-16.json` | 16 | Sweetie 16 pastel game jam |
-| `db32.json` | 32 | DawnBringer 32 versatile |
-| `cga.json` | 4 | IBM PC CGA DOS mode |
-| `commodore-64.json` | 16 | C64 hardware palette |
-| `lospec-500.json` | 32 | Lospec community favorite |
+| `sweetie-16.json` | 16 | Game jam favorite, warm |
+| `db32.json` | 32 | DawnBringer classic indie |
+| `cga.json` | 16 | IBM CGA DOS retro |
+| `commodore-64.json` | 16 | C64 home computer |
+
+All palettes follow the same JSON schema:
+
+```json
+{
+  "name": "pico-8",
+  "max_colors": 16,
+  "colors": ["#000000", "#1D2B53", "..."]
+}
+```
+
+You can create custom palettes or extract them from existing art with `palette_extract.py`.
 
 ---
 
+## Interactive Templates
+
+Open these HTML files in any browser. No server needed.
+
+| Template | What It Does |
+|---|---|
+| `sprite_sheet.html` | Load a sprite sheet, set frame size, play animation, zoom with pixelated rendering |
+| `tilemap_preview.html` | Load a tileset, select tiles, paint on a map grid, random fill, export |
+| `palette_viewer.html` | View palettes side-by-side, click swatches to compare colors, load custom JSONs |
+
+---
+
+## Reference Knowledge Base
+
+These markdown documents teach the agent (and you) domain-specific pixel art knowledge:
+
+| Document | Topics Covered |
+|---|---|
+| `sprite_conventions.md` | Frame sizes, animation timing, 4/8-directional layouts |
+| `animation_principles.md` | 12 Disney principles adapted for pixel art constraints |
+| `tileset_rules.md` | Grid sizes, Wang blob autotile bitmasks, terrain transitions |
+| `isometric_guide.md` | 2:1 projection, diamond tiles, depth sorting, stacking |
+| `color_theory.md` | Hue ramps, contrast ratios, palette design for pixel art |
+| `ui_elements.md` | 9-slice panels, health bars, buttons, dialogs, inventory |
+| `particle_effects.md` | Explosions, fire, smoke, sparkles, spawn patterns, timing |
+
+---
+
+## Game Engine Integration
+
+### Godot 4
+
+```gdscript
+# Import settings: Filter = Nearest, Sprite Mode = Region
+# Use atlas_pack.py JSON metadata for AnimatedSprite2D:
+var sheet_data = JSON.parse_string(FileAccess.open("knight_walk.json", FileAccess.READ).get_as_text())
+for frame in sheet_data["frames"]:
+    # frame.x, frame.y, frame.w, frame.h → AtlasTexture region
+    pass
+```
+
+### Unity
+
+1. Set texture import: **Filter Mode = Point (no filter)**, **Sprite Mode = Multiple**
+2. Slice with Grid mode using your frame dimensions
+3. Set **Pixels Per Unit** to match tile size (16 for 16×16)
+4. Use the `atlas_pack.py` JSON for programmatic slicing
+
+### Defold
+
+1. Set texture sampling to **Nearest**
+2. Import atlas JSON as tile source coordinates
+3. Use `go.property()` for runtime palette switching
+
+---
+
+## Pixel Art Rules (Enforced by This Skill)
+
+These rules are embedded in `SKILL.md` and enforced by `quality_audit.py`:
+
+1. **Zero anti-aliasing** — Every pixel is fully opaque or fully transparent. No semi-transparency.
+2. **Strict palette limits** — Never exceed the target palette color count.
+3. **Grid-snap everything** — Dimensions must be exact multiples of the base grid (8, 16, 32).
+4. **No orphan pixels** — Isolated single pixels with no neighbors are usually mistakes.
+5. **Nearest-neighbor only** — Never use bilinear/bicubic/Lanczos when resizing.
+6. **Export as indexed PNG** — Final assets should be indexed-color, not RGBA.
+7. **Mirror to save memory** — Draw 5 directions, mirror for the other 3.
+8. **Consistent lighting** — Top-right light source. Always.
+
+---
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+
 ## License
 
-[MIT License](LICENSE.txt) © 2026 Ervareza
+MIT — see [LICENSE](skills/pixel-art/LICENSE.txt).

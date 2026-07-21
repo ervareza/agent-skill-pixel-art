@@ -10,3 +10,4 @@ compiled_atlases/
 lut_palettes/
 spec_manifests/
 exports/
+.vercel
