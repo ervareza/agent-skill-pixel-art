@@ -1,0 +1,51 @@
+{
+  "image": "item_sheet.png",
+  "frame_width": 16,
+  "frame_height": 16,
+  "columns": 5,
+  "rows": 1,
+  "frame_count": 5,
+  "padding": 0,
+  "frames": [
+    {
+      "index": 0,
+      "filename": "gem.png",
+      "x": 0,
+      "y": 0,
+      "w": 16,
+      "h": 16
+    },
+    {
+      "index": 1,
+      "filename": "key.png",
+      "x": 16,
+      "y": 0,
+      "w": 16,
+      "h": 16
+    },
+    {
+      "index": 2,
+      "filename": "potion.png",
+      "x": 32,
+      "y": 0,
+      "w": 16,
+      "h": 16
+    },
+    {
+      "index": 3,
+      "filename": "shield.png",
+      "x": 48,
+      "y": 0,
+      "w": 16,
+      "h": 16
+    },
+    {
+      "index": 4,
+      "filename": "sword.png",
+      "x": 64,
+      "y": 0,
+      "w": 16,
+      "h": 16
+    }
+  ]
+}
