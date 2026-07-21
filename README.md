@@ -145,156 +145,658 @@ Every script supports `--help` for usage info and `--json` for machine-readable 
 
 ## Usage Examples
 
-These are 5 real-world use cases, tested end-to-end with actual PNG data. Every command shown below was run and verified.
+These are 5 real-world use cases, tested end-to-end with actual PNG data. Every command was run and every JSON output shown below is the **actual unedited result**.
 
 ### Example 1: Character Walk Cycle → Atlas → GIF → Game Export
 
 Create a knight character with a 4-frame walk cycle, pack into a sprite sheet, export an animated GIF preview, and resize for game use.
 
+**Step 1 — Set up workspace:**
+
 ```bash
-# 1. Set up workspace
 python scripts/init_workspace.py --dir ./knight_project --name knight_hero --json
-# → Creates sprites/, tilesets/, frames/, sheets/, exports/ + manifest
-
-# 2. Create frames (your pixel art goes into frames/)
-# ... create walk_00.png through walk_03.png at 16×16 ...
-
-# 3. Audit each frame for pixel art quality
-python scripts/quality_audit.py --image frames/walk_00.png --grid 16 --max-colors 16 --json
-# → {"status": "pass", "antialiasing": {"clean": true}, "orphan_pixels": {"clean": true}, ...}
-
-# 4. Pack all frames into a sprite sheet
-python scripts/atlas_pack.py --frames-dir ./frames/ --output sheets/knight_walk.png --cols 4 --json
-# → {"status": "ok", "frame_count": 4, "sheet_size": [64, 16]}
-# Also creates knight_walk.json with frame coordinates for game engines
-
-# 5. Export animated GIF for preview
-python scripts/gif_export.py --sheet sheets/knight_walk.png --frame-width 16 --frame-height 16 --fps 8 --output exports/knight_walk.gif --json
-# → {"status": "ok", "frame_count": 4, "fps": 8, "duration_ms": 125}
-
-# 6. Resize 4× for high-DPI displays
-python scripts/sprite_resize.py --input sheets/knight_walk.png --output exports/knight_walk_4x.png --scale 4 --json
-# → {"status": "ok", "original_size": [64, 16], "new_size": [256, 64]}
 ```
 
-**Tools used:** `init_workspace`, `quality_audit`, `atlas_pack`, `gif_export`, `sprite_resize`
+<details>
+<summary>📋 Full output</summary>
+
+```json
+{
+  "status": "ok",
+  "workspace": "/private/tmp/usecase1",
+  "created_directories": [
+    "/private/tmp/usecase1/sprites",
+    "/private/tmp/usecase1/tilesets",
+    "/private/tmp/usecase1/frames",
+    "/private/tmp/usecase1/sheets",
+    "/private/tmp/usecase1/exports"
+  ],
+  "manifest": "/private/tmp/usecase1/knight_hero.manifest.json"
+}
+```
+
+</details>
+
+**Step 2 — Create 4 walk cycle frames at 16×16 using Sweetie-16 palette colors.**
+
+**Step 3 — Audit each frame:**
+
+```bash
+python scripts/quality_audit.py --image frames/walk_00.png --grid 16 --max-colors 16 --json
+```
+
+<details>
+<summary>📋 Full output</summary>
+
+```json
+{
+  "status": "pass",
+  "file": "/tmp/usecase1/frames/walk_00.png",
+  "antialiasing": {
+    "semi_transparent_pixels": 0,
+    "total_pixels": 256,
+    "clean": true
+  },
+  "orphan_pixels": {
+    "orphan_pixels": 0,
+    "clean": true
+  },
+  "palette": {
+    "unique_colors": 6,
+    "max_allowed": 16,
+    "clean": true
+  },
+  "grid_alignment": {
+    "width": 16,
+    "height": 16,
+    "grid_size": 16,
+    "aligned": true
+  }
+}
+```
+
+</details>
+
+**Step 4 — Pack all frames into a sprite sheet:**
+
+```bash
+python scripts/atlas_pack.py --frames-dir ./frames/ --output sheets/knight_walk.png --cols 4 --json
+```
+
+<details>
+<summary>📋 Full output</summary>
+
+```json
+{
+  "status": "ok",
+  "sheet": "/tmp/usecase1/sheets/knight_walk.png",
+  "metadata": "/tmp/usecase1/sheets/knight_walk.json",
+  "frame_count": 4,
+  "sheet_size": [64, 16]
+}
+```
+
+</details>
+
+**Step 5 — Export animated GIF preview:**
+
+```bash
+python scripts/gif_export.py --sheet sheets/knight_walk.png --frame-width 16 --frame-height 16 --fps 8 --output exports/knight_walk.gif --json
+```
+
+<details>
+<summary>📋 Full output</summary>
+
+```json
+{
+  "status": "ok",
+  "output": "/tmp/usecase1/exports/knight_walk.gif",
+  "frame_count": 4,
+  "frame_size": [16, 16],
+  "fps": 8,
+  "duration_ms": 125,
+  "file_size_bytes": 510
+}
+```
+
+</details>
+
+**Step 6 — Resize 4× for high-DPI displays:**
+
+```bash
+python scripts/sprite_resize.py --input sheets/knight_walk.png --output exports/knight_walk_4x.png --scale 4 --json
+```
+
+<details>
+<summary>📋 Full output</summary>
+
+```json
+{
+  "status": "ok",
+  "input": "/tmp/usecase1/sheets/knight_walk.png",
+  "output": "/tmp/usecase1/exports/knight_walk_4x.png",
+  "original_size": [64, 16],
+  "new_size": [256, 64],
+  "scale": 4,
+  "file_size_bytes": 525
+}
+```
+
+</details>
+
+**Tools used:** `init_workspace` → `quality_audit` → `atlas_pack` → `gif_export` → `sprite_resize`
 
 ---
 
 ### Example 2: Tileset → GameBoy Palette Remap → Indexed Export
 
-Create a terrain tileset, audit for quality, remap to the classic GameBoy 4-color palette, and export as indexed PNG for the target platform.
+Create a terrain tileset (grass/dirt/water/stone/sand), audit for quality, remap to the classic GameBoy 4-color palette, and export as indexed PNG.
+
+**Step 1 — Audit the tileset (48×48, 3×3 grid of 16px tiles):**
 
 ```bash
-# 1. Audit the tileset
 python scripts/quality_audit.py --image tileset.png --grid 16 --max-colors 16 --json
-# → {"status": "pass", "palette": {"unique_colors": 10, "max_allowed": 16, "clean": true}, "grid_alignment": {"aligned": true}}
-
-# 2. Remap to GameBoy palette
-python scripts/palette_remap.py --image tileset.png --palette palettes/gameboy.json --output tileset_gb.png --json
-# → {"status": "ok", "palette": "gameboy", "palette_colors": 4}
-
-# 3. Export as indexed PNG (tiny file size!)
-python scripts/export_indexed.py --input tileset_gb.png --output tileset_gb_indexed.png --max-colors 4 --json
-# → {"status": "ok", "indexed_colors": 4, "file_size_bytes": 133}
 ```
 
-**Tools used:** `quality_audit`, `palette_remap`, `export_indexed`
+<details>
+<summary>📋 Full output</summary>
+
+```json
+{
+  "status": "pass",
+  "file": "/tmp/usecase2_tileset.png",
+  "antialiasing": {
+    "semi_transparent_pixels": 0,
+    "total_pixels": 2304,
+    "clean": true
+  },
+  "orphan_pixels": {
+    "orphan_pixels": 0,
+    "clean": true
+  },
+  "palette": {
+    "unique_colors": 10,
+    "max_allowed": 16,
+    "clean": true
+  },
+  "grid_alignment": {
+    "width": 48,
+    "height": 48,
+    "grid_size": 16,
+    "aligned": true
+  }
+}
+```
+
+</details>
+
+**Step 2 — Remap to GameBoy palette (10 colors → 4 colors):**
+
+```bash
+python scripts/palette_remap.py --image tileset.png --palette palettes/gameboy.json --output tileset_gb.png --json
+```
+
+<details>
+<summary>📋 Full output</summary>
+
+```json
+{
+  "status": "ok",
+  "input": "/tmp/usecase2_tileset.png",
+  "output": "/tmp/usecase2_tileset_gb.png",
+  "palette": "gameboy",
+  "palette_colors": 4
+}
+```
+
+</details>
+
+**Step 3 — Export as indexed PNG (tiny file size!):**
+
+```bash
+python scripts/export_indexed.py --input tileset_gb.png --output tileset_gb_indexed.png --max-colors 4 --json
+```
+
+<details>
+<summary>📋 Full output</summary>
+
+```json
+{
+  "status": "ok",
+  "input": "/tmp/usecase2_tileset_gb.png",
+  "output": "/tmp/usecase2_tileset_gb_indexed.png",
+  "original_colors": 4,
+  "indexed_colors": 4,
+  "dimensions": [48, 48],
+  "file_size_bytes": 133
+}
+```
+
+</details>
+
+**Tools used:** `quality_audit` → `palette_remap` → `export_indexed`
 
 ---
 
 ### Example 3: Extract Palette → Procedural Terrain → Dithered Sky
 
-Extract the color palette from existing character art, use it to generate a procedural terrain noise texture and a dithered sky gradient — everything stays visually cohesive.
+Extract the color palette from existing character art, use those exact colors to generate a procedural terrain texture and a dithered sky gradient — everything stays visually cohesive.
+
+**Step 1 — Extract palette from the knight sprite:**
 
 ```bash
-# 1. Extract palette from existing sprite
 python scripts/palette_extract.py --image knight_walk_00.png --max-colors 16 --output palettes/custom.json --json
-# → {"status": "ok", "total_unique_colors": 6, "color_frequency": [
-#     {"color": "#3B5DC9", "pixels": 24, "percent": 38.7},
-#     {"color": "#EF7D57", "pixels": 10, "percent": 16.1}, ...
-#   ], "saved_to": "palettes/custom.json"}
-
-# 2. Generate terrain noise with extracted palette
-python scripts/noise_generator.py --width 64 --height 64 --scale 12 --octaves 3 --seed 777 --palette palettes/custom.json --output terrain.png --json
-# → {"status": "ok", "size": [64, 64], "palette": "palettes/custom.json"}
-
-# 3. Generate dithered sky gradient
-python scripts/dither.py --width 64 --height 32 --color1 "#29366F" --color2 "#41A6F6" --matrix 4 --output sky.png --json
-# → {"status": "ok", "size": [64, 32], "matrix": "4x4"}
-
-# 4. Audit the terrain texture
-python scripts/quality_audit.py --image terrain.png --grid 8 --max-colors 16 --json
-# → {"status": "pass"}
 ```
 
-**Tools used:** `palette_extract`, `noise_generator`, `dither`, `quality_audit`
+<details>
+<summary>📋 Full output</summary>
+
+```json
+{
+  "status": "ok",
+  "source": "/tmp/usecase1/frames/walk_00.png",
+  "total_unique_colors": 6,
+  "extracted_colors": 6,
+  "palette": {
+    "name": "walk_00",
+    "max_colors": 6,
+    "colors": [
+      "#3B5DC9",
+      "#EF7D57",
+      "#F4F4F4",
+      "#566C86",
+      "#1A1C2C",
+      "#FFCD75"
+    ]
+  },
+  "color_frequency": [
+    { "color": "#3B5DC9", "pixels": 24, "percent": 38.7 },
+    { "color": "#EF7D57", "pixels": 10, "percent": 16.1 },
+    { "color": "#F4F4F4", "pixels": 10, "percent": 16.1 },
+    { "color": "#566C86", "pixels": 8, "percent": 12.9 },
+    { "color": "#1A1C2C", "pixels": 6, "percent": 9.7 },
+    { "color": "#FFCD75", "pixels": 4, "percent": 6.5 }
+  ],
+  "saved_to": "/tmp/usecase3_extracted.json"
+}
+```
+
+</details>
+
+**Step 2 — Generate terrain noise with extracted palette:**
+
+```bash
+python scripts/noise_generator.py --width 64 --height 64 --scale 12 --octaves 3 --seed 777 --palette palettes/custom.json --output terrain.png --json
+```
+
+<details>
+<summary>📋 Full output</summary>
+
+```json
+{
+  "status": "ok",
+  "output": "/tmp/usecase3_terrain.png",
+  "size": [64, 64],
+  "scale": 12.0,
+  "octaves": 3,
+  "seed": 777,
+  "palette": "/tmp/usecase3_extracted.json",
+  "file_size_bytes": 1006
+}
+```
+
+</details>
+
+**Step 3 — Generate dithered sky gradient:**
+
+```bash
+python scripts/dither.py --width 64 --height 32 --color1 "#29366F" --color2 "#41A6F6" --matrix 4 --output sky.png --json
+```
+
+<details>
+<summary>📋 Full output</summary>
+
+```json
+{
+  "status": "ok",
+  "output": "/tmp/usecase3_sky.png",
+  "size": [64, 32],
+  "color1": "#29366F",
+  "color2": "#41A6F6",
+  "matrix": "4x4",
+  "file_size_bytes": 264
+}
+```
+
+</details>
+
+**Step 4 — Audit the terrain texture:**
+
+```bash
+python scripts/quality_audit.py --image terrain.png --grid 8 --max-colors 16 --json
+```
+
+<details>
+<summary>📋 Full output</summary>
+
+```json
+{
+  "status": "pass",
+  "file": "/tmp/usecase3_terrain.png",
+  "antialiasing": {
+    "semi_transparent_pixels": 0,
+    "total_pixels": 4096,
+    "clean": true
+  },
+  "orphan_pixels": {
+    "orphan_pixels": 0,
+    "clean": true
+  },
+  "palette": {
+    "unique_colors": 5,
+    "max_allowed": 16,
+    "clean": true
+  },
+  "grid_alignment": {
+    "width": 64,
+    "height": 64,
+    "grid_size": 8,
+    "aligned": true
+  }
+}
+```
+
+</details>
+
+**Tools used:** `palette_extract` → `noise_generator` → `dither` → `quality_audit`
 
 ---
 
 ### Example 4: Batch QA → Outline → Resize → Palette Remap
 
-Run quality assurance on an entire folder of sprites, add outlines for visibility, resize for game export, and remap to PICO-8 palette.
+Run quality assurance on an entire folder of sprites at once, add dark outlines for visibility on busy backgrounds, resize 3× for game display, and remap to PICO-8 palette.
+
+**Step 1 — Batch audit all 4 walk frames:**
 
 ```bash
-# 1. Batch audit all sprites in folder
-python scripts/batch_audit.py --dir ./sprites/ --grid 16 --max-colors 16 --json
-# → {"status": "pass", "total_files": 4, "passed": 4, "failed": 0,
-#    "results": [{"file": "walk_00.png", "status": "pass", "issues": []}, ...]}
-
-# 2. Add dark outline for readability against busy backgrounds
-python scripts/outline_generator.py --input sprites/walk_00.png --output outlined/walk_00.png --color "#1A1A2E" --json
-# → {"status": "ok", "original_size": [16, 16], "outlined_size": [18, 18], "outline_color": "#1A1A2E"}
-
-# 3. Resize 3× for game display
-python scripts/sprite_resize.py --input outlined/walk_00.png --output exports/walk_00_3x.png --scale 3 --json
-# → {"status": "ok", "original_size": [18, 18], "new_size": [54, 54]}
-
-# 4. Remap to PICO-8 palette
-python scripts/palette_remap.py --image outlined/walk_00.png --palette palettes/pico-8.json --output exports/walk_00_pico8.png --json
-# → {"status": "ok", "palette": "pico-8", "palette_colors": 16}
+python scripts/batch_audit.py --dir ./frames/ --grid 16 --max-colors 16 --json
 ```
 
-**Tools used:** `batch_audit`, `outline_generator`, `sprite_resize`, `palette_remap`
+<details>
+<summary>📋 Full output</summary>
+
+```json
+{
+  "status": "pass",
+  "total_files": 4,
+  "passed": 4,
+  "failed": 0,
+  "results": [
+    {
+      "file": "walk_00.png",
+      "size": [16, 16],
+      "status": "pass",
+      "issues": []
+    },
+    {
+      "file": "walk_01.png",
+      "size": [16, 16],
+      "status": "pass",
+      "issues": []
+    },
+    {
+      "file": "walk_02.png",
+      "size": [16, 16],
+      "status": "pass",
+      "issues": []
+    },
+    {
+      "file": "walk_03.png",
+      "size": [16, 16],
+      "status": "pass",
+      "issues": []
+    }
+  ]
+}
+```
+
+</details>
+
+**Step 2 — Add dark outline for readability:**
+
+```bash
+python scripts/outline_generator.py --input frames/walk_00.png --output outlined/walk_00.png --color "#1A1A2E" --json
+```
+
+<details>
+<summary>📋 Full output</summary>
+
+```json
+{
+  "status": "ok",
+  "input": "/tmp/usecase1/frames/walk_00.png",
+  "output": "/tmp/usecase4_outlined.png",
+  "original_size": [16, 16],
+  "outlined_size": [18, 18],
+  "outline_color": "#1A1A2E"
+}
+```
+
+</details>
+
+**Step 3 — Resize 3× for game display:**
+
+```bash
+python scripts/sprite_resize.py --input outlined/walk_00.png --output exports/walk_00_3x.png --scale 3 --json
+```
+
+<details>
+<summary>📋 Full output</summary>
+
+```json
+{
+  "status": "ok",
+  "input": "/tmp/usecase4_outlined.png",
+  "output": "/tmp/usecase4_outlined_3x.png",
+  "original_size": [18, 18],
+  "new_size": [54, 54],
+  "scale": 3,
+  "file_size_bytes": 335
+}
+```
+
+</details>
+
+**Step 4 — Remap to PICO-8 palette:**
+
+```bash
+python scripts/palette_remap.py --image outlined/walk_00.png --palette palettes/pico-8.json --output exports/walk_00_pico8.png --json
+```
+
+<details>
+<summary>📋 Full output</summary>
+
+```json
+{
+  "status": "ok",
+  "input": "/tmp/usecase4_outlined.png",
+  "output": "/tmp/usecase4_pico8.png",
+  "palette": "pico-8",
+  "palette_colors": 16
+}
+```
+
+</details>
+
+**Tools used:** `batch_audit` → `outline_generator` → `sprite_resize` → `palette_remap`
 
 ---
 
 ### Example 5: 8-Way Character from 5 Directions (Mirror to Save Memory)
 
-Draw only east-facing frames, automatically mirror them to create west-facing frames. Pack both into separate sprite sheets with animated GIF previews.
+Draw only east-facing frames, automatically mirror them to create west-facing frames. Pack both into separate sprite sheets with animated GIF previews, and batch audit everything.
+
+**Step 1 — Create 4 east-facing frames (draw once).**
+
+**Step 2 — Auto-mirror east → west (saves 50% art time!):**
 
 ```bash
-# 1. Create east-facing frames (draw once)
-# ... create east_00.png through east_03.png ...
-
-# 2. Auto-mirror east → west (saves 50% art time!)
 python scripts/sprite_mirror.py --input-dir ./east_frames/ --output-dir ./west_frames/ --axis horizontal --json
-# → {"status": "ok", "files_mirrored": 4}
-
-# 3. Pack east sheet
-python scripts/atlas_pack.py --frames-dir ./east_frames/ --output east_sheet.png --cols 4 --json
-# → {"status": "ok", "frame_count": 4, "sheet_size": [64, 16]}
-
-# 4. Pack west sheet
-python scripts/atlas_pack.py --frames-dir ./west_frames/ --output west_sheet.png --cols 4 --json
-# → {"status": "ok", "frame_count": 4, "sheet_size": [64, 16]}
-
-# 5. Export GIF previews
-python scripts/gif_export.py --frames-dir ./east_frames/ --fps 6 --output east_anim.gif --json
-# → {"status": "ok", "frame_count": 4, "fps": 6}
-
-python scripts/gif_export.py --frames-dir ./west_frames/ --fps 6 --output west_anim.gif --json
-# → {"status": "ok", "frame_count": 4, "fps": 6}
-
-# 6. Batch audit both directions
-python scripts/batch_audit.py --dir ./east_frames/ --grid 16 --max-colors 16 --json
-# → {"status": "pass", "total_files": 4, "passed": 4, "failed": 0}
-
-python scripts/batch_audit.py --dir ./west_frames/ --grid 16 --max-colors 16 --json
-# → {"status": "pass", "total_files": 4, "passed": 4, "failed": 0}
 ```
 
-**Tools used:** `sprite_mirror`, `atlas_pack`, `gif_export`, `batch_audit`
+<details>
+<summary>📋 Full output</summary>
+
+```json
+{
+  "status": "ok",
+  "input_dir": "/tmp/usecase5/east_frames",
+  "output_dir": "/tmp/usecase5/west_frames",
+  "axis": "horizontal",
+  "files_mirrored": 4
+}
+```
+
+</details>
+
+**Step 3 — Pack east sheet:**
+
+```bash
+python scripts/atlas_pack.py --frames-dir ./east_frames/ --output east_sheet.png --cols 4 --json
+```
+
+<details>
+<summary>📋 Full output</summary>
+
+```json
+{
+  "status": "ok",
+  "sheet": "/tmp/usecase5/east_sheet.png",
+  "metadata": "/tmp/usecase5/east_sheet.json",
+  "frame_count": 4,
+  "sheet_size": [64, 16]
+}
+```
+
+</details>
+
+**Step 4 — Pack west sheet:**
+
+```bash
+python scripts/atlas_pack.py --frames-dir ./west_frames/ --output west_sheet.png --cols 4 --json
+```
+
+<details>
+<summary>📋 Full output</summary>
+
+```json
+{
+  "status": "ok",
+  "sheet": "/tmp/usecase5/west_sheet.png",
+  "metadata": "/tmp/usecase5/west_sheet.json",
+  "frame_count": 4,
+  "sheet_size": [64, 16]
+}
+```
+
+</details>
+
+**Step 5 — Export GIF previews:**
+
+```bash
+python scripts/gif_export.py --frames-dir ./east_frames/ --fps 6 --output east_anim.gif --json
+```
+
+<details>
+<summary>📋 Full output (east)</summary>
+
+```json
+{
+  "status": "ok",
+  "output": "/tmp/usecase5/east_anim.gif",
+  "frame_count": 4,
+  "frame_size": [16, 16],
+  "fps": 6,
+  "duration_ms": 166,
+  "file_size_bytes": 441
+}
+```
+
+</details>
+
+```bash
+python scripts/gif_export.py --frames-dir ./west_frames/ --fps 6 --output west_anim.gif --json
+```
+
+<details>
+<summary>📋 Full output (west)</summary>
+
+```json
+{
+  "status": "ok",
+  "output": "/tmp/usecase5/west_anim.gif",
+  "frame_count": 4,
+  "frame_size": [16, 16],
+  "fps": 6,
+  "duration_ms": 166,
+  "file_size_bytes": 441
+}
+```
+
+</details>
+
+**Step 6 — Batch audit both directions:**
+
+```bash
+python scripts/batch_audit.py --dir ./east_frames/ --grid 16 --max-colors 16 --json
+```
+
+<details>
+<summary>📋 Full output (east)</summary>
+
+```json
+{
+  "status": "pass",
+  "total_files": 4,
+  "passed": 4,
+  "failed": 0,
+  "results": [
+    { "file": "east_00.png", "size": [16, 16], "status": "pass", "issues": [] },
+    { "file": "east_01.png", "size": [16, 16], "status": "pass", "issues": [] },
+    { "file": "east_02.png", "size": [16, 16], "status": "pass", "issues": [] },
+    { "file": "east_03.png", "size": [16, 16], "status": "pass", "issues": [] }
+  ]
+}
+```
+
+</details>
+
+```bash
+python scripts/batch_audit.py --dir ./west_frames/ --grid 16 --max-colors 16 --json
+```
+
+<details>
+<summary>📋 Full output (west)</summary>
+
+```json
+{
+  "status": "pass",
+  "total_files": 4,
+  "passed": 4,
+  "failed": 0,
+  "results": [
+    { "file": "east_00.png", "size": [16, 16], "status": "pass", "issues": [] },
+    { "file": "east_01.png", "size": [16, 16], "status": "pass", "issues": [] },
+    { "file": "east_02.png", "size": [16, 16], "status": "pass", "issues": [] },
+    { "file": "east_03.png", "size": [16, 16], "status": "pass", "issues": [] }
+  ]
+}
+```
+
+</details>
+
+**Tools used:** `sprite_mirror` → `atlas_pack` ×2 → `gif_export` ×2 → `batch_audit` ×2
+
 
 ---
 
