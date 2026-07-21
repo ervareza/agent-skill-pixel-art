@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tilemap Preview</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0f0f1a;color:#e0e0e0;font-family:monospace;display:flex;flex-direction:column;align-items:center;padding:1.5rem;min-height:100vh}
+h1{font-size:1.1rem;margin-bottom:1rem;color:#7fdbca}
+.controls{display:flex;gap:.8rem;margin-bottom:1rem;align-items:center;flex-wrap:wrap;justify-content:center}
+label{font-size:.8rem}
+input[type="file"]{font-size:.75rem}
+input[type="number"]{width:50px;padding:.2rem;background:#16213e;color:#e0e0e0;border:1px solid #0f3460;font-family:monospace}
+input[type="color"]{width:30px;height:24px;border:1px solid #533483;cursor:pointer}
+button{padding:.3rem .6rem;background:#0f3460;color:#e0e0e0;border:1px solid #533483;cursor:pointer;font-family:monospace;font-size:.75rem}
+button:hover{background:#533483}
+.wrap{overflow:auto;max-width:90vw;max-height:70vh;border:2px solid #533483}
+canvas{image-rendering:pixelated;display:block}
+.info{margin-top:.8rem;font-size:.7rem;color:#83769c;text-align:center}
+</style>
+</head>
+<body>
+<h1>Tilemap Preview</h1>
+<div class="controls">
+  <label>Tileset: <input type="file" id="fileInput" accept=".png"></label>
+  <label>Tile W: <input type="number" id="tw" value="16" min="1"></label>
+  <label>Tile H: <input type="number" id="th" value="16" min="1"></label>
+  <label>Map W: <input type="number" id="mw" value="10" min="1" max="64"></label>
+  <label>Map H: <input type="number" id="mh" value="10" min="1" max="64"></label>
+  <label>Scale: <input type="number" id="scale" value="2" min="1" max="8"></label>
+  <label>Grid: <input type="color" id="gridColor" value="#533483"></label>
+  <button id="randomBtn">🎲 Random Fill</button>
+  <button id="clearBtn">🗑 Clear</button>
+</div>
+<div class="wrap"><canvas id="c"></canvas></div>
+<div class="info" id="info">Load a tileset PNG. Click tiles in the tileset to select, then click on the map to place.</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const canvas=$('c'),ctx=canvas.getContext('2d');
+let tilesetImg=null,tileW=16,tileH=16,mapW=10,mapH=10,scale=2;
+let mapData=[],selectedTile=0,tilesetCols=1,tilesetRows=1,totalTiles=0;
+let mode='map'; // 'tileset' or 'map'
+
+$('fileInput').addEventListener('change',e=>{
+  const f=e.target.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=ev=>{tilesetImg=new Image();tilesetImg.onload=()=>{init();render()};tilesetImg.src=ev.target.result};
+  r.readAsDataURL(f);
+});
+
+function init(){
+  tileW=+$('tw').value;tileH=+$('th').value;mapW=+$('mw').value;mapH=+$('mh').value;scale=+$('scale').value;
+  tilesetCols=Math.floor(tilesetImg.width/tileW);
+  tilesetRows=Math.floor(tilesetImg.height/tileH);
+  totalTiles=tilesetCols*tilesetRows;
+  mapData=Array(mapW*mapH).fill(-1);
+  selectedTile=0;
+}
+
+function render(){
+  if(!tilesetImg)return;
+  const tsW=tilesetCols*tileW*scale;
+  const gap=16*scale;
+  const mapPxW=mapW*tileW*scale;
+  const mapPxH=mapH*tileH*scale;
+  canvas.width=tsW+gap+mapPxW;
+  canvas.height=Math.max(tilesetRows*tileH*scale,mapPxH);
+  ctx.imageSmoothingEnabled=false;
+  ctx.fillStyle='#0f0f1a';ctx.fillRect(0,0,canvas.width,canvas.height);
+
+  // Draw tileset
+  ctx.drawImage(tilesetImg,0,0,tilesetImg.width,tilesetImg.height,0,0,tsW,tilesetRows*tileH*scale);
+  // Highlight selected
+  const sx=(selectedTile%tilesetCols)*tileW*scale,sy=Math.floor(selectedTile/tilesetCols)*tileH*scale;
+  ctx.strokeStyle='#FFEC27';ctx.lineWidth=2;ctx.strokeRect(sx,sy,tileW*scale,tileH*scale);
+  // Tileset grid
+  ctx.strokeStyle=$('gridColor').value+'66';ctx.lineWidth=1;
+  for(let x=0;x<=tilesetCols;x++){ctx.beginPath();ctx.moveTo(x*tileW*scale,0);ctx.lineTo(x*tileW*scale,tilesetRows*tileH*scale);ctx.stroke()}
+  for(let y=0;y<=tilesetRows;y++){ctx.beginPath();ctx.moveTo(0,y*tileH*scale);ctx.lineTo(tsW,y*tileH*scale);ctx.stroke()}
+
+  // Draw map
+  const ox=tsW+gap;
+  ctx.fillStyle='#1a1a2e';ctx.fillRect(ox,0,mapPxW,mapPxH);
+  for(let i=0;i<mapData.length;i++){
+    const t=mapData[i];if(t<0)continue;
+    const tc=t%tilesetCols,tr=Math.floor(t/tilesetCols);
+    const mx=(i%mapW)*tileW*scale+ox,my=Math.floor(i/mapW)*tileH*scale;
+    ctx.drawImage(tilesetImg,tc*tileW,tr*tileH,tileW,tileH,mx,my,tileW*scale,tileH*scale);
+  }
+  // Map grid
+  ctx.strokeStyle=$('gridColor').value+'44';
+  for(let x=0;x<=mapW;x++){ctx.beginPath();ctx.moveTo(ox+x*tileW*scale,0);ctx.lineTo(ox+x*tileW*scale,mapPxH);ctx.stroke()}
+  for(let y=0;y<=mapH;y++){ctx.beginPath();ctx.moveTo(ox,y*tileH*scale);ctx.lineTo(ox+mapPxW,y*tileH*scale);ctx.stroke()}
+
+  $('info').textContent=`Tileset: ${tilesetCols}×${tilesetRows} (${totalTiles} tiles) | Selected: #${selectedTile} | Map: ${mapW}×${mapH} | Scale: ${scale}×`;
+}
+
+canvas.addEventListener('click',e=>{
+  if(!tilesetImg)return;
+  const rect=canvas.getBoundingClientRect();
+  const cx=(e.clientX-rect.left)*(canvas.width/rect.width);
+  const cy=(e.clientY-rect.top)*(canvas.height/rect.height);
+  const tsW=tilesetCols*tileW*scale;
+  const gap=16*scale;
+  if(cx<tsW){
+    const tc=Math.floor(cx/(tileW*scale)),tr=Math.floor(cy/(tileH*scale));
+    selectedTile=tr*tilesetCols+tc;
+    if(selectedTile>=totalTiles)selectedTile=totalTiles-1;
+  }else if(cx>=tsW+gap){
+    const mx=Math.floor((cx-tsW-gap)/(tileW*scale)),my=Math.floor(cy/(tileH*scale));
+    if(mx<mapW&&my<mapH)mapData[my*mapW+mx]=selectedTile;
+  }
+  render();
+});
+
+$('randomBtn').onclick=()=>{if(!tilesetImg)return;mapData=mapData.map(()=>Math.floor(Math.random()*totalTiles));render()};
+$('clearBtn').onclick=()=>{mapData=mapData.map(()=>-1);render()};
+['tw','th','mw','mh','scale','gridColor'].forEach(id=>$(id).addEventListener('change',()=>{if(tilesetImg){init();render()}}));
+</script>
+</body>
+</html>
