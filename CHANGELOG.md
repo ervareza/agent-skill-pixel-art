@@ -4,6 +4,25 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [v4.1.0] - 2025-07-22
+
+### Added
+- **8 new CLI scripts:** `sprite_resize.py`, `gif_export.py`, `palette_extract.py`, `batch_audit.py`, `sprite_mirror.py`, `outline_generator.py`, `dither.py`, `noise_generator.py`
+- **6 new palettes:** `sweetie-16.json`, `db32.json`, `cga.json`, `commodore-64.json`, `snes.json`
+- **2 new HTML templates:** `tilemap_preview.html` (interactive tilemap painter), `palette_viewer.html` (palette comparison tool)
+- **4 new reference docs:** `particle_effects.md`, `ui_elements.md`, `isometric_guide.md`, `animation_principles.md`
+- `requirements.txt` for pip install
+
+### Changed
+- **SKILL.md** expanded: 15-branch decision tree, troubleshooting table, engine-specific tips (Godot 4, Unity, Defold)
+- **README.md** completely rewritten: 5 real-world usage examples, complete script reference, palette table, engine integration guides, installation for Antigravity/Claude/Codex
+
+### Fixed
+- `tilemap_preview.html` was referenced in SKILL.md but didn't exist — now implemented
+- Pillow deprecation warnings (`getdata()` → `px.load()`)
+- RGBA quantization bug in `export_indexed.py`
+- NES palette `max_colors` mismatch (was 54, actual 56)
+
 ## [v4.0.0] - 2025-07-22
 
 ### Changed
