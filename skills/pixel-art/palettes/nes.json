@@ -1,7 +1,7 @@
 {
   "name": "nes",
-  "description": "NES hardware palette. 54 colors available through the PPU NTSC signal. This is the full canonical set.",
-  "max_colors": 54,
+  "description": "NES hardware palette. 56 colors from the PPU NTSC signal. Includes some duplicated blacks per hardware rows.",
+  "max_colors": 56,
   "colors": [
     "#7C7C7C", "#0000FC", "#0000BC", "#4428BC", "#940084", "#A80020", "#A81000", "#881400",
     "#503000", "#007800", "#006800", "#005800", "#004058", "#000000", "#000000", "#000000",
