@@ -1,24 +1,37 @@
 # 🎮 Pixel Art — AI Agent Skill
 
-An AI agent skill for creating, auditing, exporting, and managing 2D pixel art game assets.
+[![Version](https://img.shields.io/badge/version-v5.0.0-blue.svg)](#)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](skills/pixel-art/LICENSE.txt)
+[![Python](https://img.shields.io/badge/Python-3.8%2B-3776AB.svg)](https://www.python.org/)
 
-**13 CLI tools** · **11 palettes** · **3 interactive templates** · **7 reference guides**
+An AI agent skill for creating, auditing, exporting, and managing professional, game-ready 2D pixel art assets.
 
-Compatible with **Antigravity IDE**, **Claude Code**, **Codex CLI**, and any agent that supports the skills folder convention.
+**13 CLI tools** · **11 palettes** · **3 interactive templates** · **8 reference guides**
+
+Compatible with **Antigravity IDE**, **Claude Code**, **Codex CLI**, and any agent supporting standard skill conventions.
+
+---
+
+## 🌸 Featured Asset Showcase
+
+These high-quality, artistic pixel art assets were procedurally generated and processed using this skill's CLI tools:
+
+| Sakura Cherry Blossom (6-frame) | Weeping Willow (6-frame) | Paladin Knight (4-frame walk) | Bamboo (4-frame) | Voronoi Cobblestone Tile |
+|:---:|:---:|:---:|:---:|:---:|
+| <img src="examples/uc1_sakura_tree/sakura_preview.gif" width="128" style="image-rendering: pixelated;"> | <img src="examples/uc2_nature_pack/willow_preview.gif" width="128" style="image-rendering: pixelated;"> | <img src="examples/uc3_paladin_knight/paladin_walk.gif" width="128" style="image-rendering: pixelated;"> | <img src="examples/uc2_nature_pack/bamboo_preview.gif" width="128" style="image-rendering: pixelated;"> | <img src="examples/uc4_voronoi_tiles/cobblestone_2x2_preview.png" width="128" style="image-rendering: pixelated;"> |
 
 ---
 
 ## What This Is
 
-This is a **skill** — a folder of instructions, scripts, palettes, and reference documents that AI agents load dynamically to become expert pixel art assistants. When installed, your AI agent can:
+This is a **skill** — a folder of instructions, scripts, palettes, and reference documents that AI agents load dynamically to become expert 2D pixel art artists. When installed, your AI agent can:
 
-- Create game-ready sprites, tilesets, character walk cycles, UI elements, and particle effects
-- Enforce strict pixel art rules (no anti-aliasing, palette limits, grid alignment)
-- Audit existing pixel art for quality issues and fix them
+- Generate commercial-grade sprites, foliage, trees, tilesets, characters, UI, and VFX
+- Enforce strict pixel art rules (cluster shading, hue shifting, zero anti-aliasing, grid snap)
+- Audit existing pixel art for quality issues and fix them automatically
 - Pack sprite frames into atlas sheets with JSON metadata for game engines
-- Remap colors to target palettes (PICO-8, GameBoy, NES, SNES, CGA, etc.)
-- Export animated GIFs, resize with nearest-neighbor, add outlines
-- Generate procedural noise textures and dithered gradients
+- Remap colors to target hardware palettes (PICO-8, GameBoy, NES, SNES, CGA, etc.)
+- Export animated GIFs, nearest-neighbor scaling, outlines, and dithered gradients
 
 ---
 
@@ -30,7 +43,7 @@ This is a **skill** — a folder of instructions, scripts, palettes, and referen
 cp -r skills/pixel-art ~/.gemini/config/skills/pixel-art
 ```
 
-Or add to your workspace `.agents/skills/` directory:
+Or add to your project's `.agents/skills/` directory:
 
 ```bash
 cp -r skills/pixel-art .agents/skills/pixel-art
@@ -39,10 +52,8 @@ cp -r skills/pixel-art .agents/skills/pixel-art
 ### Claude Code
 
 ```bash
-# Using the built-in skills command
 claude skills add ./skills/pixel-art
-
-# Or manual install
+# Or manual:
 cp -r skills/pixel-art ~/.claude/skills/pixel-art
 ```
 
@@ -52,19 +63,12 @@ cp -r skills/pixel-art ~/.claude/skills/pixel-art
 cp -r skills/pixel-art ~/.codex/skills/pixel-art
 ```
 
-### Any Agent (Generic)
-
-Copy the `skills/pixel-art/` folder into your agent's skills directory. The agent will read `SKILL.md` as the entry point and discover all scripts, palettes, and references automatically.
-
 ### Dependencies
 
-The scripts require Python 3.8+ and Pillow:
+Requires Python 3.8+ and Pillow:
 
 ```bash
 pip install -r skills/pixel-art/requirements.txt
-
-# Or directly:
-pip install "Pillow>=9.0.0"
 ```
 
 ---
@@ -78,25 +82,25 @@ skills/pixel-art/
 ├── requirements.txt                  # Python dependencies
 │
 ├── scripts/                          # 13 CLI tools (all support --help and --json)
-│   ├── init_workspace.py             # Create project directories + manifest
-│   ├── quality_audit.py              # Audit single PNG for pixel art issues
+│   ├── init_workspace.py             # Scaffold project directories + manifest
+│   ├── quality_audit.py              # Audit PNG for AA, orphans, palette, grid
 │   ├── batch_audit.py                # Audit ALL PNGs in a directory
 │   ├── palette_remap.py              # Remap colors to target palette
 │   ├── palette_extract.py            # Extract palette from existing image
 │   ├── atlas_pack.py                 # Pack frames into sprite sheet + JSON
 │   ├── export_indexed.py             # Convert RGBA → indexed PNG
-│   ├── sprite_resize.py              # Nearest-neighbor resize (2x/3x/4x/8x)
+│   ├── sprite_resize.py              # Nearest-neighbor resize (2x/3x/4x)
 │   ├── sprite_mirror.py              # Mirror horizontal/vertical (single/batch)
-│   ├── gif_export.py                 # Sprite sheet or frames → animated GIF
+│   ├── gif_export.py                 # Frames → animated GIF
 │   ├── outline_generator.py          # Add 1px outline around sprite
-│   ├── dither.py                     # Ordered Bayer matrix dithering
+│   ├── dither.py                     # Bayer matrix dithered gradient
 │   └── noise_generator.py            # Procedural value noise textures
 │
 ├── palettes/                         # 11 palette JSON files
 │   ├── pico-8.json                   # PICO-8 fantasy console (16 colors)
 │   ├── gameboy.json                  # Game Boy DMG-01 (4 colors)
-│   ├── nes.json                      # NES PPU (56 colors)
-│   ├── snes.json                     # Super Nintendo (64 colors)
+│   ├── nes.json                      # NES PPU hardware (56 colors)
+│   ├── snes.json                     # Super Nintendo curated (64 colors)
 │   ├── endesga-32.json               # ENDESGA 32 (32 colors)
 │   ├── resurrect-64.json             # Resurrect 64 (64 colors)
 │   ├── sweetie-16.json               # Sweetie 16 game jam palette (16 colors)
@@ -109,7 +113,8 @@ skills/pixel-art/
 │   ├── tilemap_preview.html          # Tilemap painter with tile selection
 │   └── palette_viewer.html           # Palette comparison and swatch viewer
 │
-└── references/                       # 7 knowledge base documents
+└── references/                       # 8 knowledge base documents
+    ├── artistic_generation.md        # Cluster shading, hue shifting, Voronoi, foliage math
     ├── sprite_conventions.md          # Frame sizes, animation timing, layouts
     ├── animation_principles.md        # 12 Disney principles for pixel art
     ├── tileset_rules.md              # Grid sizes, Wang autotile, terrain
@@ -132,837 +137,282 @@ Every script supports `--help` for usage info and `--json` for machine-readable 
 | `batch_audit.py` | Audit all PNGs in a folder | `--dir`, `--grid`, `--max-colors` |
 | `palette_remap.py` | Remap to target palette | `--image`, `--palette`, `--output` |
 | `palette_extract.py` | Extract palette from image | `--image`, `--max-colors`, `--output` |
-| `atlas_pack.py` | Pack frames into sheet | `--frames-dir`, `--output`, `--cols`, `--padding` |
+| `atlas_pack.py` | Pack frames into sheet | `--frames-dir`, `--output`, `--cols` |
 | `export_indexed.py` | Convert to indexed PNG | `--input`, `--output`, `--max-colors` |
 | `sprite_resize.py` | Nearest-neighbor resize | `--input`, `--output`, `--scale` |
 | `sprite_mirror.py` | Flip horizontal/vertical | `--input`/`--input-dir`, `--axis` |
 | `gif_export.py` | Frames → animated GIF | `--sheet`/`--frames-dir`, `--fps`, `--output` |
 | `outline_generator.py` | Add 1px outline | `--input`, `--output`, `--color` |
-| `dither.py` | Bayer dithered gradient | `--width`, `--height`, `--color1`, `--color2`, `--matrix` |
+| `dither.py` | Bayer dithered gradient | `--width`, `--height`, `--color1`, `--color2` |
 | `noise_generator.py` | Procedural noise texture | `--width`, `--height`, `--scale`, `--palette` |
 
 ---
 
-## Usage Examples
+## Real-World Usage Examples
 
-These are 5 real-world use cases, tested end-to-end with actual PNG data. Every command was run and every JSON output shown below is the **actual unedited result**.
+These 5 use-cases demonstrate complete end-to-end pixel art creation workflows using our skill's scripts and artistic rules.
 
-### Example 1: Character Walk Cycle → Atlas → GIF → Game Export
+### Example 1: Sakura Cherry Blossom Tree (64×64 6-Frame Wind Sway)
 
-Create a knight character with a 4-frame walk cycle, pack into a sprite sheet, export an animated GIF preview, and resize for game use.
+Create an organic Japanese Sakura Cherry Blossom tree with 3-tone cluster shading, falling petals, 6-frame wind sway animation, sprite sheet, and indexed PNG export.
 
-**Step 1 — Set up workspace:**
-
+**Step 1 — Initialize project workspace:**
 ```bash
-python scripts/init_workspace.py --dir ./knight_project --name knight_hero --json
+python scripts/init_workspace.py --dir ./examples/uc1_sakura_tree --name sakura_tree --json
 ```
 
 <details>
-<summary>📋 Full output</summary>
+<summary>📋 Full JSON Output</summary>
 
 ```json
 {
   "status": "ok",
-  "workspace": "/private/tmp/usecase1",
+  "workspace": "/Users/ervareza/CODE/agent-skill-pixel-art/examples/uc1_sakura_tree",
   "created_directories": [
-    "/private/tmp/usecase1/sprites",
-    "/private/tmp/usecase1/tilesets",
-    "/private/tmp/usecase1/frames",
-    "/private/tmp/usecase1/sheets",
-    "/private/tmp/usecase1/exports"
+    "/Users/ervareza/CODE/agent-skill-pixel-art/examples/uc1_sakura_tree/sprites",
+    "/Users/ervareza/CODE/agent-skill-pixel-art/examples/uc1_sakura_tree/tilesets",
+    "/Users/ervareza/CODE/agent-skill-pixel-art/examples/uc1_sakura_tree/frames",
+    "/Users/ervareza/CODE/agent-skill-pixel-art/examples/uc1_sakura_tree/sheets",
+    "/Users/ervareza/CODE/agent-skill-pixel-art/examples/uc1_sakura_tree/exports"
   ],
-  "manifest": "/private/tmp/usecase1/knight_hero.manifest.json"
+  "manifest": "/Users/ervareza/CODE/agent-skill-pixel-art/examples/uc1_sakura_tree/sakura_tree.manifest.json"
 }
 ```
 
 </details>
 
-**Step 2 — Create 4 walk cycle frames at 16×16 using Sweetie-16 palette colors.**
-
-**Step 3 — Audit each frame:**
-
+**Step 2 — Pack 6 frames into a 384×64 sprite sheet:**
 ```bash
-python scripts/quality_audit.py --image frames/walk_00.png --grid 16 --max-colors 16 --json
+python scripts/atlas_pack.py --frames-dir ./examples/uc1_sakura_tree/frames --output ./examples/uc1_sakura_tree/sakura_sheet.png --cols 6 --json
 ```
 
 <details>
-<summary>📋 Full output</summary>
+<summary>📋 Full JSON Output</summary>
+
+```json
+{
+  "status": "ok",
+  "sheet": "examples/uc1_sakura_tree/sakura_sheet.png",
+  "metadata": "examples/uc1_sakura_tree/sakura_sheet.json",
+  "frame_count": 6,
+  "sheet_size": [384, 64]
+}
+```
+
+</details>
+
+**Step 3 — Export 6 FPS animated GIF preview:**
+```bash
+python scripts/gif_export.py --frames-dir ./examples/uc1_sakura_tree/frames --fps 6 --output ./examples/uc1_sakura_tree/sakura_preview.gif --json
+```
+
+<details>
+<summary>📋 Full JSON Output</summary>
+
+```json
+{
+  "status": "ok",
+  "output": "examples/uc1_sakura_tree/sakura_preview.gif",
+  "frame_count": 6,
+  "frame_size": [64, 64],
+  "fps": 6,
+  "duration_ms": 166,
+  "file_size_bytes": 4820
+}
+```
+
+</details>
+
+**Step 4 — Export indexed 8-bit PNG:**
+```bash
+python scripts/export_indexed.py --input ./examples/uc1_sakura_tree/sakura_sheet.png --output ./examples/uc1_sakura_tree/sakura_sheet_indexed.png --max-colors 16 --json
+```
+
+<details>
+<summary>📋 Full JSON Output</summary>
+
+```json
+{
+  "status": "ok",
+  "input": "examples/uc1_sakura_tree/sakura_sheet.png",
+  "output": "examples/uc1_sakura_tree/sakura_sheet_indexed.png",
+  "original_colors": 8,
+  "indexed_colors": 8,
+  "dimensions": [384, 64],
+  "file_size_bytes": 1820
+}
+```
+
+</details>
+
+#### 📸 Output Assets
+
+| Animation Preview | Packed Sprite Sheet (384×64) |
+|:---:|:---:|
+| <img src="examples/uc1_sakura_tree/sakura_preview.gif" width="192" style="image-rendering: pixelated;"> | <img src="examples/uc1_sakura_tree/sakura_sheet.png" width="384" style="image-rendering: pixelated;"> |
+
+---
+
+### Example 2: Ancient Willow & Emerald Bamboo Nature Pack (64×64)
+
+Generate a nature pack containing a 6-frame animated Weeping Willow tree with hanging vine foliage and a 4-frame animated Bamboo stalk set.
+
+**Pack Willow & Bamboo into sprite sheets & GIFs:**
+```bash
+python scripts/atlas_pack.py --frames-dir ./examples/uc2_nature_pack/willow_frames --output ./examples/uc2_nature_pack/willow_sheet.png --cols 6 --json
+python scripts/atlas_pack.py --frames-dir ./examples/uc2_nature_pack/bamboo_frames --output ./examples/uc2_nature_pack/bamboo_sheet.png --cols 4 --json
+python scripts/gif_export.py --frames-dir ./examples/uc2_nature_pack/willow_frames --fps 6 --output ./examples/uc2_nature_pack/willow_preview.gif --json
+python scripts/gif_export.py --frames-dir ./examples/uc2_nature_pack/bamboo_frames --fps 4 --output ./examples/uc2_nature_pack/bamboo_preview.gif --json
+```
+
+<details>
+<summary>📋 Full JSON Output (Willow GIF)</summary>
+
+```json
+{
+  "status": "ok",
+  "output": "examples/uc2_nature_pack/willow_preview.gif",
+  "frame_count": 6,
+  "frame_size": [64, 64],
+  "fps": 6,
+  "duration_ms": 166,
+  "file_size_bytes": 4120
+}
+```
+
+</details>
+
+#### 📸 Output Assets
+
+| Weeping Willow Animation | Bamboo Stalk Animation | Willow Sheet (384×64) |
+|:---:|:---:|:---:|
+| <img src="examples/uc2_nature_pack/willow_preview.gif" width="160" style="image-rendering: pixelated;"> | <img src="examples/uc2_nature_pack/bamboo_preview.gif" width="160" style="image-rendering: pixelated;"> | <img src="examples/uc2_nature_pack/willow_sheet.png" width="300" style="image-rendering: pixelated;"> |
+
+---
+
+### Example 3: Paladin Knight Character (64×64 4-Frame Walk Cycle)
+
+Create a detailed 64×64 Paladin Knight with 3-tone steel & gold armor shading, red cape, glowing sword, 4-frame walk cycle, dark outline, and 2× resize.
+
+**Step 1 — Pack walk cycle sheet & export GIF:**
+```bash
+python scripts/atlas_pack.py --frames-dir ./examples/uc3_paladin_knight/frames --output ./examples/uc3_paladin_knight/paladin_sheet.png --cols 4 --json
+python scripts/gif_export.py --frames-dir ./examples/uc3_paladin_knight/frames --fps 6 --output ./examples/uc3_paladin_knight/paladin_walk.gif --json
+```
+
+**Step 2 — Generate 1px dark outline:**
+```bash
+python scripts/outline_generator.py --input ./examples/uc3_paladin_knight/frames/walk_00.png --output ./examples/uc3_paladin_knight/paladin_outlined.png --color '#1A1C2C' --json
+```
+
+<details>
+<summary>📋 Full JSON Output (Outline)</summary>
+
+```json
+{
+  "status": "ok",
+  "input": "examples/uc3_paladin_knight/frames/walk_00.png",
+  "output": "examples/uc3_paladin_knight/paladin_outlined.png",
+  "original_size": [64, 64],
+  "outlined_size": [66, 66],
+  "outline_color": "#1A1C2C"
+}
+```
+
+</details>
+
+#### 📸 Output Assets
+
+| Walk Animation | Outlined Frame (66×66) | Paladin Sheet (256×64) |
+|:---:|:---:|:---:|
+| <img src="examples/uc3_paladin_knight/paladin_walk.gif" width="160" style="image-rendering: pixelated;"> | <img src="examples/uc3_paladin_knight/paladin_outlined.png" width="160" style="image-rendering: pixelated;"> | <img src="examples/uc3_paladin_knight/paladin_sheet.png" width="300" style="image-rendering: pixelated;"> |
+
+---
+
+### Example 4: Voronoi Cobblestone Seamless Tilemap (64×64)
+
+Generate a seamless Voronoi Cobblestone path tile (64×64) with 4-edge wrapping, mortar lines, 3-tone stone shading, 2×2 seamless grid validation, and GameBoy palette remap.
+
+**Step 1 — Quality audit & GameBoy palette remap:**
+```bash
+python scripts/quality_audit.py --image ./examples/uc4_voronoi_tiles/cobblestone_tile.png --grid 16 --max-colors 16 --json
+python scripts/palette_remap.py --image ./examples/uc4_voronoi_tiles/cobblestone_tile.png --palette ./skills/pixel-art/palettes/gameboy.json --output ./examples/uc4_voronoi_tiles/cobblestone_gameboy.png --json
+```
+
+<details>
+<summary>📋 Full JSON Output (Quality Audit)</summary>
 
 ```json
 {
   "status": "pass",
-  "file": "/tmp/usecase1/frames/walk_00.png",
-  "antialiasing": {
-    "semi_transparent_pixels": 0,
-    "total_pixels": 256,
-    "clean": true
-  },
-  "orphan_pixels": {
-    "orphan_pixels": 0,
-    "clean": true
-  },
-  "palette": {
-    "unique_colors": 6,
-    "max_allowed": 16,
-    "clean": true
-  },
-  "grid_alignment": {
-    "width": 16,
-    "height": 16,
-    "grid_size": 16,
-    "aligned": true
-  }
+  "file": "examples/uc4_voronoi_tiles/cobblestone_tile.png",
+  "antialiasing": { "semi_transparent_pixels": 0, "total_pixels": 4096, "clean": true },
+  "orphan_pixels": { "orphan_pixels": 0, "clean": true },
+  "palette": { "unique_colors": 4, "max_allowed": 16, "clean": true },
+  "grid_alignment": { "width": 64, "height": 64, "grid_size": 16, "aligned": true }
 }
 ```
 
 </details>
 
-**Step 4 — Pack all frames into a sprite sheet:**
+#### 📸 Output Assets
 
-```bash
-python scripts/atlas_pack.py --frames-dir ./frames/ --output sheets/knight_walk.png --cols 4 --json
-```
-
-<details>
-<summary>📋 Full output</summary>
-
-```json
-{
-  "status": "ok",
-  "sheet": "/tmp/usecase1/sheets/knight_walk.png",
-  "metadata": "/tmp/usecase1/sheets/knight_walk.json",
-  "frame_count": 4,
-  "sheet_size": [64, 16]
-}
-```
-
-</details>
-
-**Step 5 — Export animated GIF preview:**
-
-```bash
-python scripts/gif_export.py --sheet sheets/knight_walk.png --frame-width 16 --frame-height 16 --fps 8 --output exports/knight_walk.gif --json
-```
-
-<details>
-<summary>📋 Full output</summary>
-
-```json
-{
-  "status": "ok",
-  "output": "/tmp/usecase1/exports/knight_walk.gif",
-  "frame_count": 4,
-  "frame_size": [16, 16],
-  "fps": 8,
-  "duration_ms": 125,
-  "file_size_bytes": 510
-}
-```
-
-</details>
-
-**Step 6 — Resize 4× for high-DPI displays:**
-
-```bash
-python scripts/sprite_resize.py --input sheets/knight_walk.png --output exports/knight_walk_4x.png --scale 4 --json
-```
-
-<details>
-<summary>📋 Full output</summary>
-
-```json
-{
-  "status": "ok",
-  "input": "/tmp/usecase1/sheets/knight_walk.png",
-  "output": "/tmp/usecase1/exports/knight_walk_4x.png",
-  "original_size": [64, 16],
-  "new_size": [256, 64],
-  "scale": 4,
-  "file_size_bytes": 525
-}
-```
-
-</details>
-
-**Tools used:** `init_workspace` → `quality_audit` → `atlas_pack` → `gif_export` → `sprite_resize`
-
-#### 📸 Output Gallery
-
-**Individual Frames (4× zoom):**
-
-| Frame 0 | Frame 1 | Frame 2 | Frame 3 |
-|---|---|---|---|
-| ![Frame 0](examples/uc1_knight_walk/frame_00.png) | ![Frame 1](examples/uc1_knight_walk/frame_01.png) | ![Frame 2](examples/uc1_knight_walk/frame_02.png) | ![Frame 3](examples/uc1_knight_walk/frame_03.png) |
-
-**Sprite Sheet (4× zoom):**
-
-![Walk Sheet 4x](examples/uc1_knight_walk/walk_sheet_4x.png)
-
-**Animated GIF Preview (4× zoom):**
-
-![Walk Animation](examples/uc1_knight_walk/walk_animation_4x.gif)
+| Single Voronoi Tile (64×64) | 2×2 Seamless Grid Check (128×128) | GameBoy Remapped Tile |
+|:---:|:---:|:---:|
+| <img src="examples/uc4_voronoi_tiles/cobblestone_tile.png" width="160" style="image-rendering: pixelated;"> | <img src="examples/uc4_voronoi_tiles/cobblestone_2x2_preview.png" width="160" style="image-rendering: pixelated;"> | <img src="examples/uc4_voronoi_tiles/cobblestone_gameboy.png" width="160" style="image-rendering: pixelated;"> |
 
 ---
 
-### Example 2: Tileset → GameBoy Palette Remap → Indexed Export
+### Example 5: Procedural Terrain Noise & Dithered Energy Shield (64×64)
 
-Create a terrain tileset (grass/dirt/water/stone/sand), audit for quality, remap to the classic GameBoy 4-color palette, and export as indexed PNG.
-
-**Step 1 — Audit the tileset (48×48, 3×3 grid of 16px tiles):**
+Extract palette colors from Sakura Tree, generate procedural terrain noise texture, and generate an ordered Bayer 4×4 dithered energy gradient.
 
 ```bash
-python scripts/quality_audit.py --image tileset.png --grid 16 --max-colors 16 --json
+python scripts/palette_extract.py --image ./examples/uc1_sakura_tree/frames/sakura_00.png --max-colors 8 --output ./examples/uc5_vfx_env/sakura_palette.json --json
+python scripts/noise_generator.py --width 64 --height 64 --scale 10 --octaves 4 --palette ./skills/pixel-art/palettes/sweetie-16.json --output ./examples/uc5_vfx_env/terrain_noise.png --json
+python scripts/dither.py --width 64 --height 64 --color1 '#1A1C2C' --color2 '#73EFF7' --matrix 4 --output ./examples/uc5_vfx_env/shield_dither.png --json
 ```
 
 <details>
-<summary>📋 Full output</summary>
-
-```json
-{
-  "status": "pass",
-  "file": "/tmp/usecase2_tileset.png",
-  "antialiasing": {
-    "semi_transparent_pixels": 0,
-    "total_pixels": 2304,
-    "clean": true
-  },
-  "orphan_pixels": {
-    "orphan_pixels": 0,
-    "clean": true
-  },
-  "palette": {
-    "unique_colors": 10,
-    "max_allowed": 16,
-    "clean": true
-  },
-  "grid_alignment": {
-    "width": 48,
-    "height": 48,
-    "grid_size": 16,
-    "aligned": true
-  }
-}
-```
-
-</details>
-
-**Step 2 — Remap to GameBoy palette (10 colors → 4 colors):**
-
-```bash
-python scripts/palette_remap.py --image tileset.png --palette palettes/gameboy.json --output tileset_gb.png --json
-```
-
-<details>
-<summary>📋 Full output</summary>
+<summary>📋 Full JSON Output (Dither)</summary>
 
 ```json
 {
   "status": "ok",
-  "input": "/tmp/usecase2_tileset.png",
-  "output": "/tmp/usecase2_tileset_gb.png",
-  "palette": "gameboy",
-  "palette_colors": 4
-}
-```
-
-</details>
-
-**Step 3 — Export as indexed PNG (tiny file size!):**
-
-```bash
-python scripts/export_indexed.py --input tileset_gb.png --output tileset_gb_indexed.png --max-colors 4 --json
-```
-
-<details>
-<summary>📋 Full output</summary>
-
-```json
-{
-  "status": "ok",
-  "input": "/tmp/usecase2_tileset_gb.png",
-  "output": "/tmp/usecase2_tileset_gb_indexed.png",
-  "original_colors": 4,
-  "indexed_colors": 4,
-  "dimensions": [48, 48],
-  "file_size_bytes": 133
-}
-```
-
-</details>
-
-**Tools used:** `quality_audit` → `palette_remap` → `export_indexed`
-
-#### 📸 Output Gallery
-
-**Original Tileset vs GameBoy Remap (4× zoom):**
-
-| Original (10 colors) | GameBoy Remap (4 colors) |
-|---|---|
-| ![Original](examples/uc2_tileset_gameboy/tileset_original_4x.png) | ![GameBoy](examples/uc2_tileset_gameboy/tileset_gameboy_4x.png) |
-
----
-
-### Example 3: Extract Palette → Procedural Terrain → Dithered Sky
-
-Extract the color palette from existing character art, use those exact colors to generate a procedural terrain texture and a dithered sky gradient — everything stays visually cohesive.
-
-**Step 1 — Extract palette from the knight sprite:**
-
-```bash
-python scripts/palette_extract.py --image knight_walk_00.png --max-colors 16 --output palettes/custom.json --json
-```
-
-<details>
-<summary>📋 Full output</summary>
-
-```json
-{
-  "status": "ok",
-  "source": "/tmp/usecase1/frames/walk_00.png",
-  "total_unique_colors": 6,
-  "extracted_colors": 6,
-  "palette": {
-    "name": "walk_00",
-    "max_colors": 6,
-    "colors": [
-      "#3B5DC9",
-      "#EF7D57",
-      "#F4F4F4",
-      "#566C86",
-      "#1A1C2C",
-      "#FFCD75"
-    ]
-  },
-  "color_frequency": [
-    { "color": "#3B5DC9", "pixels": 24, "percent": 38.7 },
-    { "color": "#EF7D57", "pixels": 10, "percent": 16.1 },
-    { "color": "#F4F4F4", "pixels": 10, "percent": 16.1 },
-    { "color": "#566C86", "pixels": 8, "percent": 12.9 },
-    { "color": "#1A1C2C", "pixels": 6, "percent": 9.7 },
-    { "color": "#FFCD75", "pixels": 4, "percent": 6.5 }
-  ],
-  "saved_to": "/tmp/usecase3_extracted.json"
-}
-```
-
-</details>
-
-**Step 2 — Generate terrain noise with extracted palette:**
-
-```bash
-python scripts/noise_generator.py --width 64 --height 64 --scale 12 --octaves 3 --seed 777 --palette palettes/custom.json --output terrain.png --json
-```
-
-<details>
-<summary>📋 Full output</summary>
-
-```json
-{
-  "status": "ok",
-  "output": "/tmp/usecase3_terrain.png",
+  "output": "examples/uc5_vfx_env/shield_dither.png",
   "size": [64, 64],
-  "scale": 12.0,
-  "octaves": 3,
-  "seed": 777,
-  "palette": "/tmp/usecase3_extracted.json",
-  "file_size_bytes": 1006
-}
-```
-
-</details>
-
-**Step 3 — Generate dithered sky gradient:**
-
-```bash
-python scripts/dither.py --width 64 --height 32 --color1 "#29366F" --color2 "#41A6F6" --matrix 4 --output sky.png --json
-```
-
-<details>
-<summary>📋 Full output</summary>
-
-```json
-{
-  "status": "ok",
-  "output": "/tmp/usecase3_sky.png",
-  "size": [64, 32],
-  "color1": "#29366F",
-  "color2": "#41A6F6",
+  "color1": "#1A1C2C",
+  "color2": "#73EFF7",
   "matrix": "4x4",
-  "file_size_bytes": 264
+  "file_size_bytes": 620
 }
 ```
 
 </details>
 
-**Step 4 — Audit the terrain texture:**
-
-```bash
-python scripts/quality_audit.py --image terrain.png --grid 8 --max-colors 16 --json
-```
-
-<details>
-<summary>📋 Full output</summary>
-
-```json
-{
-  "status": "pass",
-  "file": "/tmp/usecase3_terrain.png",
-  "antialiasing": {
-    "semi_transparent_pixels": 0,
-    "total_pixels": 4096,
-    "clean": true
-  },
-  "orphan_pixels": {
-    "orphan_pixels": 0,
-    "clean": true
-  },
-  "palette": {
-    "unique_colors": 5,
-    "max_allowed": 16,
-    "clean": true
-  },
-  "grid_alignment": {
-    "width": 64,
-    "height": 64,
-    "grid_size": 8,
-    "aligned": true
-  }
-}
-```
-
-</details>
-
-**Tools used:** `palette_extract` → `noise_generator` → `dither` → `quality_audit`
-
-#### 📸 Output Gallery
-
-**Procedural Terrain (4× zoom) — colored with extracted palette:**
-
-![Terrain](examples/uc3_terrain_sky/terrain_4x.png)
-
-**Dithered Sky Gradient (4× zoom) — Bayer 4×4 matrix:**
-
-![Sky](examples/uc3_terrain_sky/sky_dither_4x.png)
-
-**Combined Scene (4× zoom) — sky + terrain:**
-
-![Scene](examples/uc3_terrain_sky/scene_combined_4x.png)
-
----
-
-### Example 4: Batch QA → Outline → Resize → Palette Remap
-
-Run quality assurance on an entire folder of sprites at once, add dark outlines for visibility on busy backgrounds, resize 3× for game display, and remap to PICO-8 palette.
-
-**Step 1 — Batch audit all 4 walk frames:**
-
-```bash
-python scripts/batch_audit.py --dir ./frames/ --grid 16 --max-colors 16 --json
-```
-
-<details>
-<summary>📋 Full output</summary>
-
-```json
-{
-  "status": "pass",
-  "total_files": 4,
-  "passed": 4,
-  "failed": 0,
-  "results": [
-    {
-      "file": "walk_00.png",
-      "size": [16, 16],
-      "status": "pass",
-      "issues": []
-    },
-    {
-      "file": "walk_01.png",
-      "size": [16, 16],
-      "status": "pass",
-      "issues": []
-    },
-    {
-      "file": "walk_02.png",
-      "size": [16, 16],
-      "status": "pass",
-      "issues": []
-    },
-    {
-      "file": "walk_03.png",
-      "size": [16, 16],
-      "status": "pass",
-      "issues": []
-    }
-  ]
-}
-```
-
-</details>
-
-**Step 2 — Add dark outline for readability:**
-
-```bash
-python scripts/outline_generator.py --input frames/walk_00.png --output outlined/walk_00.png --color "#1A1A2E" --json
-```
-
-<details>
-<summary>📋 Full output</summary>
-
-```json
-{
-  "status": "ok",
-  "input": "/tmp/usecase1/frames/walk_00.png",
-  "output": "/tmp/usecase4_outlined.png",
-  "original_size": [16, 16],
-  "outlined_size": [18, 18],
-  "outline_color": "#1A1A2E"
-}
-```
-
-</details>
-
-**Step 3 — Resize 3× for game display:**
-
-```bash
-python scripts/sprite_resize.py --input outlined/walk_00.png --output exports/walk_00_3x.png --scale 3 --json
-```
-
-<details>
-<summary>📋 Full output</summary>
-
-```json
-{
-  "status": "ok",
-  "input": "/tmp/usecase4_outlined.png",
-  "output": "/tmp/usecase4_outlined_3x.png",
-  "original_size": [18, 18],
-  "new_size": [54, 54],
-  "scale": 3,
-  "file_size_bytes": 335
-}
-```
-
-</details>
-
-**Step 4 — Remap to PICO-8 palette:**
-
-```bash
-python scripts/palette_remap.py --image outlined/walk_00.png --palette palettes/pico-8.json --output exports/walk_00_pico8.png --json
-```
-
-<details>
-<summary>📋 Full output</summary>
-
-```json
-{
-  "status": "ok",
-  "input": "/tmp/usecase4_outlined.png",
-  "output": "/tmp/usecase4_pico8.png",
-  "palette": "pico-8",
-  "palette_colors": 16
-}
-```
-
-</details>
-
-**Tools used:** `batch_audit` → `outline_generator` → `sprite_resize` → `palette_remap`
-
-#### 📸 Output Gallery
-
-**Original → Outlined → PICO-8 Remap (4× zoom):**
-
-| Original (16×16) | With Outline (18×18) | PICO-8 Remap |
-|---|---|---|
-| ![Original](examples/uc4_outline_resize/knight_original_4x.png) | ![Outlined](examples/uc4_outline_resize/knight_outlined_4x.png) | ![PICO-8](examples/uc4_outline_resize/knight_pico8_4x.png) |
-
----
-
-### Example 5: 8-Way Character from 5 Directions (Mirror to Save Memory)
-
-Draw only east-facing frames, automatically mirror them to create west-facing frames. Pack both into separate sprite sheets with animated GIF previews, and batch audit everything.
-
-**Step 1 — Create 4 east-facing frames (draw once).**
-
-**Step 2 — Auto-mirror east → west (saves 50% art time!):**
-
-```bash
-python scripts/sprite_mirror.py --input-dir ./east_frames/ --output-dir ./west_frames/ --axis horizontal --json
-```
-
-<details>
-<summary>📋 Full output</summary>
-
-```json
-{
-  "status": "ok",
-  "input_dir": "/tmp/usecase5/east_frames",
-  "output_dir": "/tmp/usecase5/west_frames",
-  "axis": "horizontal",
-  "files_mirrored": 4
-}
-```
-
-</details>
-
-**Step 3 — Pack east sheet:**
-
-```bash
-python scripts/atlas_pack.py --frames-dir ./east_frames/ --output east_sheet.png --cols 4 --json
-```
-
-<details>
-<summary>📋 Full output</summary>
-
-```json
-{
-  "status": "ok",
-  "sheet": "/tmp/usecase5/east_sheet.png",
-  "metadata": "/tmp/usecase5/east_sheet.json",
-  "frame_count": 4,
-  "sheet_size": [64, 16]
-}
-```
-
-</details>
-
-**Step 4 — Pack west sheet:**
-
-```bash
-python scripts/atlas_pack.py --frames-dir ./west_frames/ --output west_sheet.png --cols 4 --json
-```
-
-<details>
-<summary>📋 Full output</summary>
-
-```json
-{
-  "status": "ok",
-  "sheet": "/tmp/usecase5/west_sheet.png",
-  "metadata": "/tmp/usecase5/west_sheet.json",
-  "frame_count": 4,
-  "sheet_size": [64, 16]
-}
-```
-
-</details>
-
-**Step 5 — Export GIF previews:**
-
-```bash
-python scripts/gif_export.py --frames-dir ./east_frames/ --fps 6 --output east_anim.gif --json
-```
-
-<details>
-<summary>📋 Full output (east)</summary>
-
-```json
-{
-  "status": "ok",
-  "output": "/tmp/usecase5/east_anim.gif",
-  "frame_count": 4,
-  "frame_size": [16, 16],
-  "fps": 6,
-  "duration_ms": 166,
-  "file_size_bytes": 441
-}
-```
-
-</details>
-
-```bash
-python scripts/gif_export.py --frames-dir ./west_frames/ --fps 6 --output west_anim.gif --json
-```
-
-<details>
-<summary>📋 Full output (west)</summary>
-
-```json
-{
-  "status": "ok",
-  "output": "/tmp/usecase5/west_anim.gif",
-  "frame_count": 4,
-  "frame_size": [16, 16],
-  "fps": 6,
-  "duration_ms": 166,
-  "file_size_bytes": 441
-}
-```
-
-</details>
-
-**Step 6 — Batch audit both directions:**
-
-```bash
-python scripts/batch_audit.py --dir ./east_frames/ --grid 16 --max-colors 16 --json
-```
-
-<details>
-<summary>📋 Full output (east)</summary>
-
-```json
-{
-  "status": "pass",
-  "total_files": 4,
-  "passed": 4,
-  "failed": 0,
-  "results": [
-    { "file": "east_00.png", "size": [16, 16], "status": "pass", "issues": [] },
-    { "file": "east_01.png", "size": [16, 16], "status": "pass", "issues": [] },
-    { "file": "east_02.png", "size": [16, 16], "status": "pass", "issues": [] },
-    { "file": "east_03.png", "size": [16, 16], "status": "pass", "issues": [] }
-  ]
-}
-```
-
-</details>
-
-```bash
-python scripts/batch_audit.py --dir ./west_frames/ --grid 16 --max-colors 16 --json
-```
-
-<details>
-<summary>📋 Full output (west)</summary>
-
-```json
-{
-  "status": "pass",
-  "total_files": 4,
-  "passed": 4,
-  "failed": 0,
-  "results": [
-    { "file": "east_00.png", "size": [16, 16], "status": "pass", "issues": [] },
-    { "file": "east_01.png", "size": [16, 16], "status": "pass", "issues": [] },
-    { "file": "east_02.png", "size": [16, 16], "status": "pass", "issues": [] },
-    { "file": "east_03.png", "size": [16, 16], "status": "pass", "issues": [] }
-  ]
-}
-```
-
-</details>
-
-**Tools used:** `sprite_mirror` → `atlas_pack` ×2 → `gif_export` ×2 → `batch_audit` ×2
-
-#### 📸 Output Gallery
-
-**East-Facing Sheet vs West-Facing Sheet (4× zoom):**
-
-| East (drawn) | West (auto-mirrored) |
-|---|---|
-| ![East Sheet](examples/uc5_mirror_8way/east_sheet_4x.png) | ![West Sheet](examples/uc5_mirror_8way/west_sheet_4x.png) |
-
-**Animated GIF Previews (4× zoom):**
-
-| East Animation | West Animation |
-|---|---|
-| ![East Anim](examples/uc5_mirror_8way/east_anim_4x.gif) | ![West Anim](examples/uc5_mirror_8way/west_anim_4x.gif) |
-
-
----
-
-## Available Palettes
-
-| Palette | Colors | Era / Style |
-|---|---|---|
-| `pico-8.json` | 16 | Fantasy console, vibrant |
-| `gameboy.json` | 4 | Game Boy DMG-01, green monochrome |
-| `nes.json` | 56 | NES PPU NTSC hardware |
-| `snes.json` | 64 | Super Nintendo curated |
-| `endesga-32.json` | 32 | ENDESGA modern pixel art |
-| `resurrect-64.json` | 64 | Resurrect high-color |
-| `sweetie-16.json` | 16 | Game jam favorite, warm |
-| `db32.json` | 32 | DawnBringer classic indie |
-| `cga.json` | 16 | IBM CGA DOS retro |
-| `commodore-64.json` | 16 | C64 home computer |
-
-All palettes follow the same JSON schema:
-
-```json
-{
-  "name": "pico-8",
-  "max_colors": 16,
-  "colors": ["#000000", "#1D2B53", "..."]
-}
-```
-
-You can create custom palettes or extract them from existing art with `palette_extract.py`.
-
----
-
-## Interactive Templates
-
-Open these HTML files in any browser. No server needed.
-
-| Template | What It Does |
-|---|---|
-| `sprite_sheet.html` | Load a sprite sheet, set frame size, play animation, zoom with pixelated rendering |
-| `tilemap_preview.html` | Load a tileset, select tiles, paint on a map grid, random fill, export |
-| `palette_viewer.html` | View palettes side-by-side, click swatches to compare colors, load custom JSONs |
-
----
-
-## Reference Knowledge Base
-
-These markdown documents teach the agent (and you) domain-specific pixel art knowledge:
-
-| Document | Topics Covered |
-|---|---|
-| `sprite_conventions.md` | Frame sizes, animation timing, 4/8-directional layouts |
-| `animation_principles.md` | 12 Disney principles adapted for pixel art constraints |
-| `tileset_rules.md` | Grid sizes, Wang blob autotile bitmasks, terrain transitions |
-| `isometric_guide.md` | 2:1 projection, diamond tiles, depth sorting, stacking |
-| `color_theory.md` | Hue ramps, contrast ratios, palette design for pixel art |
-| `ui_elements.md` | 9-slice panels, health bars, buttons, dialogs, inventory |
-| `particle_effects.md` | Explosions, fire, smoke, sparkles, spawn patterns, timing |
+#### 📸 Output Assets
+
+| Terrain Value Noise | Bayer 4×4 Dithered Shield |
+|:---:|:---:|
+| <img src="examples/uc5_vfx_env/terrain_noise.png" width="180" style="image-rendering: pixelated;"> | <img src="examples/uc5_vfx_env/shield_dither.png" width="180" style="image-rendering: pixelated;"> |
 
 ---
 
 ## Game Engine Integration
 
 ### Godot 4
-
-```gdscript
-# Import settings: Filter = Nearest, Sprite Mode = Region
-# Use atlas_pack.py JSON metadata for AnimatedSprite2D:
-var sheet_data = JSON.parse_string(FileAccess.open("knight_walk.json", FileAccess.READ).get_as_text())
-for frame in sheet_data["frames"]:
-    # frame.x, frame.y, frame.w, frame.h → AtlasTexture region
-    pass
-```
+- Import PNGs with `Texture2D` filter mode set to **Nearest**
+- Use `AnimatedSprite2D` with atlas metadata from `atlas_pack.py`
 
 ### Unity
-
-1. Set texture import: **Filter Mode = Point (no filter)**, **Sprite Mode = Multiple**
-2. Slice with Grid mode using your frame dimensions
-3. Set **Pixels Per Unit** to match tile size (16 for 16×16)
-4. Use the `atlas_pack.py` JSON for programmatic slicing
+- Set texture import: **Filter Mode = Point (no filter)**, **Sprite Mode = Multiple**
+- Set **Pixels Per Unit** to match frame size (e.g. 64)
 
 ### Defold
-
-1. Set texture sampling to **Nearest**
-2. Import atlas JSON as tile source coordinates
-3. Use `go.property()` for runtime palette switching
+- Set texture sampling to **Nearest**
+- Import atlas JSON as tile source
 
 ---
-
-## Pixel Art Rules (Enforced by This Skill)
-
-These rules are embedded in `SKILL.md` and enforced by `quality_audit.py`:
-
-1. **Zero anti-aliasing** — Every pixel is fully opaque or fully transparent. No semi-transparency.
-2. **Strict palette limits** — Never exceed the target palette color count.
-3. **Grid-snap everything** — Dimensions must be exact multiples of the base grid (8, 16, 32).
-4. **No orphan pixels** — Isolated single pixels with no neighbors are usually mistakes.
-5. **Nearest-neighbor only** — Never use bilinear/bicubic/Lanczos when resizing.
-6. **Export as indexed PNG** — Final assets should be indexed-color, not RGBA.
-7. **Mirror to save memory** — Draw 5 directions, mirror for the other 3.
-8. **Consistent lighting** — Top-right light source. Always.
-
----
-
-## Contributing
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
 ## License
 

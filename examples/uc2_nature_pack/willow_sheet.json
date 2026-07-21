@@ -1,0 +1,59 @@
+{
+  "image": "willow_sheet.png",
+  "frame_width": 64,
+  "frame_height": 64,
+  "columns": 6,
+  "rows": 1,
+  "frame_count": 6,
+  "padding": 0,
+  "frames": [
+    {
+      "index": 0,
+      "filename": "willow_00.png",
+      "x": 0,
+      "y": 0,
+      "w": 64,
+      "h": 64
+    },
+    {
+      "index": 1,
+      "filename": "willow_01.png",
+      "x": 64,
+      "y": 0,
+      "w": 64,
+      "h": 64
+    },
+    {
+      "index": 2,
+      "filename": "willow_02.png",
+      "x": 128,
+      "y": 0,
+      "w": 64,
+      "h": 64
+    },
+    {
+      "index": 3,
+      "filename": "willow_03.png",
+      "x": 192,
+      "y": 0,
+      "w": 64,
+      "h": 64
+    },
+    {
+      "index": 4,
+      "filename": "willow_04.png",
+      "x": 256,
+      "y": 0,
+      "w": 64,
+      "h": 64
+    },
+    {
+      "index": 5,
+      "filename": "willow_05.png",
+      "x": 320,
+      "y": 0,
+      "w": 64,
+      "h": 64
+    }
+  ]
+}

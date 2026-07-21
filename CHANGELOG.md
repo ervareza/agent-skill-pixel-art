@@ -23,7 +23,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 - RGBA quantization bug in `export_indexed.py`
 - NES palette `max_colors` mismatch (was 54, actual 56)
 
-## [v4.0.0] - 2025-07-22
+## [v5.0.0] - 2025-07-22
+
+### Added
+- **`references/artistic_generation.md`**: Comprehensive artistic pixel art guide covering cluster shading, hue shifting, Voronoi pathing, foliage & tree algorithms (Sakura, Willow, Bamboo).
+- **5 Brand New Artistic Use Cases**:
+  1. Sakura Cherry Blossom Tree (64×64 6-frame wind sway animation + sheet + GIF + indexed PNG).
+  2. Ancient Willow & Emerald Bamboo Nature Pack (64×64 6-frame willow + 4-frame bamboo).
+  3. Paladin Knight Character (64×64 4-frame walk cycle + sheet + GIF + 1px outline).
+  4. Voronoi Cobblestone Tilemap (64×64 seamless Voronoi tile + 2×2 grid check + GameBoy palette remap).
+  5. Procedural Terrain & Dithered Energy Shield (64×64 noise + Bayer 4×4 dither).
+- **Showcase Hero Gallery in README**: High-res animated GIF previews for Sakura, Willow, Bamboo, Paladin, and Voronoi Cobblestone.
+
+### Changed
+- **`SKILL.md`**: Integrated `artistic_generation.md` into Decision Tree, Gotchas, and Reference Index.
+- **`README.md`**: Added GitHub status badges, showcase hero gallery, and updated all 5 real-world usage examples with clean HTML pixelated rendering tags.
+
+## [v4.1.0] - 2025-07-22
 
 ### Changed
 - **Complete rewrite** following Anthropic official skill conventions (studied from `anthropics/skills` repo)

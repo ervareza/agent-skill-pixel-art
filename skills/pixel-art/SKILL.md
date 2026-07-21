@@ -129,6 +129,7 @@ The `templates/` directory contains interactive HTML tools:
 ## Further Reading
 
 - [Sprite Conventions](references/sprite_conventions.md) — Frame sizes, animation timing, directional layouts
+- [Artistic Generation](references/artistic_generation.md) — Cluster shading, hue shifting, Voronoi, foliage & tree algorithms
 - [Animation Principles](references/animation_principles.md) — 12 Disney principles applied to pixel art
 - [Tileset Rules](references/tileset_rules.md) — Grid sizes, Wang autotile bitmasks, terrain transitions
 - [Isometric Guide](references/isometric_guide.md) — 2:1 projection, tile stacking, depth sorting
