@@ -1,22 +1,22 @@
-# PixelMatrix Engine Asset Contract Specification
+# ChromaMatrix Core Asset Contract Blueprint
 
 ```yaml
-contract_id: "PX-2026-001"
-engine_version: "2.0.0"
+contract_id: "CM-2026-001"
+engine_version: "3.0.0"
 timestamp: "2026-07-22T00:00:00Z"
-status: "INITIALIZED"
+status: "BOOTSTRAPPED"
 
 asset_metadata:
-  name: "hero_knight_sprite"
+  identifier: "hero_knight_sprite"
   category: "CHARACTER_SPRITE"
   target_engine: "Godot / Unity 2D"
 
 specification:
-  canvas_preset: "standard_sprite_32"
+  grid_matrix: "standard_sprite_32"
   dimensions: [32, 32]
-  palette_lut: "pico8_fantasy_16"
+  luma_palette: "pico8_fantasy_16"
   max_colors: 16
-  sprite_matrix: "character_4way_matrix"
+  sprite_core: "character_4way_matrix"
 
 validation_criteria:
   grid_aligned: true

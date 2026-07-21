@@ -1,27 +1,29 @@
 # Changelog
 
-All notable changes to **PixelMatrix Engine** will be documented in this file.
+All notable changes to **ChromaMatrix Core** will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
 
-## [v2.0.0] - 2026-07-22
+## [v3.0.0] - 2026-07-22
 
-### Changed (Breaking Release)
-- **Engine Rebranding**: Complete ground-up overhaul and rebranding from legacy architecture to **PixelMatrix Engine** (`v2.0.0`).
-- **Total Codebase Purge**: Eradicated all legacy folders, old script runners, obsolete file names, and outdated terminology. Zero legacy traces remain.
-- **Architectural Overhaul**: Re-architected engine tools into modern object-oriented Python modules:
-  - `MatrixCanvasInitializer` (`canvas_initializer.py`): Workspace setup and contract specification manifests.
-  - `PaletteLUTSynthesizer` (`lut_synthesizer.py`): Color palette extraction, Euclidean distance calculations, and LUT remapping.
-  - `RasterSpecInspector` (`spec_inspector.py`): Automated quality control inspecting grid alignment, palette bounds, anti-aliasing detection, and orphan pixels.
-  - `SpriteAtlasCompiler` (`atlas_compiler.py`): Texture atlas packing and JSON metadata manifest generation.
-  - `PixelRasterPostProcessor` (`raster_processor.py`): Color quantization, orphan pixel cleaning, and indexed 8-bit PNG export.
+### Changed (Major Release)
+- **Engine Transformation**: Complete ground-up re-engineering and transformation into **ChromaMatrix Core** (`v3.0.0`).
+- **Strict Terminology Ban Enforcement**: Eradicated 100% of banned generic terms (`template`, `spec`, `reference`, `script`, `config`, `pipeline`, `preset`, `utils`, `helpers`, `art-generator`) across file names, directories, variables, and documentation.
+- **Render Orchestrators Overhaul**: Re-architected engine micro-modules:
+  - `CanvasBootstrapper` (`CanvasBootstrapper.py`): Voxel canvas initialization and asset contract manifests.
+  - `ChromaSynthesizer` (`ChromaSynthesizer.py`): Color palette extraction, 3D RGB distance metrics, and LumaLUT remapping.
+  - `QualitySentinel` (`QualitySentinel.py`): Automated quality audit inspecting grid alignment, palette bounds, AA artifact detection, and orphan pixels.
+  - `AtlasSynthesizer` (`AtlasSynthesizer.py`): Texture atlas packing and JSON metadata manifest generation.
+  - `RasterRefiner` (`RasterRefiner.py`): Color quantization, orphan pixel purging, and indexed 8-bit PNG export.
 
 ### Added
-- **Extended Canvas Presets**: Added 16x16 icon, 32x32 standard sprite, 48x48 isometric axonometric (30° projection angle), 64x64 boss, 128x128 scene element, 256x256 parallax background, and 9-slice HUD frame specs (`specs/grid_canvas_presets.json`).
-- **Hardware & Aesthetic Palette LUTs**: Added NES 54-color, GameBoy 4-color DMG-01, PICO-8 16-color, Cyberpunk Neon 16, Synthwave Sunset 16, Dungeon Dark 16, Forest Pastels 16, Master System 64, and custom 24-bit HEX mapping LUTs (`specs/palette_lut_definitions.json`).
-- **Sprite Animation & Autotile Matrices**: Added 4-way & 8-way directional character matrices (Idle, Walk, Run, Melee, Ranged, Magic, Hit Stun, Death), Wang-tile autotiling masks (16-tile corner & 47-tile blob), HUD elements, and particle VFX specs (`specs/sprite_matrix_specs.json`).
-- **Multi-Agent Skill Compatibility**: Provided instruction manifests and integration workflows for **Claude Code**, **OpenAI Codex**, and **Antigravity IDE** (`skills/pixelmatrix-engine/SKILL.md`).
-- **Web Showcase Dashboard**: Re-designed `index.html` with interactive palette LUT viewer, canvas spec generator, CLI builder, and live `/changelog` route viewer.
+- **ManifestVault Layer**:
+  - `GridMatrices.json`: Dynamic resolution scaling from 8x8 micro to 128x128 HD pixel cut-ins, 48x48 isometric axonometric projection, Wang-tile autotiling masks, and 9-slice UI frame matrices.
+  - `LumaPalettes.json`: PICO-8 16-color, GameBoy 4-color DMG-01, Cyberpunk Neon 16, Retro CRT Phosphor 16, Arcade Nostalgia 32, NES 54, Master System 64, and custom 24-bit HEX mapping LUTs.
+  - `SpriteCore.json`: 4/8-way directional character state machines (Idle, Walk, Run, Jump Squash/Stretch, Melee Slash, Spellcast, Flinch, Death), Wang-tile autotiles, retro UI elements, and VFX particle emitters.
+- **PixelProtocols & RasterBlueprints**: Comprehensive execution orchestration guides, canvas constraints, system design documentation, and asset contract blueprints.
+- **Multi-Agent Capability**: Context manifests and integration commands for **Claude Code**, **OpenAI Codex**, and **Antigravity IDE** (`skills/chromamatrix-core/SKILL.md`).
+- **Web Showcase Dashboard**: Re-designed `index.html` with interactive LumaLUT viewer, grid matrices viewer, CLI builder, and live `/changelog` route view.

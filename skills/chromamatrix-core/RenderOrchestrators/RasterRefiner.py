@@ -1,24 +1,24 @@
 #!/usr/bin/env python3
 """
-PixelMatrix Engine — PixelRasterPostProcessor
-Color Quantization, Isolated Orphan Pixel Cleaning & Indexed 8-bit PNG Export.
+ChromaMatrix Core — RasterRefiner
+Color Quantization, Isolated Pixel Purge & Indexed PNG Export.
 
-Author: PixelMatrix Engine Core Team
+Author: ChromaMatrix Core Team
 License: MIT
-Version: 2.0.0
+Version: 3.0.0
 """
 
 import sys
 import json
 import argparse
 from pathlib import Path
-from typing import Dict, Any, List, Tuple
+from typing import Dict, Any
 from PIL import Image
 
-class PixelRasterPostProcessor:
+class RasterRefiner:
     """
-    Cleans raw pixel assets by stripping anti-aliasing artifacts, quantizing colors
-    to target LUT count, purging isolated orphan pixels, and exporting clean 8-bit PNGs.
+    Refines raw pixel rasters by stripping anti-aliasing artifacts, quantizing colors
+    to target LumaLUT count, purging isolated orphan pixels, and exporting clean 8-bit PNGs.
     """
 
     def __init__(self, input_image_path: Path):
@@ -43,11 +43,11 @@ class PixelRasterPostProcessor:
 
         return modified_count
 
-    def clean_orphan_pixels(self) -> int:
-        """Cleans isolated pixels with no opaque 8-way neighbors."""
+    def purge_orphan_pixels(self) -> int:
+        """Purges isolated pixels with zero opaque 8-way neighbors."""
         pixels = self.img.load()
         w, h = self.img.size
-        cleaned = 0
+        purged = 0
 
         for x in range(1, w - 1):
             for y in range(1, h - 1):
@@ -68,36 +68,34 @@ class PixelRasterPostProcessor:
 
                 if not has_neighbor:
                     pixels[x, y] = (0, 0, 0, 0)
-                    cleaned += 1
+                    purged += 1
 
-        return cleaned
+        return purged
 
     def quantize_and_export(self, output_path: Path, max_colors: int = 16) -> Dict[str, Any]:
-        """Quantizes image colors and exports as an indexed PNG."""
-        # Process in memory
+        """Quantizes raster colors and exports as an indexed PNG."""
         aa_cleaned = self.clean_transparency_threshold()
-        orphans_cleaned = self.clean_orphan_pixels()
+        orphans_purged = self.purge_orphan_pixels()
 
-        # Convert to P mode (indexed) with defined color limit
         quantized = self.img.quantize(colors=max_colors, dither=Image.Dither.NONE)
         
         output_path.parent.mkdir(parents=True, exist_ok=True)
         quantized.save(output_path, "PNG")
 
         return {
-            "engine": "PixelMatrix Engine",
-            "processor": "PixelRasterPostProcessor",
+            "engine": "ChromaMatrix Core",
+            "orchestrator": "RasterRefiner",
             "input": str(self.input_path),
             "output": str(output_path),
             "aa_pixels_cleaned": aa_cleaned,
-            "orphan_pixels_cleaned": orphans_cleaned,
+            "orphan_pixels_purged": orphans_purged,
             "quantized_color_limit": max_colors,
             "export_format": "PNG_INDEXED_P_MODE"
         }
 
 
 def main():
-    parser = argparse.ArgumentParser(description="PixelMatrix Pixel Raster PostProcessor CLI")
+    parser = argparse.ArgumentParser(description="ChromaMatrix RasterRefiner CLI")
     parser.add_argument("--input", type=str, required=True, help="Input PNG path")
     parser.add_argument("--output", type=str, required=True, help="Output PNG path")
     parser.add_argument("--max-colors", type=int, default=16, help="Target max colors")
@@ -106,8 +104,8 @@ def main():
     args = parser.parse_args()
 
     try:
-        processor = PixelRasterPostProcessor(Path(args.input))
-        report = processor.quantize_and_export(Path(args.output), args.max_colors)
+        refiner = RasterRefiner(Path(args.input))
+        report = refiner.quantize_and_export(Path(args.output), args.max_colors)
         print(json.dumps(report, indent=2))
     except Exception as e:
         print(json.dumps({"error": str(e)}, indent=2))

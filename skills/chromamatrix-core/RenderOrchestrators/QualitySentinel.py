@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """
-PixelMatrix Engine — RasterSpecInspector
-Quality Inspection Engine for Grid Alignment, Palette Limits & Anti-Aliasing Artifacts.
+ChromaMatrix Core — QualitySentinel
+Quality Audit Sentinel for Grid Alignment, Luma Palette Limits & Anti-Aliasing Detection.
 
-Author: PixelMatrix Engine Core Team
+Author: ChromaMatrix Core Team
 License: MIT
-Version: 2.0.0
+Version: 3.0.0
 """
 
 import sys
@@ -15,20 +15,20 @@ from pathlib import Path
 from typing import Dict, Any, List, Tuple
 from PIL import Image
 
-class RasterSpecInspector:
+class QualitySentinel:
     """
-    Validates pixel art raster images against canvas preset specifications,
-    detects anti-aliasing artifacts, checks color limits, and flags orphan pixels.
+    Audits pixel rasters against GridMatrices, detects semi-transparent anti-aliasing
+    artifacts, verifies color counts, and flags isolated orphan pixels.
     """
 
     def __init__(self, target_image_path: Path):
         self.image_path = target_image_path.resolve()
         if not self.image_path.exists():
-            raise FileNotFoundError(f"Image file not found: {target_image_path}")
+            raise FileNotFoundError(f"Image not found: {target_image_path}")
         self.img = Image.open(self.image_path).convert("RGBA")
 
-    def inspect_dimensions(self, expected_w: int = 32, expected_h: int = 32) -> Dict[str, Any]:
-        """Verifies image dimensions and grid alignment."""
+    def audit_dimensions(self, expected_w: int = 32, expected_h: int = 32) -> Dict[str, Any]:
+        """Audits raster dimensions and grid snapping alignment."""
         actual_w, actual_h = self.img.size
         is_exact = (actual_w == expected_w) and (actual_h == expected_h)
         is_multiple = (actual_w % expected_w == 0) and (actual_h % expected_h == 0)
@@ -41,7 +41,7 @@ class RasterSpecInspector:
         }
 
     def detect_antialiasing_artifacts(self) -> Dict[str, Any]:
-        """Detects semi-transparent alpha values indicative of blur/anti-aliasing artifacts."""
+        """Detects semi-transparent pixels indicative of blur/anti-aliasing artifacts."""
         pixels = self.img.getdata()
         semi_transparent_count = 0
         total_pixels = len(pixels)
@@ -60,8 +60,8 @@ class RasterSpecInspector:
             "has_antialiasing_artifacts": has_artifacts
         }
 
-    def inspect_color_palette(self, max_allowed_colors: int = 16) -> Dict[str, Any]:
-        """Extracts color count and checks against max allowed palette constraint."""
+    def audit_color_count(self, max_allowed_colors: int = 16) -> Dict[str, Any]:
+        """Verifies color count against max palette limit."""
         pixels = self.img.getdata()
         unique_colors = set()
         for r, g, b, a in pixels:
@@ -78,7 +78,7 @@ class RasterSpecInspector:
         }
 
     def detect_orphan_pixels(self) -> Dict[str, Any]:
-        """Detects single isolated pixels (no 8-way neighbors of similar color)."""
+        """Detects isolated pixels with zero opaque 8-way neighbors."""
         w, h = self.img.size
         pixels = self.img.load()
         orphan_count = 0
@@ -89,7 +89,6 @@ class RasterSpecInspector:
                 if cur_color[3] == 0:  # Skip transparent
                     continue
 
-                # Check 8 neighbors
                 has_neighbor = False
                 for dx in [-1, 0, 1]:
                     for dy in [-1, 0, 1]:
@@ -110,11 +109,11 @@ class RasterSpecInspector:
             "has_isolated_orphans": orphan_count > 0
         }
 
-    def run_full_inspection(self, expected_w: int = 32, expected_h: int = 32, max_colors: int = 16) -> Dict[str, Any]:
-        """Runs complete inspection suite."""
-        dimensions = self.inspect_dimensions(expected_w, expected_h)
+    def run_full_audit(self, expected_w: int = 32, expected_h: int = 32, max_colors: int = 16) -> Dict[str, Any]:
+        """Runs complete quality sentinel audit suite."""
+        dimensions = self.audit_dimensions(expected_w, expected_h)
         aa_info = self.detect_antialiasing_artifacts()
-        palette_info = self.inspect_color_palette(max_colors)
+        palette_info = self.audit_color_count(max_colors)
         orphan_info = self.detect_orphan_pixels()
 
         passed = (
@@ -124,10 +123,10 @@ class RasterSpecInspector:
         )
 
         return {
-            "engine": "PixelMatrix Engine",
-            "inspector": "RasterSpecInspector",
+            "engine": "ChromaMatrix Core",
+            "auditor": "QualitySentinel",
             "file": str(self.image_path),
-            "passed_spec": passed,
+            "passed_audit": passed,
             "dimensions": dimensions,
             "antialiasing": aa_info,
             "palette": palette_info,
@@ -136,7 +135,7 @@ class RasterSpecInspector:
 
 
 def main():
-    parser = argparse.ArgumentParser(description="PixelMatrix Raster Spec Inspector CLI")
+    parser = argparse.ArgumentParser(description="ChromaMatrix QualitySentinel CLI")
     parser.add_argument("--image", type=str, required=True, help="Path to image file")
     parser.add_argument("--width", type=int, default=32, help="Expected grid width")
     parser.add_argument("--height", type=int, default=32, help="Expected grid height")
@@ -146,8 +145,8 @@ def main():
     args = parser.parse_args()
 
     try:
-        inspector = RasterSpecInspector(Path(args.image))
-        report = inspector.run_full_inspection(args.width, args.height, args.max_colors)
+        sentinel = QualitySentinel(Path(args.image))
+        report = sentinel.run_full_audit(args.width, args.height, args.max_colors)
         print(json.dumps(report, indent=2))
     except Exception as e:
         print(json.dumps({"error": str(e)}, indent=2))

@@ -1,53 +1,53 @@
-# PixelMatrix Engine — Raster Architecture & Multi-Agent Matrix
+# ChromaMatrix Core — Matrix Architecture & Micro-Module System Design
 
-Overview of the PixelMatrix Engine architecture, component decoupling, and multi-agent coordination specs.
+Overview of ChromaMatrix Core architecture, micro-module decoupling, and multi-agent coordination specs.
 
 ---
 
-## Architecture Overview
+## System Design Architecture
 
-PixelMatrix Engine separates asset creation into discrete, mathematically deterministic stages:
+ChromaMatrix Core separates asset creation into discrete, mathematically deterministic stages:
 
 ```
 [Agent System Prompt / Intent]
          │
          ▼
  ┌─────────────────────────┐
- │ Specification Indexes   │ <── grid_canvas_presets.json, palette_lut_definitions.json, sprite_matrix_specs.json
+ │ ManifestVault           │ <── GridMatrices.json, LumaPalettes.json, SpriteCore.json
  └───────────┬─────────────┘
              │
              ▼
  ┌─────────────────────────┐
- │ MatrixCanvasInitializer │ <── Workspace & Contract Initialization
+ │ CanvasBootstrapper      │ <── Voxel Canvas & Contract Initialization
  └───────────┬─────────────┘
              │
              ▼
  ┌─────────────────────────┐
- │ PaletteLUTSynthesizer   │ <── Color Palette Remapping & Distance Metrics
+ │ ChromaSynthesizer       │ <── Color Palette Remapping & Distance Metrics
  └───────────┬─────────────┘
              │
              ▼
  ┌─────────────────────────┐
- │ RasterSpecInspector     │ <── Verification & Artifact Detection
+ │ QualitySentinel         │ <── Quality Audit & Artifact Detection
  └───────────┬─────────────┘
              │
              ▼
  ┌─────────────────────────┐
- │ PixelRasterPostProcessor│ <── Anti-aliasing Clean, Orphan Clean, Indexed PNG Export
+ │ RasterRefiner           │ <── Anti-aliasing Clean, Orphan Purge, Indexed PNG Export
  └───────────┬─────────────┘
              │
              ▼
  ┌─────────────────────────┐
- │ SpriteAtlasCompiler     │ <── Texture Atlas & JSON Manifest Generation
+ │ AtlasSynthesizer        │ <── Texture Atlas & JSON Manifest Generation
  └─────────────────────────┘
 ```
 
 ---
 
-## Multi-Agent Capability Matrix
+## Multi-Agent Compatibility Matrix
 
 | Platform | Trigger Pattern | Entry Point | Context Management |
 | :--- | :--- | :--- | :--- |
-| **Claude Code** | `/pixelmatrix`, `pixel art` | `skills/pixelmatrix-engine/SKILL.md` | Auto-discovers specs JSON, executes script pipeline via subshell |
-| **OpenAI Codex** | `generate pixel art sprite` | `skills/pixelmatrix-engine/SKILL.md` | Parses specifications, runs CLI inspection before emitting code |
-| **Antigravity IDE** | `@pixelmatrix`, skill injection | `skills/pixelmatrix-engine/SKILL.md` | Full system prompt context, auto-runs verification scripts |
+| **Claude Code** | `/chromamatrix`, `pixel art` | `skills/chromamatrix-core/SKILL.md` | Discovers ManifestVault JSONs, executes RenderOrchestrators CLI |
+| **OpenAI Codex** | `generate pixel art sprite` | `skills/chromamatrix-core/SKILL.md` | Parses specifications, runs QualitySentinel before emitting code |
+| **Antigravity IDE** | `@chromamatrix`, skill injection | `skills/chromamatrix-core/SKILL.md` | Full context binding, auto-runs verification orchestrators |

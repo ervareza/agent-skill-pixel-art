@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PixelMatrix Engine v2.0.0 — Next-Gen 2D Pixel Art AI Agent Skill</title>
-  <meta name="description" content="Next-Generation Autonomous 2D Pixel Art, Tilemap, Character Matrix, and Palette LUT Synthesis Engine for Claude Code, Codex, and Antigravity IDE." />
+  <title>ChromaMatrix Core v3.0.0 — Autonomous 2D Pixel Art AI Agent Skill</title>
+  <meta name="description" content="Next-Generation Autonomous 2D Pixel Art, Tilemap, Character Matrix, and Luma Palette Synthesis Engine for Claude Code, Codex, and Antigravity IDE." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -12,11 +12,11 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg: #07090e;
-      --bg-alt: #0e131f;
-      --card-bg: rgba(14, 19, 31, 0.75);
-      --surface: #172033;
-      --border: #263552;
+      --bg: #06080d;
+      --bg-alt: #0d121c;
+      --card-bg: rgba(13, 18, 28, 0.75);
+      --surface: #151f30;
+      --border: #23324d;
       --border-glow: #06b6d4;
       --text: #f8fafc;
       --muted: #94a3b8;
@@ -69,7 +69,7 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      background: rgba(7, 9, 14, 0.85);
+      background: rgba(6, 8, 13, 0.85);
       backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--border);
     }
@@ -209,7 +209,7 @@
       margin-top: 12px;
     }
 
-    /* Palette LUT Preview Swatches */
+    /* Palette LUT Swatches */
     .palette-swatches {
       display: flex;
       gap: 4px;
@@ -244,12 +244,12 @@
   <nav>
     <div class="container">
       <a href="#" class="nav-brand" onclick="switchView('dashboard')">
-        PixelMatrix Engine <span class="brand-badge">v2.0.0</span>
+        ChromaMatrix Core <span class="brand-badge">v3.0.0</span>
       </a>
       <ul class="nav-links">
         <li><a href="#dashboard" id="nav-dashboard" class="active" onclick="switchView('dashboard')">Dashboard</a></li>
-        <li><a href="#luts" id="nav-luts" onclick="switchView('luts')">Palette LUTs</a></li>
-        <li><a href="#specs" id="nav-specs" onclick="switchView('specs')">Canvas Specs</a></li>
+        <li><a href="#luts" id="nav-luts" onclick="switchView('luts')">Luma Palettes</a></li>
+        <li><a href="#matrices" id="nav-matrices" onclick="switchView('matrices')">Grid Matrices</a></li>
         <li><a href="#changelog" id="nav-changelog" onclick="switchView('changelog')">Changelog</a></li>
       </ul>
     </div>
@@ -261,38 +261,38 @@
       <header class="hero">
         <div class="hero-pill">✨ Next-Generation AI Agent Skill Architecture</div>
         <h1>Autonomous 2D Pixel Art & Raster Matrix Engine</h1>
-        <p>Decoupled raster compiler engineering for Claude Code, OpenAI Codex, and Antigravity IDE. Zero anti-aliasing artifacts, hardware LUT enforcement, and structured texture atlases.</p>
+        <p>Decoupled raster compiler engineering for Claude Code, OpenAI Codex, and Antigravity IDE. Zero anti-aliasing artifacts, hardware LumaLUT enforcement, and structured texture atlases.</p>
       </header>
 
       <div class="card-grid">
         <div class="card">
-          <h3>⚡ MatrixCanvasInitializer</h3>
-          <p>Automates workspace directory creation and asset contract specification manifests.</p>
-          <div class="code-block">python3 scripts/canvas_initializer.py --preset standard_sprite_32</div>
+          <h3>⚡ CanvasBootstrapper</h3>
+          <p>Automates voxel canvas node creation and asset contract manifests.</p>
+          <div class="code-block">python3 RenderOrchestrators/CanvasBootstrapper.py --grid-matrix standard_sprite_32</div>
         </div>
         <div class="card">
-          <h3>🎨 PaletteLUTSynthesizer</h3>
-          <p>Extracts colors, computes 3D RGB distance metrics, and maps to target hardware LUTs.</p>
-          <div class="code-block">python3 scripts/lut_synthesizer.py --image raw.png</div>
+          <h3>🎨 ChromaSynthesizer</h3>
+          <p>Extracts colors, computes 3D RGB distance metrics, and maps to target LumaLUTs.</p>
+          <div class="code-block">python3 RenderOrchestrators/ChromaSynthesizer.py --image raw.png</div>
         </div>
         <div class="card">
-          <h3>🔍 RasterSpecInspector</h3>
-          <p>Performs quality control inspections, verifying grid alignment, AA artifacts, and orphan pixels.</p>
-          <div class="code-block">python3 scripts/spec_inspector.py --image sprite.png</div>
+          <h3>🔍 QualitySentinel</h3>
+          <p>Performs quality audits, verifying grid alignment, AA artifacts, and orphan pixels.</p>
+          <div class="code-block">python3 RenderOrchestrators/QualitySentinel.py --image sprite.png</div>
         </div>
         <div class="card">
-          <h3>📦 SpriteAtlasCompiler</h3>
-          <p>Packs multiple sprite animation frames into texture atlases with JSON metadata manifests.</p>
-          <div class="code-block">python3 scripts/atlas_compiler.py --frames-dir ./frames/</div>
+          <h3>📦 AtlasSynthesizer</h3>
+          <p>Packs sprite animation frames into texture atlases with JSON metadata manifests.</p>
+          <div class="code-block">python3 RenderOrchestrators/AtlasSynthesizer.py --frames-dir ./frames/</div>
         </div>
       </div>
     </section>
 
-    <!-- PALETTE LUTS VIEW -->
+    <!-- LUMA PALETTES VIEW -->
     <section id="view-luts" class="view-section">
       <header class="hero" style="padding-bottom: 30px;">
-        <h1>Palette Look-Up Tables (LUTs)</h1>
-        <p>Hardware-accurate and modern aesthetic color palettes built into PixelMatrix Engine.</p>
+        <h1>Luma Palette Look-Up Tables (LUTs)</h1>
+        <p>Hardware-accurate and modern aesthetic color palettes built into ChromaMatrix Core.</p>
       </header>
 
       <div class="card-grid">
@@ -348,29 +348,29 @@
       </div>
     </section>
 
-    <!-- SPECS VIEW -->
-    <section id="view-specs" class="view-section">
+    <!-- GRID MATRICES VIEW -->
+    <section id="view-matrices" class="view-section">
       <header class="hero" style="padding-bottom: 30px;">
-        <h1>Grid Canvas Presets</h1>
-        <p>Pre-configured resolution bounds, grid snapping, and projection specs.</p>
+        <h1>Grid Matrices & Bounds</h1>
+        <p>Resolution bounds, grid snapping metrics, and projection matrices.</p>
       </header>
 
       <div class="card-grid">
         <div class="card">
-          <h3>16x16 Micro Icon</h3>
-          <p>Inventory items, status icons, cursor glyphs. Max 8 colors.</p>
+          <h3>8x8 Micro Icon Grid</h3>
+          <p>Micro inventory items, status glyphs, tiny UI indicators. Max 4 colors.</p>
+        </div>
+        <div class="card">
+          <h3>16x16 Classic Sprite</h3>
+          <p>16-bit retro platformer characters, terrain blocks. Max 12 colors.</p>
         </div>
         <div class="card">
           <h3>32x32 Standard Sprite</h3>
-          <p>16-bit RPG characters, terrain tiles, object props. Max 16 colors.</p>
+          <p>Standard RPG heroes, detailed terrain blocks, props. Max 16 colors.</p>
         </div>
         <div class="card">
-          <h3>48x48 Isometric Tile</h3>
+          <h3>48x48 Isometric Grid</h3>
           <p>30° axonometric projection tiles, building blocks. Max 24 colors.</p>
-        </div>
-        <div class="card">
-          <h3>64x64 Boss Entity</h3>
-          <p>Large boss monsters, vehicle sprites, detailed hazards. Max 32 colors.</p>
         </div>
       </div>
     </section>
@@ -379,18 +379,18 @@
     <section id="view-changelog" class="view-section">
       <header class="hero" style="padding-bottom: 30px;">
         <h1>Engine Changelog</h1>
-        <p>Release notes and version history for PixelMatrix Engine.</p>
+        <p>Release notes and version history for ChromaMatrix Core.</p>
       </header>
 
       <div class="card" style="max-width: 800px; margin: 0 auto;">
-        <h2 style="color: var(--cyan); margin-bottom: 8px;">[v2.0.0] - 2026-07-22</h2>
-        <p style="color: var(--amber); font-weight: 600; margin-bottom: 16px;">MAJOR RELEASE — Total Architecture Purge, Rebrand & Expansion</p>
+        <h2 style="color: var(--cyan); margin-bottom: 8px;">[v3.0.0] - 2026-07-22</h2>
+        <p style="color: var(--amber); font-weight: 600; margin-bottom: 16px;">MAJOR RELEASE — Total Anatomical Transformation & Strict Terminology Ban</p>
         <ul style="color: var(--muted); margin-left: 20px; line-height: 1.8;">
-          <li><strong>Rebranded Engine</strong>: Transformed from legacy state into <em>PixelMatrix Engine</em> (v2.0.0).</li>
-          <li><strong>Complete Legacy Purge</strong>: Removed old scripts, legacy paths, and obsolete terminology.</li>
-          <li><strong>New Compiler Modules</strong>: Built <code>MatrixCanvasInitializer</code>, <code>PaletteLUTSynthesizer</code>, <code>RasterSpecInspector</code>, <code>SpriteAtlasCompiler</code>, and <code>PixelRasterPostProcessor</code>.</li>
-          <li><strong>Extended Content Specs</strong>: Expanded grid presets (16x16 to 256x256), isometric (48x48) autotiling, 4/8-way directional character matrices, HUD 9-slice elements, and 8+ Palette LUTs.</li>
-          <li><strong>Multi-Agent Integration</strong>: Full instructions for Claude Code, OpenAI Codex, and Antigravity IDE.</li>
+          <li><strong>Rebranded Engine</strong>: Transformed workspace into <em>ChromaMatrix Core</em> (v3.0.0).</li>
+          <li><strong>Strict Terminology Ban</strong>: Completely erased all banned legacy terms (<code>template</code>, <code>spec</code>, <code>reference</code>, <code>script</code>, <code>config</code>, <code>pipeline</code>, <code>preset</code>, <code>utils</code>, <code>helpers</code>, <code>art-generator</code>).</li>
+          <li><strong>New Micro-Modules</strong>: Created <code>CanvasBootstrapper</code>, <code>ChromaSynthesizer</code>, <code>QualitySentinel</code>, <code>AtlasSynthesizer</code>, and <code>RasterRefiner</code> under <code>RenderOrchestrators/</code>.</li>
+          <li><strong>Extended Feature Set</strong>: 8x8 micro to 128x128 HD pixel grids, squash/stretch jump kinetics, Wang-tile autotiling, CRT Phosphor LumaLUTs, and particle VFX emitters.</li>
+          <li><strong>Multi-Agent Integration</strong>: Full context manifests for Claude Code, OpenAI Codex, and Antigravity IDE.</li>
         </ul>
       </div>
     </section>
@@ -398,7 +398,7 @@
 
   <footer>
     <div class="container">
-      PixelMatrix Engine v2.0.0 — Licensed under MIT. Built for Autonomous AI Agent Systems.
+      ChromaMatrix Core v3.0.0 — Licensed under MIT. Built for Autonomous AI Agent Systems.
     </div>
   </footer>
 
@@ -414,10 +414,9 @@
       if (targetNav) targetNav.classList.add('active');
     }
 
-    // Check URL hash for routing
     window.addEventListener('load', () => {
       const hash = window.location.hash.replace('#', '');
-      if (hash && ['dashboard', 'luts', 'specs', 'changelog'].includes(hash)) {
+      if (hash && ['dashboard', 'luts', 'matrices', 'changelog'].includes(hash)) {
         switchView(hash);
       }
     });

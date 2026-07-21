@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """
-PixelMatrix Engine — SpriteAtlasCompiler
-Automated Sprite Sheet and Texture Atlas Compiler with JSON Metadata Generation.
+ChromaMatrix Core — AtlasSynthesizer
+Texture Atlas Compilation Engine with JSON Metadata Manifest Generation.
 
-Author: PixelMatrix Engine Core Team
+Author: ChromaMatrix Core Team
 License: MIT
-Version: 2.0.0
+Version: 3.0.0
 """
 
 import sys
@@ -16,16 +16,16 @@ from pathlib import Path
 from typing import List, Dict, Any, Tuple
 from PIL import Image
 
-class SpriteAtlasCompiler:
+class AtlasSynthesizer:
     """
-    Packs individual sprite frames or grid rasters into a unified sprite sheet atlas,
-    generating frame coordinates, uv metrics, and metadata JSON manifests.
+    Packs individual sprite frames into a unified texture atlas,
+    generating frame coordinates, uv metrics, and metadata manifests.
     """
 
     def __init__(self, frame_size: Tuple[int, int] = (32, 32)):
         self.frame_w, self.frame_h = frame_size
 
-    def pack_frames(
+    def synthesize_atlas(
         self,
         frame_paths: List[Path],
         output_atlas_path: Path,
@@ -33,12 +33,11 @@ class SpriteAtlasCompiler:
     ) -> Dict[str, Any]:
         """Packs a list of image paths into a grid texture atlas."""
         if not frame_paths:
-            raise ValueError("No frame paths provided for packing.")
+            raise ValueError("No frame paths provided for synthesis.")
 
         images = [Image.open(p).convert("RGBA") for p in frame_paths]
         count = len(images)
 
-        # Calculate optimal grid columns and rows
         cols = math.ceil(math.sqrt(count))
         rows = math.ceil(count / cols)
 
@@ -54,7 +53,6 @@ class SpriteAtlasCompiler:
             x = col * (self.frame_w + padding)
             y = row * (self.frame_h + padding)
 
-            # Resize or paste
             if img.size != (self.frame_w, self.frame_h):
                 img = img.resize((self.frame_w, self.frame_h), Image.Resampling.NEAREST)
 
@@ -69,15 +67,15 @@ class SpriteAtlasCompiler:
                     "u_max": round((x + self.frame_w) / atlas_w, 4),
                     "v_max": round((y + self.frame_h) / atlas_h, 4)
                 },
-                "grid_index": {"col": col, "row": row}
+                "grid_coordinates": {"col": col, "row": row}
             }
 
         output_atlas_path.parent.mkdir(parents=True, exist_ok=True)
         atlas_img.save(output_atlas_path, "PNG")
 
         meta = {
-            "engine": "PixelMatrix Engine",
-            "compiler": "SpriteAtlasCompiler",
+            "engine": "ChromaMatrix Core",
+            "orchestrator": "AtlasSynthesizer",
             "atlas_image": str(output_atlas_path.name),
             "dimensions": {"width": atlas_w, "height": atlas_h},
             "columns": cols,
@@ -95,7 +93,7 @@ class SpriteAtlasCompiler:
 
 
 def main():
-    parser = argparse.ArgumentParser(description="PixelMatrix Sprite Atlas Compiler CLI")
+    parser = argparse.ArgumentParser(description="ChromaMatrix AtlasSynthesizer CLI")
     parser.add_argument("--frames-dir", type=str, required=True, help="Directory containing frame PNGs")
     parser.add_argument("--output", type=str, required=True, help="Output atlas PNG path")
     parser.add_argument("--width", type=int, default=32, help="Frame width")
@@ -114,9 +112,9 @@ def main():
         print(json.dumps({"error": f"No PNG frames found in {args.frames_dir}"}))
         sys.exit(1)
 
-    compiler = SpriteAtlasCompiler((args.width, args.height))
+    synthesizer = AtlasSynthesizer((args.width, args.height))
     try:
-        meta = compiler.pack_frames(frame_files, Path(args.output))
+        meta = synthesizer.synthesize_atlas(frame_files, Path(args.output))
         print(json.dumps(meta, indent=2))
     except Exception as e:
         print(json.dumps({"error": str(e)}))

@@ -1,8 +1,8 @@
-# PixelMatrix Engine (v2.0.0)
+# ChromaMatrix Core (v3.0.0)
 
-> **Next-Generation Autonomous 2D Pixel Art, Tilemap, Character Matrix & Palette LUT Synthesis Engine for AI Agents and Game Developers.**
+> **Next-Generation Autonomous 2D Pixel Art, Tilemap, Character Matrix & Luma Palette Synthesis Engine for AI Agents and Game Developers.**
 
-[![Version](https://img.shields.io/badge/version-v2.0.0-06b6d4.svg?style=for-the-badge)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-v3.0.0-06b6d4.svg?style=for-the-badge)](CHANGELOG.md)
 [![License](https://img.shields.io/badge/license-MIT-10b981.svg?style=for-the-badge)](LICENSE)
 [![Python](https://img.shields.io/badge/python-3.9%2B-8b5cf6.svg?style=for-the-badge)](https://python.org)
 [![Compatibility](https://img.shields.io/badge/agent-Claude%20Code%20%7C%20Codex%20%7C%20Antigravity-f59e0b.svg?style=for-the-badge)](#multi-agent-integration)
@@ -11,22 +11,22 @@
 
 ## 🌟 Value Proposition
 
-**PixelMatrix Engine** completely reimagines 2D pixel art synthesis for AI Agents. It decouples creative generation from deterministic raster engineering—enforcing strict grid alignment, hardware color palette LUTs, zero anti-aliasing artifacts, and structured texture atlas packing with JSON metadata.
+**ChromaMatrix Core** redefines 2D pixel art synthesis for AI Agents. It decouples creative generation from deterministic raster engineering—enforcing strict grid snapping, hardware LumaLUTs, zero anti-aliasing artifacts, and structured texture atlas synthesis with JSON manifests.
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│                          PIXELMATRIX ENGINE v2.0.0                          │
+│                         CHROMAMATRIX CORE v3.0.0                            │
 └─────────────────────────────────────────────────────────────────────────────┘
           │                                                       │
           ▼                                                       ▼
 ┌───────────────────────────┐                           ┌────────────────────┐
-│   Specification Indexes   │                           │ Python CLI Engines │
+│      ManifestVault        │                           │RenderOrchestrators │
 ├───────────────────────────┤                           ├────────────────────┤
-│ • Grid Canvas Presets     │                           │ • Initializer      │
-│ • Palette LUT Definitions │                           │ • LUT Synthesizer  │
-│ • Sprite Matrix Specs     │                           │ • Spec Inspector   │
-└─────────┬─────────────────┘                           │ • PostProcessor    │
-          │                                             │ • Atlas Compiler   │
+│ • GridMatrices            │                           │ • Bootstrapper     │
+│ • LumaPalettes            │                           │ • ChromaSynthesizer│
+│ • SpriteCore              │                           │ • QualitySentinel  │
+└─────────┬─────────────────┘                           │ • RasterRefiner    │
+          │                                             │ • AtlasSynthesizer │
           └───────────────────────────┬─────────────────┴────────────────────┘
                                       │
                                       ▼
@@ -38,64 +38,64 @@
 
 ---
 
-## ⚡ Installation & Skill Injection
+## ⚡ Installation & Skill Binding
 
-### Option 1: Direct Agent Skill Injection (Recommended for Claude Code & Antigravity IDE)
-Copy the `skills/pixelmatrix-engine` folder into your agent's skill root:
+### Option 1: Direct Skill Registration (Claude Code & Antigravity IDE)
+Copy the `skills/chromamatrix-core` folder into your agent's skill root:
 ```bash
 # Antigravity IDE / Global Gemini Skill Root
 mkdir -p ~/.gemini/config/skills/
-cp -r skills/pixelmatrix-engine ~/.gemini/config/skills/
+cp -r skills/chromamatrix-core ~/.gemini/config/skills/
 
-# Claude Code Agent Injection
-cp -r skills/pixelmatrix-engine ~/.claude/skills/
+# Claude Code Skill Registration
+cp -r skills/chromamatrix-core ~/.claude/skills/
 ```
 
 ### Option 2: Package Managers (`npm` / `pnpm` / `cargo` / `pip`)
 ```bash
 # Node / npm
-npm install -g pixelmatrix-engine
+npm install -g chromamatrix-core
 
 # pnpm
-pnpm add -g pixelmatrix-engine
+pnpm add -g chromamatrix-core
 
 # Rust / Cargo
-cargo install pixelmatrix-engine
+cargo install chromamatrix-core
 
 # Python / Pip
-pip install -r skills/pixelmatrix-engine/requirements.txt
+pip install -r skills/chromamatrix-core/requirements.txt
 ```
 
 ---
 
-## 🚀 CLI Engine Execution Matrix
+## 🚀 Render Orchestrators Matrix
 
-| Engine CLI Script | Primary Function | Command Trigger Example |
+| Render Orchestrator | Primary Function | Execution Command Example |
 | :--- | :--- | :--- |
-| **`canvas_initializer.py`** | Initialize workspace & contracts | `python3 skills/pixelmatrix-engine/scripts/canvas_initializer.py --asset-name hero --preset standard_sprite_32 --palette pico8_fantasy_16 --json` |
-| **`lut_synthesizer.py`** | Color extraction & LUT remapping | `python3 skills/pixelmatrix-engine/scripts/lut_synthesizer.py --image raw.png --json` |
-| **`spec_inspector.py`** | Quality control & AA detection | `python3 skills/pixelmatrix-engine/scripts/spec_inspector.py --image sprite.png --width 32 --height 32 --max-colors 16 --json` |
-| **`raster_processor.py`** | Clean AA, orphan clean & export PNG | `python3 skills/pixelmatrix-engine/scripts/raster_processor.py --input raw.png --output clean.png --max-colors 16 --json` |
-| **`atlas_compiler.py`** | Texture atlas & JSON manifest packing | `python3 skills/pixelmatrix-engine/scripts/atlas_compiler.py --frames-dir ./frames/ --output atlas.png --width 32 --height 32 --json` |
+| **`CanvasBootstrapper.py`** | Initialize voxel canvas & contracts | `python3 skills/chromamatrix-core/RenderOrchestrators/CanvasBootstrapper.py --asset-id hero --grid-matrix standard_sprite_32 --palette-lut pico8_fantasy_16 --json` |
+| **`ChromaSynthesizer.py`** | Color extraction & LumaLUT remapping | `python3 skills/chromamatrix-core/RenderOrchestrators/ChromaSynthesizer.py --image raw.png --json` |
+| **`QualitySentinel.py`** | Quality audit & AA artifact detection | `python3 skills/chromamatrix-core/RenderOrchestrators/QualitySentinel.py --image sprite.png --width 32 --height 32 --max-colors 16 --json` |
+| **`RasterRefiner.py`** | Clean AA, orphan purge & export PNG | `python3 skills/chromamatrix-core/RenderOrchestrators/RasterRefiner.py --input raw.png --output clean.png --max-colors 16 --json` |
+| **`AtlasSynthesizer.py`** | Texture atlas & JSON metadata packing | `python3 skills/chromamatrix-core/RenderOrchestrators/AtlasSynthesizer.py --frames-dir ./frames/ --output atlas.png --width 32 --height 32 --json` |
 
 ---
 
 ## 🤖 Multi-Agent Integration
 
 ### 1. Claude Code
-In Claude Code CLI, reference the skill using:
+In Claude Code CLI, trigger the skill using:
 ```bash
-claude "Create a 32x32 isometric terrain tile using pixelmatrix-engine with Cyberpunk LUT"
+claude "Synthesize a 32x32 isometric terrain tile using chromamatrix-core with Cyberpunk LUT"
 ```
 
 ### 2. OpenAI Codex
 In OpenAI Codex environments, include the skill path in prompt context:
 ```python
-# System prompt context points to skills/pixelmatrix-engine/SKILL.md
+# System prompt context points to skills/chromamatrix-core/SKILL.md
 ```
 
 ### 3. Antigravity IDE
-In Antigravity IDE, invoke using `@pixelmatrix-engine` or mention pixel art sprite synthesis in chat.
+In Antigravity IDE, invoke using `@chromamatrix-core` or mention pixel art sprite synthesis in chat.
 
 ---
 

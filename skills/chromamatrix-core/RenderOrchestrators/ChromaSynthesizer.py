@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """
-PixelMatrix Engine — PaletteLUTSynthesizer
-Color Palette Look-Up Table (LUT) Extractor, Remapper & Distance Analyzer.
+ChromaMatrix Core — ChromaSynthesizer
+Color Quantization & Palette Look-Up Table (LUT) Injector.
 
-Author: PixelMatrix Engine Core Team
+Author: ChromaMatrix Core Team
 License: MIT
-Version: 2.0.0
+Version: 3.0.0
 """
 
 import sys
@@ -16,10 +16,10 @@ from pathlib import Path
 from typing import List, Tuple, Dict, Any
 from PIL import Image
 
-class PaletteLUTSynthesizer:
+class ChromaSynthesizer:
     """
-    Extracts color palettes from raw raster images, maps colors against defined
-    hardware/aesthetic LUTs, and calculates perceptual color distances.
+    Extracts color palettes from raw rasters, maps colors against defined
+    LumaPalettes, and calculates 3D RGB Euclidean color distances.
     """
 
     @staticmethod
@@ -34,16 +34,16 @@ class PaletteLUTSynthesizer:
         return f"#{rgb[0]:02X}{rgb[1]:02X}{rgb[2]:02X}"
 
     @staticmethod
-    def euclidean_distance(color1: Tuple[int, int, int], color2: Tuple[int, int, int]) -> float:
-        """Calculates Euclidean color distance in 3D RGB space."""
+    def euclidean_color_distance(color1: Tuple[int, int, int], color2: Tuple[int, int, int]) -> float:
+        """Calculates 3D RGB Euclidean color distance."""
         return math.sqrt(
             (color1[0] - color2[0]) ** 2 +
             (color1[1] - color2[1]) ** 2 +
             (color1[2] - color2[2]) ** 2
         )
 
-    def extract_palette(self, image_path: Path, max_colors: int = 256) -> List[str]:
-        """Extracts unique colors from an image file, excluding fully transparent pixels."""
+    def extract_luma_palette(self, image_path: Path, max_colors: int = 256) -> List[str]:
+        """Extracts unique opaque colors from an image file."""
         img = Image.open(image_path).convert("RGBA")
         pixels = img.getdata()
         
@@ -55,12 +55,12 @@ class PaletteLUTSynthesizer:
         sorted_rgbs = sorted(list(unique_rgbs))[:max_colors]
         return [self.rgb_to_hex(rgb) for rgb in sorted_rgbs]
 
-    def remap_to_lut(
+    def remap_to_luma_lut(
         self,
         source_colors: List[str],
         lut_colors: List[str]
     ) -> Dict[str, Any]:
-        """Maps each source color to the nearest color in the target LUT."""
+        """Maps each source color to the nearest color in target LumaLUT."""
         source_rgbs = [self.hex_to_rgb(c) for c in source_colors]
         lut_rgbs = [self.hex_to_rgb(c) for c in lut_colors]
 
@@ -72,7 +72,7 @@ class PaletteLUTSynthesizer:
             min_dist = float("inf")
 
             for lut_hex, lut_rgb in zip(lut_colors, lut_rgbs):
-                dist = self.euclidean_distance(src_rgb, lut_rgb)
+                dist = self.euclidean_color_distance(src_rgb, lut_rgb)
                 if dist < min_dist:
                     min_dist = dist
                     best_match = lut_hex
@@ -93,29 +93,26 @@ class PaletteLUTSynthesizer:
 
 
 def main():
-    parser = argparse.ArgumentParser(description="PixelMatrix Palette LUT Synthesizer CLI")
-    parser.add_argument("--image", type=str, required=False, help="Source image path")
-    parser.add_argument("--lut", type=str, required=False, help="JSON file or LUT palette key")
-    parser.add_argument("--json", action="store_true", help="Output result as JSON")
+    parser = argparse.ArgumentParser(description="ChromaMatrix ChromaSynthesizer CLI")
+    parser.add_argument("--image", type=str, required=False, help="Source raster path")
+    parser.add_argument("--json", action="store_true", help="Output JSON result")
 
     args = parser.parse_args()
-
-    synthesizer = PaletteLUTSynthesizer()
+    synthesizer = ChromaSynthesizer()
 
     if not args.image:
         demo_palette = ["#1A1A1A", "#FF0055", "#00FF66", "#FFFFFF"]
         lut_demo = ["#000000", "#FF004D", "#00E436", "#FFF1E8"]
-        result = synthesizer.remap_to_lut(demo_palette, lut_demo)
+        result = synthesizer.remap_to_luma_lut(demo_palette, lut_demo)
     else:
         image_path = Path(args.image)
         if not image_path.exists():
             print(json.dumps({"error": f"Image file not found: {args.image}"}))
             sys.exit(1)
-        extracted = synthesizer.extract_palette(image_path)
+        extracted = synthesizer.extract_luma_palette(image_path)
         result = {"extracted_colors": extracted, "count": len(extracted)}
 
-    if args.json or True:  # Default clean JSON CLI output
-        print(json.dumps(result, indent=2))
+    print(json.dumps(result, indent=2))
 
 if __name__ == "__main__":
     main()

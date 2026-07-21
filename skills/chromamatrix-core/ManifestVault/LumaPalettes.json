@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "engine": "ChromaMatrix Core",
+  "version": "3.0.0",
+  "architectural_layer": "ManifestVault",
+  "description": "Hardware-accurate and modern aesthetic Color Quantization & Palette Injector Look-Up Tables (LUTs).",
+  "chroma_luts": {
+    "pico8_fantasy_16": {
+      "name": "PICO-8 Fantasy Console",
+      "color_count": 16,
+      "category": "fantasy_console",
+      "hex_lut": [
+        "#000000", "#1D2B53", "#7E2553", "#008751", "#AB5236", "#5F574F", "#C2C3C7", "#FFF1E8",
+        "#FF004D", "#FFA300", "#FFEC27", "#00E436", "#29ADFF", "#83769C", "#FF77A8", "#FFCCAA"
+      ]
+    },
+    "gameboy_dmg_4": {
+      "name": "Nintendo GameBoy DMG-01 Monochrome",
+      "color_count": 4,
+      "category": "hardware",
+      "hex_lut": [
+        "#0F380F", "#306230", "#8BAC0F", "#9BBC0F"
+      ]
+    },
+    "cyberpunk_neon_16": {
+      "name": "Cyberpunk Neon Grid",
+      "color_count": 16,
+      "category": "modern_aesthetic",
+      "hex_lut": [
+        "#05050A", "#0D1B2A", "#1B263B", "#415A77", "#778DA9", "#E0E1DD", "#FF0055", "#FF5000",
+        "#FFCC00", "#00FF66", "#00F0FF", "#7000FF", "#BD00FF", "#FF00B7", "#FFFFFF", "#2A0845"
+      ]
+    },
+    "retro_crt_phosphor_16": {
+      "name": "Retro CRT Arcade Phosphor",
+      "color_count": 16,
+      "category": "retro_hardware",
+      "hex_lut": [
+        "#08140D", "#0F2B1A", "#1A4D2E", "#277043", "#37945B", "#49B875", "#5DDD92", "#75F0A7",
+        "#8FF3B8", "#AAFAF0", "#00FF66", "#33FF99", "#66FFCB", "#99FFFC", "#D0FFFF", "#FFFFFF"
+      ]
+    },
+    "arcade_nostalgia_32": {
+      "name": "Arcade Nostalgia 32",
+      "color_count": 32,
+      "category": "retro_hardware",
+      "hex_lut": [
+        "#181425", "#262b44", "#3a4466", "#5a6988", "#8b9bb4", "#c0cbdc", "#e4e5f1", "#ffffff",
+        "#7b1e34", "#b03f35", "#e2774a", "#e29d62", "#e2c475", "#f2ea99", "#3b5c32", "#558a3c",
+        "#88c070", "#b2ed92", "#23495d", "#36727d", "#53a7a2", "#89e6c4", "#392b5c", "#523b7a",
+        "#875896", "#c383b5", "#f9b7ce", "#7a2a4b", "#a64964", "#d77688", "#f4a2a3", "#f8d5b8"
+      ]
+    },
+    "nes_classic_54": {
+      "name": "Nintendo Entertainment System 54",
+      "color_count": 54,
+      "category": "hardware",
+      "hex_lut": [
+        "#7C7C7C", "#0000FC", "#0000BC", "#4428BC", "#940084", "#A80020", "#A81000", "#881400",
+        "#503000", "#007800", "#006800", "#005800", "#004058", "#000000", "#BCBCBC", "#0078F8",
+        "#0058F8", "#6844F8", "#D800CC", "#E40058", "#F83800", "#E45C10", "#AC7C00", "#00B800",
+        "#00A800", "#00A844", "#008888", "#F8F8F8", "#3CBCF8", "#6888F8", "#9878F8", "#F878F8",
+        "#F85898", "#F87858", "#FCA044", "#F8B800", "#B8F818", "#58D854", "#58F898", "#00E8D8",
+        "#787878", "#FCFCFC", "#A4E4FC", "#B8B8F8", "#D8B8F8", "#F8B8F8", "#F8A4C0", "#F0D0B0",
+        "#FCE0A8", "#F8D878", "#D8F878", "#B8F8B8", "#B8F8D8", "#00FCFC"
+      ]
+    },
+    "master_system_64": {
+      "name": "Sega Master System 64",
+      "color_count": 64,
+      "category": "hardware",
+      "hex_lut": [
+        "#000000", "#000055", "#0000AA", "#0000FF", "#005500", "#005555", "#0055AA", "#0055FF",
+        "#00AA00", "#00AA55", "#00AAAA", "#00AAFF", "#00FF00", "#00FF55", "#00FFAA", "#00FFFF",
+        "#550000", "#550055", "#5500AA", "#5500FF", "#555500", "#555555", "#5555AA", "#5555FF",
+        "#55AA00", "#55AA55", "#55AAAA", "#55AAFF", "#55FF00", "#55FF55", "#55FFAA", "#55FFFF",
+        "#AA0000", "#AA0055", "#AA00AA", "#AA00FF", "#AA5500", "#AA5555", "#AA55AA", "#AA55FF",
+        "#AAAA00", "#AAAA55", "#AAAAAA", "#AAAAFF", "#AAFF00", "#AAFF55", "#AAFFAA", "#AAFFFF",
+        "#FF0000", "#FF0055", "#FF00AA", "#FF00FF", "#FF5500", "#FF5555", "#FF55AA", "#FF55FF",
+        "#FFAA00", "#FFAA55", "#FFAAAA", "#FFAAFF", "#FFFF00", "#FFFF55", "#DFDFDF", "#FFFFFF"
+      ]
+    }
+  }
+}
