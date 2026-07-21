@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sprite Sheet Viewer</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #1a1a2e; color: #e0e0e0; font-family: monospace; display: flex; flex-direction: column; align-items: center; padding: 2rem; min-height: 100vh; }
+  h1 { font-size: 1.2rem; margin-bottom: 1rem; color: #7fdbca; }
+  .controls { display: flex; gap: 1rem; margin-bottom: 1.5rem; align-items: center; flex-wrap: wrap; justify-content: center; }
+  label { font-size: 0.85rem; }
+  input[type="file"] { font-size: 0.8rem; }
+  input[type="number"] { width: 60px; padding: 0.25rem; background: #16213e; color: #e0e0e0; border: 1px solid #0f3460; font-family: monospace; }
+  button { padding: 0.4rem 0.8rem; background: #0f3460; color: #e0e0e0; border: 1px solid #533483; cursor: pointer; font-family: monospace; font-size: 0.8rem; }
+  button:hover { background: #533483; }
+  .canvas-wrap { background: repeating-conic-gradient(#2a2a3e 0% 25%, #1e1e30 0% 50%) 0 0 / 16px 16px; border: 2px solid #533483; image-rendering: pixelated; }
+  canvas { image-rendering: pixelated; display: block; }
+  .info { margin-top: 1rem; font-size: 0.75rem; color: #83769c; text-align: center; }
+</style>
+</head>
+<body>
+<h1>Sprite Sheet Viewer</h1>
+<div class="controls">
+  <label>Sheet: <input type="file" id="fileInput" accept=".png,.gif,.bmp"></label>
+  <label>Frame W: <input type="number" id="fw" value="32" min="1"></label>
+  <label>Frame H: <input type="number" id="fh" value="32" min="1"></label>
+  <label>Scale: <input type="number" id="scale" value="4" min="1" max="16"></label>
+  <label>FPS: <input type="number" id="fps" value="8" min="1" max="60"></label>
+  <button id="playBtn">▶ Play</button>
+  <button id="prevBtn">◀</button>
+  <button id="nextBtn">▶</button>
+</div>
+<div class="canvas-wrap"><canvas id="c"></canvas></div>
+<div class="info" id="info">Load a sprite sheet to begin</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const canvas = $('c'), ctx = canvas.getContext('2d');
+let img = null, frame = 0, cols = 1, rows = 1, total = 1, playing = false, timer = null;
+
+$('fileInput').addEventListener('change', e => {
+  const file = e.target.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => { img = new Image(); img.onload = () => { frame = 0; update(); }; img.src = ev.target.result; };
+  reader.readAsDataURL(file);
+});
+
+function update() {
+  if (!img) return;
+  const fw = +$('fw').value, fh = +$('fh').value, s = +$('scale').value;
+  cols = Math.floor(img.width / fw); rows = Math.floor(img.height / fh);
+  total = cols * rows; if (total < 1) total = 1;
+  frame = ((frame % total) + total) % total;
+  canvas.width = fw * s; canvas.height = fh * s;
+  ctx.imageSmoothingEnabled = false;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  const sx = (frame % cols) * fw, sy = Math.floor(frame / cols) * fh;
+  ctx.drawImage(img, sx, sy, fw, fh, 0, 0, fw * s, fh * s);
+  $('info').textContent = `Frame ${frame + 1}/${total} | ${fw}×${fh} | ${cols}c × ${rows}r | ${s}× scale`;
+}
+
+$('prevBtn').onclick = () => { frame--; update(); };
+$('nextBtn').onclick = () => { frame++; update(); };
+$('playBtn').onclick = () => {
+  playing = !playing;
+  $('playBtn').textContent = playing ? '⏸ Pause' : '▶ Play';
+  if (playing) { timer = setInterval(() => { frame++; update(); }, 1000 / +$('fps').value); }
+  else { clearInterval(timer); }
+};
+['fw','fh','scale','fps'].forEach(id => $(id).addEventListener('change', () => { if (playing) { clearInterval(timer); timer = setInterval(() => { frame++; update(); }, 1000 / +$('fps').value); } update(); }));
+</script>
+</body>
+</html>
