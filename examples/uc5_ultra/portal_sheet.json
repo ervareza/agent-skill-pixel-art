@@ -1,0 +1,75 @@
+{
+  "image": "portal_sheet.png",
+  "frame_width": 1024,
+  "frame_height": 1024,
+  "columns": 4,
+  "rows": 2,
+  "frame_count": 8,
+  "padding": 0,
+  "frames": [
+    {
+      "index": 0,
+      "filename": "portal_00.png",
+      "x": 0,
+      "y": 0,
+      "w": 1024,
+      "h": 1024
+    },
+    {
+      "index": 1,
+      "filename": "portal_01.png",
+      "x": 1024,
+      "y": 0,
+      "w": 1024,
+      "h": 1024
+    },
+    {
+      "index": 2,
+      "filename": "portal_02.png",
+      "x": 2048,
+      "y": 0,
+      "w": 1024,
+      "h": 1024
+    },
+    {
+      "index": 3,
+      "filename": "portal_03.png",
+      "x": 3072,
+      "y": 0,
+      "w": 1024,
+      "h": 1024
+    },
+    {
+      "index": 4,
+      "filename": "portal_04.png",
+      "x": 0,
+      "y": 1024,
+      "w": 1024,
+      "h": 1024
+    },
+    {
+      "index": 5,
+      "filename": "portal_05.png",
+      "x": 1024,
+      "y": 1024,
+      "w": 1024,
+      "h": 1024
+    },
+    {
+      "index": 6,
+      "filename": "portal_06.png",
+      "x": 2048,
+      "y": 1024,
+      "w": 1024,
+      "h": 1024
+    },
+    {
+      "index": 7,
+      "filename": "portal_07.png",
+      "x": 3072,
+      "y": 1024,
+      "w": 1024,
+      "h": 1024
+    }
+  ]
+}

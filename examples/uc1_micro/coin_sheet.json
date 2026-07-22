@@ -1,0 +1,27 @@
+{
+  "image": "coin_sheet.png",
+  "frame_width": 16,
+  "frame_height": 16,
+  "columns": 2,
+  "rows": 1,
+  "frame_count": 2,
+  "padding": 0,
+  "frames": [
+    {
+      "index": 0,
+      "filename": "coin_00.png",
+      "x": 0,
+      "y": 0,
+      "w": 16,
+      "h": 16
+    },
+    {
+      "index": 1,
+      "filename": "coin_01.png",
+      "x": 16,
+      "y": 0,
+      "w": 16,
+      "h": 16
+    }
+  ]
+}

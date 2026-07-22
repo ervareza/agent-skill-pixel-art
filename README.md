@@ -148,7 +148,85 @@ Every script supports `--help` for usage info and `--json` for machine-readable 
 
 ---
 
-## Usage Examples (The Ultimate Showcase)
+## Usage Examples — The Ultimate Showcase
+
+> **730+ files** · **88 animated GIFs** · **580 PNGs** · **13/13 scripts used** · **10/10 palettes** · **All generated via CLI, one command at a time**
+
+### UC1: Micro Sandbox (16×16, Sweetie-16)
+Static coins, idle sparkles, and explosive VFX particles.
+
+| Coin Static (2f) | Sparkle Idle (4f) | Explosion VFX (12f) |
+|---|---|---|
+| <img src="examples/uc1_micro/coin_static.gif" width="64"> | <img src="examples/uc1_micro/sparkle_idle.gif" width="64"> | <img src="examples/uc1_micro/explosion_vfx.gif" width="64"> |
+
+**Tools used:** `batch_audit` → `gif_export` → `atlas_pack` → `sprite_resize`
+
+---
+
+### UC2: 8-Way Action Hero (32×32, DB32)
+7 actions × 8 directions = **56 animated GIFs**. Drew 5 directions, auto-mirrored 3 with `sprite_mirror.py`.
+
+#### Walk Cycle — All 8 Directions
+| N | NE | E | SE | S | SW | W | NW |
+|---|---|---|---|---|---|---|---|
+| <img src="examples/uc2_hero/gifs/walk_north.gif" width="48"> | <img src="examples/uc2_hero/gifs/walk_northeast.gif" width="48"> | <img src="examples/uc2_hero/gifs/walk_east.gif" width="48"> | <img src="examples/uc2_hero/gifs/walk_southeast.gif" width="48"> | <img src="examples/uc2_hero/gifs/walk_south.gif" width="48"> | <img src="examples/uc2_hero/gifs/walk_southwest.gif" width="48"> | <img src="examples/uc2_hero/gifs/walk_west.gif" width="48"> | <img src="examples/uc2_hero/gifs/walk_northwest.gif" width="48"> |
+
+#### All 7 Actions — East Direction
+| Idle | Walk | Run | Jump | Attack | Hurt | Die |
+|---|---|---|---|---|---|---|
+| <img src="examples/uc2_hero/gifs/idle_east.gif" width="48"> | <img src="examples/uc2_hero/gifs/walk_east.gif" width="48"> | <img src="examples/uc2_hero/gifs/run_east.gif" width="48"> | <img src="examples/uc2_hero/gifs/jump_east.gif" width="48"> | <img src="examples/uc2_hero/gifs/attack_east.gif" width="48"> | <img src="examples/uc2_hero/gifs/hurt_east.gif" width="48"> | <img src="examples/uc2_hero/gifs/die_east.gif" width="48"> |
+
+**Tools used:** `sprite_mirror` (×21) → `gif_export` (×56) → `atlas_pack` (×56)
+
+---
+
+### UC3: HD Tileset & Spellcaster (64×64, Resurrect-64)
+
+#### Procedural Terrain Tiles
+| Grass | Water | Stone | Sand | Lava | Sky Dither | Night Dither |
+|---|---|---|---|---|---|---|
+| <img src="examples/uc3_hd/tiles/grass.png" width="64"> | <img src="examples/uc3_hd/tiles/water.png" width="64"> | <img src="examples/uc3_hd/tiles/stone.png" width="64"> | <img src="examples/uc3_hd/tiles/sand.png" width="64"> | <img src="examples/uc3_hd/tiles/lava.png" width="64"> | <img src="examples/uc3_hd/tiles/sky_dither.png" width="64"> | <img src="examples/uc3_hd/tiles/night_dither.png" width="64"> |
+
+#### Wizard Cast — 4 Directions
+| Down | Up | Left | Right |
+|---|---|---|---|
+| <img src="examples/uc3_hd/gifs/cast_down.gif" width="64"> | <img src="examples/uc3_hd/gifs/cast_up.gif" width="64"> | <img src="examples/uc3_hd/gifs/cast_left.gif" width="64"> | <img src="examples/uc3_hd/gifs/cast_right.gif" width="64"> |
+
+**Tools used:** `noise_generator` (×5) → `dither` (×2) → `sprite_mirror` (×10) → `gif_export` (×20)
+
+---
+
+### UC4: Side-Scrolling Boss (128×128, Endesga-32)
+
+| Idle | Jump | Attack | Die |
+|---|---|---|---|
+| <img src="examples/uc4_boss/gifs/idle_right.gif" width="128"> | <img src="examples/uc4_boss/gifs/jump_right.gif" width="128"> | <img src="examples/uc4_boss/gifs/attack_right.gif" width="128"> | <img src="examples/uc4_boss/gifs/die_right.gif" width="128"> |
+
+**Tools used:** `sprite_mirror` → `sprite_resize` (2×) → `outline_generator` → `gif_export` (×8)
+
+---
+
+### UC5: Cinematic Portal (1024×1024 Ultra)
+
+| Portal Cinematic (8f, 24fps) |
+|---|
+| <img src="examples/uc5_ultra/portal_cinematic.gif" width="400"> |
+
+**Tools used:** `quality_audit` (1M pixels validated) → `gif_export` → `atlas_pack` (4096×2048 sheet!)
+
+---
+
+### UC6: The Palette Multiverse (10 Palettes)
+
+| Sweetie-16 | PICO-8 | GameBoy | DB32 | Endesga-32 |
+|---|---|---|---|---|
+| <img src="examples/uc6_palettes/wizard_sweetie-16_4x.png" width="96"> | <img src="examples/uc6_palettes/wizard_pico-8_4x.png" width="96"> | <img src="examples/uc6_palettes/wizard_gameboy_4x.png" width="96"> | <img src="examples/uc6_palettes/wizard_db32_4x.png" width="96"> | <img src="examples/uc6_palettes/wizard_endesga-32_4x.png" width="96"> |
+
+| Resurrect-64 | NES | SNES | CGA | Commodore 64 |
+|---|---|---|---|---|
+| <img src="examples/uc6_palettes/wizard_resurrect-64_4x.png" width="96"> | <img src="examples/uc6_palettes/wizard_nes_4x.png" width="96"> | <img src="examples/uc6_palettes/wizard_snes_4x.png" width="96"> | <img src="examples/uc6_palettes/wizard_cga_4x.png" width="96"> | <img src="examples/uc6_palettes/wizard_commodore-64_4x.png" width="96"> |
+
+**Tools used:** `palette_remap` (×10) → `export_indexed` (×10) → `sprite_resize` (×10) → `palette_extract`
 
 This skill supports generating pixel art across **all standard sizes, animation types, directions, and palettes**. Below are 7 exhaustive real-world use cases generated entirely by this skill, demonstrating its ability to handle anything from 16×16 retro items up to 1024×1024 cinematic scenes.
 

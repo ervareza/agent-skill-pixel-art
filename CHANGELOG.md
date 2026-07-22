@@ -4,6 +4,28 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [v5.0.0] - 2026-07-22
+
+### Added
+- **730+ example assets** generated fresh from zero using manual CLI execution
+- **88 animated GIFs** covering all use cases, all animation types, all directions
+- **56 spritesheets** for the 8-way hero character (7 actions × 8 directions)
+- **7 procedural terrain tiles** via `noise_generator.py` and `dither.py`
+- **10 palette variants** via `palette_remap.py` + `export_indexed.py` + `palette_extract.py`
+- **White-theme HTML showcase** (`index.html`) — clean, minimalist, responsive
+- **`CONTRIBUTING.md`** — contributor guidelines
+- **`CODE_OF_CONDUCT.md`** — community standards
+- **Vercel deployment** — live showcase at agent-skill-pixel-art.vercel.app
+- **GitHub public repository** with badges, description, and homepage link
+
+### Changed
+- **README.md** completely rewritten with the new exhaustive gallery
+- **All 13/13 CLI scripts** demonstrated and validated
+- **All 10/10 palettes** used in examples
+
+### Removed
+- All old example assets (replaced with fresh generation)
+
 ## [v4.1.0] - 2025-07-22
 
 ### Added

@@ -1,0 +1,59 @@
+{
+  "image": "walk_northwest_sheet.png",
+  "frame_width": 32,
+  "frame_height": 32,
+  "columns": 6,
+  "rows": 1,
+  "frame_count": 6,
+  "padding": 0,
+  "frames": [
+    {
+      "index": 0,
+      "filename": "hero_walk_00.png",
+      "x": 0,
+      "y": 0,
+      "w": 32,
+      "h": 32
+    },
+    {
+      "index": 1,
+      "filename": "hero_walk_01.png",
+      "x": 32,
+      "y": 0,
+      "w": 32,
+      "h": 32
+    },
+    {
+      "index": 2,
+      "filename": "hero_walk_02.png",
+      "x": 64,
+      "y": 0,
+      "w": 32,
+      "h": 32
+    },
+    {
+      "index": 3,
+      "filename": "hero_walk_03.png",
+      "x": 96,
+      "y": 0,
+      "w": 32,
+      "h": 32
+    },
+    {
+      "index": 4,
+      "filename": "hero_walk_04.png",
+      "x": 128,
+      "y": 0,
+      "w": 32,
+      "h": 32
+    },
+    {
+      "index": 5,
+      "filename": "hero_walk_05.png",
+      "x": 160,
+      "y": 0,
+      "w": 32,
+      "h": 32
+    }
+  ]
+}
