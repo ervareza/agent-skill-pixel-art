@@ -1,0 +1,11 @@
+{
+  "asset": "pixel_hero",
+  "workspace": "/Users/ervareza/CODE/agent-skill-pixel-art/examples/uc7_workspace",
+  "directories": {
+    "sprites": "/Users/ervareza/CODE/agent-skill-pixel-art/examples/uc7_workspace/sprites",
+    "tilesets": "/Users/ervareza/CODE/agent-skill-pixel-art/examples/uc7_workspace/tilesets",
+    "frames": "/Users/ervareza/CODE/agent-skill-pixel-art/examples/uc7_workspace/frames",
+    "sheets": "/Users/ervareza/CODE/agent-skill-pixel-art/examples/uc7_workspace/sheets",
+    "exports": "/Users/ervareza/CODE/agent-skill-pixel-art/examples/uc7_workspace/exports"
+  }
+}

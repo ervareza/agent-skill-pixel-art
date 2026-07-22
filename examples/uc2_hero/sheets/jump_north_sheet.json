@@ -1,0 +1,43 @@
+{
+  "image": "jump_north_sheet.png",
+  "frame_width": 32,
+  "frame_height": 32,
+  "columns": 4,
+  "rows": 1,
+  "frame_count": 4,
+  "padding": 0,
+  "frames": [
+    {
+      "index": 0,
+      "filename": "hero_jump_00.png",
+      "x": 0,
+      "y": 0,
+      "w": 32,
+      "h": 32
+    },
+    {
+      "index": 1,
+      "filename": "hero_jump_01.png",
+      "x": 32,
+      "y": 0,
+      "w": 32,
+      "h": 32
+    },
+    {
+      "index": 2,
+      "filename": "hero_jump_02.png",
+      "x": 64,
+      "y": 0,
+      "w": 32,
+      "h": 32
+    },
+    {
+      "index": 3,
+      "filename": "hero_jump_03.png",
+      "x": 96,
+      "y": 0,
+      "w": 32,
+      "h": 32
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "image": "sparkle_sheet.png",
+  "frame_width": 16,
+  "frame_height": 16,
+  "columns": 4,
+  "rows": 1,
+  "frame_count": 4,
+  "padding": 0,
+  "frames": [
+    {
+      "index": 0,
+      "filename": "sparkle_00.png",
+      "x": 0,
+      "y": 0,
+      "w": 16,
+      "h": 16
+    },
+    {
+      "index": 1,
+      "filename": "sparkle_01.png",
+      "x": 16,
+      "y": 0,
+      "w": 16,
+      "h": 16
+    },
+    {
+      "index": 2,
+      "filename": "sparkle_02.png",
+      "x": 32,
+      "y": 0,
+      "w": 16,
+      "h": 16
+    },
+    {
+      "index": 3,
+      "filename": "sparkle_03.png",
+      "x": 48,
+      "y": 0,
+      "w": 16,
+      "h": 16
+    }
+  ]
+}

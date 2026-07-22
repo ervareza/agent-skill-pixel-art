@@ -1,0 +1,107 @@
+{
+  "image": "vfx_sheet.png",
+  "frame_width": 16,
+  "frame_height": 16,
+  "columns": 6,
+  "rows": 2,
+  "frame_count": 12,
+  "padding": 0,
+  "frames": [
+    {
+      "index": 0,
+      "filename": "explosion_00.png",
+      "x": 0,
+      "y": 0,
+      "w": 16,
+      "h": 16
+    },
+    {
+      "index": 1,
+      "filename": "explosion_01.png",
+      "x": 16,
+      "y": 0,
+      "w": 16,
+      "h": 16
+    },
+    {
+      "index": 2,
+      "filename": "explosion_02.png",
+      "x": 32,
+      "y": 0,
+      "w": 16,
+      "h": 16
+    },
+    {
+      "index": 3,
+      "filename": "explosion_03.png",
+      "x": 48,
+      "y": 0,
+      "w": 16,
+      "h": 16
+    },
+    {
+      "index": 4,
+      "filename": "explosion_04.png",
+      "x": 64,
+      "y": 0,
+      "w": 16,
+      "h": 16
+    },
+    {
+      "index": 5,
+      "filename": "explosion_05.png",
+      "x": 80,
+      "y": 0,
+      "w": 16,
+      "h": 16
+    },
+    {
+      "index": 6,
+      "filename": "explosion_06.png",
+      "x": 0,
+      "y": 16,
+      "w": 16,
+      "h": 16
+    },
+    {
+      "index": 7,
+      "filename": "explosion_07.png",
+      "x": 16,
+      "y": 16,
+      "w": 16,
+      "h": 16
+    },
+    {
+      "index": 8,
+      "filename": "explosion_08.png",
+      "x": 32,
+      "y": 16,
+      "w": 16,
+      "h": 16
+    },
+    {
+      "index": 9,
+      "filename": "explosion_09.png",
+      "x": 48,
+      "y": 16,
+      "w": 16,
+      "h": 16
+    },
+    {
+      "index": 10,
+      "filename": "explosion_10.png",
+      "x": 64,
+      "y": 16,
+      "w": 16,
+      "h": 16
+    },
+    {
+      "index": 11,
+      "filename": "explosion_11.png",
+      "x": 80,
+      "y": 16,
+      "w": 16,
+      "h": 16
+    }
+  ]
+}
