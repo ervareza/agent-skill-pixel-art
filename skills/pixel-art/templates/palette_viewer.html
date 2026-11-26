@@ -3,76 +3,76 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Palette Viewer</title>
+<title>PixelForge Palette Viewer &amp; Hue-Ramp Builder</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:#0f0f1a;color:#e0e0e0;font-family:monospace;padding:2rem;min-height:100vh}
-h1{font-size:1.2rem;margin-bottom:1.5rem;color:#7fdbca;text-align:center}
-.palette-grid{display:flex;flex-wrap:wrap;gap:1.5rem;justify-content:center}
-.palette-card{background:#16213e;border:1px solid #0f3460;border-radius:8px;padding:1rem;min-width:280px;max-width:360px}
-.palette-name{font-size:.9rem;color:#7fdbca;margin-bottom:.5rem;font-weight:bold}
-.palette-meta{font-size:.7rem;color:#83769c;margin-bottom:.8rem}
-.swatch-grid{display:flex;flex-wrap:wrap;gap:2px}
-.swatch{width:28px;height:28px;border-radius:3px;cursor:pointer;position:relative;border:1px solid #0004}
-.swatch:hover{transform:scale(1.3);z-index:1;box-shadow:0 0 8px #fff4}
-.swatch .tooltip{display:none;position:absolute;bottom:110%;left:50%;transform:translateX(-50%);background:#000c;color:#fff;padding:2px 6px;font-size:.65rem;white-space:nowrap;border-radius:3px;z-index:2}
-.swatch:hover .tooltip{display:block}
-.upload{text-align:center;margin-bottom:1.5rem}
-input[type="file"]{font-size:.8rem}
-.compare{display:flex;gap:1rem;justify-content:center;margin-top:1rem;flex-wrap:wrap}
-.compare-slot{width:80px;height:80px;border:2px dashed #533483;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:.6rem;color:#83769c;cursor:pointer}
+  :root { --bg:#0e1018; --panel:#161926; --border:#272c42; --accent:#6366f1; --cyan:#22d3ee; --text:#e6e8f0; --muted:#8892b0; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:var(--bg); color:var(--text); font-family:ui-monospace,monospace; padding:1.5rem; }
+  h1 { text-align:center; color:var(--cyan); font-size:1.15rem; margin-bottom:1.25rem; }
+  .bar { max-width:1100px; margin:0 auto 1.5rem; background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:1rem; display:flex; flex-wrap:wrap; gap:1rem; align-items:center; justify-content:space-between; font-size:0.8rem; }
+  .compare { display:flex; gap:0.75rem; align-items:center; }
+  .slot { width:72px; height:42px; border:1px dashed #4b5580; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:0.68rem; }
+  .grid { max-width:1100px; margin:0 auto; display:grid; grid-template-columns:repeat(auto-fill, minmax(300px, 1fr)); gap:1rem; }
+  .card { background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:1rem; }
+  .title { font-weight:700; color:var(--cyan); font-size:0.9rem; }
+  .meta { font-size:0.72rem; color:var(--muted); margin:0.2rem 0 0.7rem; }
+  .swatches { display:flex; flex-wrap:wrap; gap:3px; }
+  .sw { width:26px; height:26px; border-radius:4px; cursor:pointer; border:1px solid rgba(0,0,0,0.35); }
+  .sw:hover { transform:scale(1.22); z-index:2; outline:2px solid #fff; }
 </style>
 </head>
 <body>
-<h1>Palette Viewer & Comparator</h1>
-<div class="upload">
-  <input type="file" id="files" accept=".json" multiple>
-  <span style="font-size:.75rem;color:#83769c"> — Load palette JSON files</span>
+<h1>PixelForge — 16-Palette Viewer &amp; WCAG Contrast Comparator</h1>
+<div class="bar">
+  <div><label>Load Custom JSON: <input type="file" id="files" accept=".json" multiple></label></div>
+  <div class="compare">
+    <div class="slot" id="slot1">Color A</div>
+    <div class="slot" id="slot2">Color B</div>
+    <div id="ratio" style="color:var(--cyan);font-weight:700;">Contrast: —</div>
+  </div>
 </div>
-<div class="compare" id="compare">
-  <div class="compare-slot" id="slot1">Click swatch<br>to compare</div>
-  <div class="compare-slot" id="slot2">Click another<br>swatch</div>
-</div>
-<div class="palette-grid" id="grid"></div>
-
+<div class="grid" id="grid"></div>
 <script>
-const grid=document.getElementById('grid');
-let slot=1;
-
-function renderPalette(data){
-  const card=document.createElement('div');card.className='palette-card';
-  card.innerHTML=`<div class="palette-name">${data.name}</div><div class="palette-meta">${data.max_colors} colors${data.description?' — '+data.description:''}</div>`;
-  const sg=document.createElement('div');sg.className='swatch-grid';
-  data.colors.forEach(c=>{
-    const s=document.createElement('div');s.className='swatch';s.style.background=c;
-    s.innerHTML=`<span class="tooltip">${c}</span>`;
-    s.onclick=()=>{
-      const el=document.getElementById('slot'+slot);
-      el.style.background=c;el.style.border='2px solid '+c;
-      el.innerHTML=`<span style="color:${isLight(c)?'#000':'#fff'};font-size:.65rem">${c}</span>`;
-      slot=slot===1?2:1;
-    };
-    sg.appendChild(s);
-  });
-  card.appendChild(sg);grid.appendChild(card);
-}
-
-function isLight(hex){
-  const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
-  return(r*299+g*587+b*114)/1000>128;
-}
-
-// Built-in palettes
-const builtIn=[
-  {name:"pico-8",max_colors:16,description:"Fantasy console",colors:["#000000","#1D2B53","#7E2553","#008751","#AB5236","#5F574F","#C2C3C7","#FFF1E8","#FF004D","#FFA300","#FFEC27","#00E436","#29ADFF","#83769C","#FF77A8","#FFCCAA"]},
-  {name:"gameboy",max_colors:4,description:"DMG-01",colors:["#0F380F","#306230","#8BAC0F","#9BBC0F"]},
-  {name:"sweetie-16",max_colors:16,description:"Game jam favorite",colors:["#1A1C2C","#5D275D","#B13E53","#EF7D57","#FFCD75","#A7F070","#38B764","#257179","#29366F","#3B5DC9","#41A6F6","#73EFF7","#F4F4F4","#94B0C2","#566C86","#333C57"]},
+const BUILTIN = [
+  { name: "endesga-32", desc: "Modern indie favorite (32)", colors: ["#BE4A2F","#D77643","#EAD4AA","#E4A672","#B86F50","#733E39","#3E2731","#A22633","#E43B44","#F77622","#FEAE34","#FEE761","#63C74D","#3E8948","#265C42","#193C3E","#124E89","#0099DB","#2CE8F5","#FFFFFF","#C0CBDC","#8B9BB4","#5A6988","#3A4466","#262B44","#181425","#FF0044","#68386C","#B55088","#F6757A","#E8B796","#C28569"] },
+  { name: "pico-8", desc: "Fantasy console (16)", colors: ["#000000","#1D2B53","#7E2553","#008751","#AB5236","#5F574F","#C2C3C7","#FFF1E8","#FF004D","#FFA300","#FFEC27","#00E436","#29ADFF","#83769C","#FF77A8","#FFCCAA"] },
+  { name: "sweetie-16", desc: "Game jam warm classic (16)", colors: ["#1A1C2C","#5D275D","#B13E53","#EF7D57","#FFCD75","#A7F070","#38B764","#257179","#29366F","#3B5DC9","#41A6F6","#73EFF7","#F4F4F4","#94B0C2","#566C86","#333C57"] },
+  { name: "fantasy-24", desc: "Cohesive RPG fantasy ramps (24)", colors: ["#1F1827","#34263B","#523B52","#7C5A68","#B28582","#E2BFA6","#F7E5CA","#D94E4E","#E8854D","#F2C75C","#7BC253","#3B8C52","#21524B","#2D6B8C","#4FA6C9","#9AE2F2","#4A437A","#7B69B5","#C49AE6","#A6633C","#6E3B28","#47251E","#7C8C99","#BCCAD6"] },
+  { name: "cyberpunk-16", desc: "Neon synthwave & sci-fi (16)", colors: ["#0D0917","#1B1536","#31235E","#5A338F","#9B44C9","#FF3CA6","#FF85C8","#00F5D4","#00B4D8","#0077B6","#FFE66D","#FF9F1C","#FF4D4D","#3D4C6E","#8B9BB4","#F0F6FF"] },
+  { name: "pastel-16", desc: "Cozy slice-of-life chibi (16)", colors: ["#2E2538","#574866","#8B779E","#C8B8D9","#FFF8F0","#FFE1CC","#F5B5B5","#E88491","#F7D694","#B8E3A3","#7AC29A","#4B8F7C","#94D4E8","#6CA6D9","#8E8CE0","#D49CE0"] },
+  { name: "gameboy", desc: "DMG-01 monochrome (4)", colors: ["#0F380F","#306230","#8BAC0F","#9BBC0F"] },
+  { name: "onebit", desc: "High-contrast 1-bit (2)", colors: ["#11111B","#F5F5F0"] }
 ];
-builtIn.forEach(renderPalette);
-
-document.getElementById('files').addEventListener('change',e=>{
-  Array.from(e.target.files).forEach(f=>{
-    const r=new FileReader();r.onload=ev=>{try{renderPalette(JSON.parse(ev.target.result))}catch(err){console.error(err)}};
+let slot = 1, cA = null, cB = null;
+function lum(hex){
+  const v = [1,3,5].map(i => { let s = parseInt(hex.slice(i,i+2),16)/255; return s<=0.03928 ? s/12.92 : ((s+0.055)/1.055)**2.4; });
+  return 0.2126*v[0]+0.7152*v[1]+0.0722*v[2];
+}
+function render(p){
+  const card = document.createElement('div'); card.className = 'card';
+  card.innerHTML = `<div class="title">${p.name}</div><div class="meta">${p.colors.length} colors ${p.desc||p.description?'· '+(p.desc||p.description):''}</div>`;
+  const wrap = document.createElement('div'); wrap.className = 'swatches';
+  p.colors.forEach(c => {
+    const sw = document.createElement('div'); sw.className = 'sw'; sw.style.background = c; sw.title = c;
+    sw.onclick = () => {
+      const el = document.getElementById('slot'+slot);
+      el.style.background = c; el.style.color = lum(c) > 0.35 ? '#000' : '#fff'; el.textContent = c;
+      if (slot === 1) cA = c; else cB = c;
+      slot = slot === 1 ? 2 : 1;
+      if (cA && cB) {
+        const l1 = lum(cA), l2 = lum(cB), r = (Math.max(l1,l2)+0.05)/(Math.min(l1,l2)+0.05);
+        document.getElementById('ratio').textContent = `Contrast: ${r.toFixed(2)}:1 ${r>=3?'(PASS)':'(LOW)'}`;
+      }
+    };
+    wrap.appendChild(sw);
+  });
+  card.appendChild(wrap);
+  document.getElementById('grid').appendChild(card);
+}
+BUILTIN.forEach(render);
+document.getElementById('files').addEventListener('change', e => {
+  Array.from(e.target.files).forEach(f => {
+    const r = new FileReader(); r.onload = ev => { try { render(JSON.parse(ev.target.result)); } catch {} };
     r.readAsText(f);
   });
 });

@@ -1,0 +1,138 @@
+{
+  "terrain": "stone",
+  "mode": "wang16",
+  "tile_size": 16,
+  "tile_count": 16,
+  "columns": 4,
+  "rows": 4,
+  "tiles": [
+    {
+      "index": 0,
+      "bitmask": 0,
+      "col": 0,
+      "row": 0,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "index": 1,
+      "bitmask": 1,
+      "col": 1,
+      "row": 0,
+      "x": 16,
+      "y": 0
+    },
+    {
+      "index": 2,
+      "bitmask": 2,
+      "col": 2,
+      "row": 0,
+      "x": 32,
+      "y": 0
+    },
+    {
+      "index": 3,
+      "bitmask": 3,
+      "col": 3,
+      "row": 0,
+      "x": 48,
+      "y": 0
+    },
+    {
+      "index": 4,
+      "bitmask": 4,
+      "col": 0,
+      "row": 1,
+      "x": 0,
+      "y": 16
+    },
+    {
+      "index": 5,
+      "bitmask": 5,
+      "col": 1,
+      "row": 1,
+      "x": 16,
+      "y": 16
+    },
+    {
+      "index": 6,
+      "bitmask": 6,
+      "col": 2,
+      "row": 1,
+      "x": 32,
+      "y": 16
+    },
+    {
+      "index": 7,
+      "bitmask": 7,
+      "col": 3,
+      "row": 1,
+      "x": 48,
+      "y": 16
+    },
+    {
+      "index": 8,
+      "bitmask": 8,
+      "col": 0,
+      "row": 2,
+      "x": 0,
+      "y": 32
+    },
+    {
+      "index": 9,
+      "bitmask": 9,
+      "col": 1,
+      "row": 2,
+      "x": 16,
+      "y": 32
+    },
+    {
+      "index": 10,
+      "bitmask": 10,
+      "col": 2,
+      "row": 2,
+      "x": 32,
+      "y": 32
+    },
+    {
+      "index": 11,
+      "bitmask": 11,
+      "col": 3,
+      "row": 2,
+      "x": 48,
+      "y": 32
+    },
+    {
+      "index": 12,
+      "bitmask": 12,
+      "col": 0,
+      "row": 3,
+      "x": 0,
+      "y": 48
+    },
+    {
+      "index": 13,
+      "bitmask": 13,
+      "col": 1,
+      "row": 3,
+      "x": 16,
+      "y": 48
+    },
+    {
+      "index": 14,
+      "bitmask": 14,
+      "col": 2,
+      "row": 3,
+      "x": 32,
+      "y": 48
+    },
+    {
+      "index": 15,
+      "bitmask": 15,
+      "col": 3,
+      "row": 3,
+      "x": 48,
+      "y": 48
+    }
+  ]
+}

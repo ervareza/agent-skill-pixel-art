@@ -1,0 +1,328 @@
+{
+  "frames": [
+    {
+      "filename": "hero_64x64_sheet_000.png",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "duration": 115
+    },
+    {
+      "filename": "hero_64x64_sheet_001.png",
+      "frame": {
+        "x": 64,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "duration": 115
+    },
+    {
+      "filename": "hero_64x64_sheet_002.png",
+      "frame": {
+        "x": 128,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "duration": 92
+    },
+    {
+      "filename": "hero_64x64_sheet_003.png",
+      "frame": {
+        "x": 192,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "duration": 115
+    },
+    {
+      "filename": "hero_64x64_sheet_004.png",
+      "frame": {
+        "x": 256,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "duration": 115
+    },
+    {
+      "filename": "hero_64x64_sheet_005.png",
+      "frame": {
+        "x": 320,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "duration": 115
+    },
+    {
+      "filename": "hero_64x64_sheet_006.png",
+      "frame": {
+        "x": 384,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "duration": 92
+    },
+    {
+      "filename": "hero_64x64_sheet_007.png",
+      "frame": {
+        "x": 448,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "duration": 115
+    }
+  ],
+  "meta": {
+    "app": "PixelForge Engine",
+    "version": "1.0.0",
+    "image": "hero_64x64_sheet.png",
+    "format": "RGBA8888",
+    "size": {
+      "w": 512,
+      "h": 64
+    },
+    "frameSize": {
+      "w": 64,
+      "h": 64
+    },
+    "columns": 8,
+    "rows": 1,
+    "padding": 0,
+    "scale": "1",
+    "layers": [
+      {
+        "name": "shadow",
+        "visible": true,
+        "opacity": 255,
+        "blend_mode": "normal",
+        "locked": false,
+        "group": ""
+      },
+      {
+        "name": "cape_back",
+        "visible": true,
+        "opacity": 255,
+        "blend_mode": "normal",
+        "locked": false,
+        "group": ""
+      },
+      {
+        "name": "hair_back",
+        "visible": true,
+        "opacity": 255,
+        "blend_mode": "normal",
+        "locked": false,
+        "group": ""
+      },
+      {
+        "name": "arm_far",
+        "visible": true,
+        "opacity": 255,
+        "blend_mode": "normal",
+        "locked": false,
+        "group": ""
+      },
+      {
+        "name": "leg_far",
+        "visible": true,
+        "opacity": 255,
+        "blend_mode": "normal",
+        "locked": false,
+        "group": ""
+      },
+      {
+        "name": "torso",
+        "visible": true,
+        "opacity": 255,
+        "blend_mode": "normal",
+        "locked": false,
+        "group": ""
+      },
+      {
+        "name": "leg_near",
+        "visible": true,
+        "opacity": 255,
+        "blend_mode": "normal",
+        "locked": false,
+        "group": ""
+      },
+      {
+        "name": "head",
+        "visible": true,
+        "opacity": 255,
+        "blend_mode": "normal",
+        "locked": false,
+        "group": ""
+      },
+      {
+        "name": "hair_front",
+        "visible": true,
+        "opacity": 255,
+        "blend_mode": "normal",
+        "locked": false,
+        "group": ""
+      },
+      {
+        "name": "headgear",
+        "visible": true,
+        "opacity": 255,
+        "blend_mode": "normal",
+        "locked": false,
+        "group": ""
+      },
+      {
+        "name": "arm_near",
+        "visible": true,
+        "opacity": 255,
+        "blend_mode": "normal",
+        "locked": false,
+        "group": ""
+      },
+      {
+        "name": "weapon",
+        "visible": true,
+        "opacity": 255,
+        "blend_mode": "normal",
+        "locked": false,
+        "group": ""
+      },
+      {
+        "name": "shield",
+        "visible": true,
+        "opacity": 255,
+        "blend_mode": "normal",
+        "locked": false,
+        "group": ""
+      },
+      {
+        "name": "vfx",
+        "visible": true,
+        "opacity": 255,
+        "blend_mode": "normal",
+        "locked": false,
+        "group": ""
+      },
+      {
+        "name": "outline",
+        "visible": true,
+        "opacity": 255,
+        "blend_mode": "normal",
+        "locked": false,
+        "group": ""
+      }
+    ],
+    "frameTags": [
+      {
+        "name": "walk_right",
+        "from": 0,
+        "to": 7,
+        "direction": "forward"
+      }
+    ]
+  }
+}

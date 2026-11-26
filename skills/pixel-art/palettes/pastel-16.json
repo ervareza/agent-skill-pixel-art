@@ -1,0 +1,9 @@
+{
+  "name": "pastel-16",
+  "description": "Cozy pastel 16-color palette ideal for slice-of-life RPGs, pets, cozy rooms, and chibi sprites.",
+  "max_colors": 16,
+  "colors": [
+    "#2E2538", "#574866", "#8B779E", "#C8B8D9", "#FFF8F0", "#FFE1CC", "#F5B5B5", "#E88491",
+    "#F7D694", "#B8E3A3", "#7AC29A", "#4B8F7C", "#94D4E8", "#6CA6D9", "#8E8CE0", "#D49CE0"
+  ]
+}

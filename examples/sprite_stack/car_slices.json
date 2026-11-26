@@ -1,0 +1,12 @@
+{
+  "preset": "car",
+  "slice_width": 16,
+  "slice_height": 24,
+  "slice_count": 12,
+  "strip_size": [
+    192,
+    24
+  ],
+  "recommended_squash": 0.75,
+  "recommended_spacing": 1.0
+}

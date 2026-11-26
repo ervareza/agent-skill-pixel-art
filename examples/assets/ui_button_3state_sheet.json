@@ -1,0 +1,118 @@
+{
+  "frames": [
+    {
+      "filename": "ui_button_3state_sheet_000.png",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 48,
+        "h": 20
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 48,
+        "h": 20
+      },
+      "sourceSize": {
+        "w": 48,
+        "h": 20
+      },
+      "duration": 100
+    },
+    {
+      "filename": "ui_button_3state_sheet_001.png",
+      "frame": {
+        "x": 48,
+        "y": 0,
+        "w": 48,
+        "h": 20
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 48,
+        "h": 20
+      },
+      "sourceSize": {
+        "w": 48,
+        "h": 20
+      },
+      "duration": 400
+    },
+    {
+      "filename": "ui_button_3state_sheet_002.png",
+      "frame": {
+        "x": 96,
+        "y": 0,
+        "w": 48,
+        "h": 20
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 48,
+        "h": 20
+      },
+      "sourceSize": {
+        "w": 48,
+        "h": 20
+      },
+      "duration": 400
+    }
+  ],
+  "meta": {
+    "app": "PixelForge Engine",
+    "version": "1.0.0",
+    "image": "ui_button_3state_sheet.png",
+    "format": "RGBA8888",
+    "size": {
+      "w": 144,
+      "h": 20
+    },
+    "frameSize": {
+      "w": 48,
+      "h": 20
+    },
+    "columns": 3,
+    "rows": 1,
+    "padding": 0,
+    "scale": "1",
+    "layers": [
+      {
+        "name": "main",
+        "visible": true,
+        "opacity": 255,
+        "blend_mode": "normal",
+        "locked": false,
+        "group": ""
+      }
+    ],
+    "frameTags": [
+      {
+        "name": "normal",
+        "from": 0,
+        "to": 0,
+        "direction": "forward"
+      },
+      {
+        "name": "hover",
+        "from": 1,
+        "to": 1,
+        "direction": "forward"
+      },
+      {
+        "name": "pressed",
+        "from": 2,
+        "to": 2,
+        "direction": "forward"
+      }
+    ]
+  }
+}

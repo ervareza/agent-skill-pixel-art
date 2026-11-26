@@ -1,0 +1,12 @@
+{
+  "preset": "tree",
+  "slice_width": 20,
+  "slice_height": 20,
+  "slice_count": 16,
+  "strip_size": [
+    320,
+    20
+  ],
+  "recommended_squash": 0.75,
+  "recommended_spacing": 1.0
+}

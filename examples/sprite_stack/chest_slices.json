@@ -1,0 +1,12 @@
+{
+  "preset": "chest",
+  "slice_width": 18,
+  "slice_height": 14,
+  "slice_count": 12,
+  "strip_size": [
+    216,
+    14
+  ],
+  "recommended_squash": 0.75,
+  "recommended_spacing": 1.0
+}

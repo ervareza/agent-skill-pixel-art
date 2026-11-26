@@ -1,22 +1,22 @@
 #!/usr/bin/env python3
-"""
-Initialize a pixel art workspace with standard directories and an asset manifest.
+"""Initialize a PixelForge v1.0.0 pixel art workspace with standard game-asset directories & manifest."""
 
-Usage:
-    python scripts/init_workspace.py --dir ./my-project --json
-    python scripts/init_workspace.py --help
-"""
+from __future__ import annotations
 
-import sys
-import json
 import argparse
+import json
+import sys
 from pathlib import Path
 
-
 WORKSPACE_DIRS = [
-    "sprites",
+    "characters",
+    "layers",
     "tilesets",
-    "frames",
+    "vfx",
+    "items",
+    "ui",
+    "stacks",
+    "aseprite",
     "sheets",
     "exports",
 ]
@@ -31,45 +31,33 @@ def init_workspace(root: Path, asset_name: str) -> dict:
         created.append(str(target))
 
     manifest = {
+        "engine": "PixelForge",
+        "version": "1.0.0",
         "asset": asset_name,
         "workspace": str(root),
         "directories": {d: str(root / d) for d in WORKSPACE_DIRS},
     }
-
     manifest_path = root / f"{asset_name}.manifest.json"
-    with open(manifest_path, "w", encoding="utf-8") as f:
-        json.dump(manifest, f, indent=2)
-
-    return {
-        "status": "ok",
-        "workspace": str(root),
-        "created_directories": created,
-        "manifest": str(manifest_path),
-    }
+    manifest_path.write_text(json.dumps(manifest, indent=2), encoding="utf-8")
+    return {"status": "ok", "workspace": str(root), "created_directories": created, "manifest": str(manifest_path)}
 
 
-def main():
-    parser = argparse.ArgumentParser(
-        description="Initialize a pixel art workspace with standard directories and an asset manifest."
-    )
-    parser.add_argument("--dir", type=str, default=".", help="Root directory for the workspace (default: current directory)")
-    parser.add_argument("--name", type=str, default="untitled", help="Asset name for the manifest (default: untitled)")
+def main() -> None:
+    parser = argparse.ArgumentParser(description="Initialize a PixelForge pixel art game asset workspace.")
+    parser.add_argument("--dir", type=str, default=".", help="Workspace root directory")
+    parser.add_argument("--name", type=str, default="pixel-game", help="Project name for manifest")
     parser.add_argument("--json", action="store_true", help="Output result as JSON")
     args = parser.parse_args()
 
     try:
-        result = init_workspace(Path(args.dir), args.name)
+        res = init_workspace(Path(args.dir), args.name)
         if args.json:
-            print(json.dumps(result, indent=2))
+            print(json.dumps(res, indent=2))
         else:
-            print(f"Workspace initialized at: {result['workspace']}")
-            print(f"Manifest written to: {result['manifest']}")
+            print(f"Initialized PixelForge workspace at {res['workspace']} ({len(WORKSPACE_DIRS)} dirs)")
         sys.exit(0)
     except Exception as e:
-        if args.json:
-            print(json.dumps({"status": "error", "message": str(e)}))
-        else:
-            print(f"Error: {e}", file=sys.stderr)
+        print(json.dumps({"status": "error", "message": str(e)}) if args.json else f"Error: {e}", file=sys.stderr)
         sys.exit(1)
 
 

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PixelForge Fake-3D Sprite Stacking Turntable Viewer</title>
+<style>
+  :root { --bg:#0e1018; --panel:#161926; --border:#272c42; --accent:#6366f1; --cyan:#22d3ee; --text:#e6e8f0; --muted:#8892b0; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:var(--bg); color:var(--text); font-family:ui-monospace,monospace; padding:1.5rem; display:flex; flex-direction:column; align-items:center; gap:1rem; }
+  h1 { font-size:1.15rem; color:var(--cyan); }
+  .bar { display:flex; flex-wrap:wrap; gap:0.8rem; background:var(--panel); border:1px solid var(--border); padding:0.9rem 1.2rem; border-radius:10px; align-items:center; justify-content:center; font-size:0.78rem; }
+  input[type="number"], input[type="range"] { accent-color:var(--accent); }
+  input[type="number"] { width:62px; background:#0d0f18; color:var(--text); border:1px solid var(--border); border-radius:4px; padding:0.2rem 0.35rem; }
+  button { background:#232842; color:var(--text); border:1px solid #394066; border-radius:6px; padding:0.35rem 0.7rem; cursor:pointer; font-family:inherit; }
+  button:hover { background:var(--accent); }
+  .stage { background:repeating-conic-gradient(#1f2336 0% 25%, #181b2b 0% 50%) 0 0 / 16px 16px; border:1px solid var(--border); border-radius:10px; padding:1.5rem; }
+  canvas { image-rendering:pixelated; display:block; }
+  .hint { font-size:0.74rem; color:var(--muted); }
+</style>
+</head>
+<body>
+<h1>PixelForge — Interactive 360° Fake-3D Sprite Stacking Viewer</h1>
+<div class="bar">
+  <label>Slice Strip PNG: <input type="file" id="fileInput" accept=".png"></label>
+  <label>Slices: <input type="number" id="slices" value="12" min="1" max="128"></label>
+  <label>Scale: <input type="number" id="scale" value="6" min="1" max="16"></label>
+  <label>Squash: <input type="range" id="squash" min="0.4" max="1.0" step="0.05" value="0.75"></label>
+  <label>Spacing: <input type="range" id="spacing" min="0" max="3.0" step="0.25" value="1.0"></label>
+  <label>Angle: <input type="range" id="angle" min="0" max="360" step="1" value="35"></label>
+  <button id="spinBtn">Pause Spin</button>
+</div>
+<div class="stage"><canvas id="c" width="384" height="384"></canvas></div>
+<p class="hint" id="info">Load any horizontal slice strip (e.g. from scripts/sprite_stack.py) — drag Angle or watch it spin in crisp pixel-art 3D!</p>
+
+<script>
+const $ = id => document.getElementById(id);
+const canvas = $('c'), ctx = canvas.getContext('2d');
+let img = null, spinning = true, ang = 35;
+
+$('fileInput').addEventListener('change', e => {
+  const f = e.target.files[0]; if (!f) return;
+  const r = new FileReader();
+  r.onload = ev => { img = new Image(); img.onload = () => { $('info').textContent = `Loaded ${img.width}x${img.height} strip`; }; img.src = ev.target.result; };
+  r.readAsDataURL(f);
+});
+$('spinBtn').onclick = () => { spinning = !spinning; $('spinBtn').textContent = spinning ? 'Pause Spin' : 'Auto Spin'; };
+$('angle').oninput = e => { ang = +e.target.value; spinning = false; $('spinBtn').textContent = 'Auto Spin'; };
+
+function frame() {
+  if (spinning) { ang = (ang + 1.2) % 360; $('angle').value = Math.round(ang); }
+  ctx.imageSmoothingEnabled = false;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  if (img) {
+    const n = Math.max(1, +$('slices').value);
+    const sw = Math.floor(img.width / n), sh = img.height;
+    const scale = Math.max(1, +$('scale').value);
+    const squash = +$('squash').value, spacing = +$('spacing').value;
+    const rad = ang * Math.PI / 180;
+    const cx = canvas.width / 2, cy = canvas.height * 0.62;
+
+    for (let z = 0; z < n; z++) {
+      ctx.save();
+      ctx.translate(Math.round(cx), Math.round(cy - z * spacing * scale));
+      ctx.scale(1, squash);
+      ctx.rotate(rad);
+      ctx.drawImage(img, z * sw, 0, sw, sh, -Math.floor((sw * scale) / 2), -Math.floor((sh * scale) / 2), sw * scale, sh * scale);
+      ctx.restore();
+    }
+  }
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>

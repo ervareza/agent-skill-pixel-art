@@ -1,0 +1,90 @@
+{
+  "frames": [
+    {
+      "filename": "ui_inventory_slot_sheet_000.png",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 24
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 24
+      },
+      "sourceSize": {
+        "w": 24,
+        "h": 24
+      },
+      "duration": 100
+    },
+    {
+      "filename": "ui_inventory_slot_sheet_001.png",
+      "frame": {
+        "x": 24,
+        "y": 0,
+        "w": 24,
+        "h": 24
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 24
+      },
+      "sourceSize": {
+        "w": 24,
+        "h": 24
+      },
+      "duration": 400
+    }
+  ],
+  "meta": {
+    "app": "PixelForge Engine",
+    "version": "1.0.0",
+    "image": "ui_inventory_slot_sheet.png",
+    "format": "RGBA8888",
+    "size": {
+      "w": 48,
+      "h": 24
+    },
+    "frameSize": {
+      "w": 24,
+      "h": 24
+    },
+    "columns": 2,
+    "rows": 1,
+    "padding": 0,
+    "scale": "1",
+    "layers": [
+      {
+        "name": "main",
+        "visible": true,
+        "opacity": 255,
+        "blend_mode": "normal",
+        "locked": false,
+        "group": ""
+      }
+    ],
+    "frameTags": [
+      {
+        "name": "empty",
+        "from": 0,
+        "to": 0,
+        "direction": "forward"
+      },
+      {
+        "name": "selected",
+        "from": 1,
+        "to": 1,
+        "direction": "forward"
+      }
+    ]
+  }
+}

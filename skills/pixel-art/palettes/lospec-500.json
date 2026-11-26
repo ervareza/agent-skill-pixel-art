@@ -1,0 +1,11 @@
+{
+  "name": "lospec-500",
+  "description": "Lospec 500 community 32-color palette with versatile warm shadows and crisp highlights.",
+  "max_colors": 32,
+  "colors": [
+    "#10121C", "#2C1E31", "#6B2643", "#AC2847", "#EC273F", "#94493A", "#DE5D3A", "#E98537",
+    "#F3A833", "#4D3533", "#6E4C30", "#A26D3F", "#CE9248", "#DAB163", "#E8D282", "#F7F3B7",
+    "#1E4044", "#006554", "#26854C", "#5AB552", "#9DE64E", "#008B8B", "#62A477", "#A6CB96",
+    "#D3EED3", "#3E3B65", "#3859B3", "#3388DE", "#36C5F4", "#6DEAD6", "#5E5B8C", "#8C78A5"
+  ]
+}

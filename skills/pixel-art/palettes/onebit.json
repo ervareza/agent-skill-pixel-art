@@ -1,0 +1,8 @@
+{
+  "name": "onebit",
+  "description": "Minimalist 1-bit high-contrast palette (ink & cream) for crisp retro indie games.",
+  "max_colors": 2,
+  "colors": [
+    "#11111B", "#F5F5F0"
+  ]
+}

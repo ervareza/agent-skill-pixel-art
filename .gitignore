@@ -1,6 +1,8 @@
 .DS_Store
 *.pyc
 __pycache__/
+.pytest_cache/
+*.egg-info/
 projects/
 .venv/
 env/

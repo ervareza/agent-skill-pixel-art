@@ -1,400 +1,694 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pixel Art Agent Skill — Interactive Showcase</title>
-    <meta name="description" content="An autonomous AI agent skill for generating, auditing, and exporting flawless 2D pixel art game assets. 730+ assets, 88 GIFs, 13 CLI tools.">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg: #ffffff;
-            --surface: #f8f9fa;
-            --border: #e5e7eb;
-            --text: #111827;
-            --text-muted: #6b7280;
-            --accent: #4f46e5;
-            --accent-light: #eef2ff;
-            --code-bg: #1e1e2e;
-            --code-text: #89b4fa;
-            --checker-a: #f0f0f0;
-            --checker-b: #e0e0e0;
-        }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
-        
-        /* HEADER */
-        header {
-            text-align: center;
-            padding: 5rem 2rem 4rem;
-            border-bottom: 1px solid var(--border);
-        }
-        header h1 {
-            font-size: 3rem;
-            font-weight: 800;
-            letter-spacing: -0.02em;
-            margin-bottom: 0.75rem;
-        }
-        header h1 span { color: var(--accent); }
-        .subtitle { font-size: 1.15rem; color: var(--text-muted); max-width: 600px; margin: 0 auto 2rem; }
-        .stats { display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2rem; }
-        .stat { text-align: center; }
-        .stat-number { font-size: 2rem; font-weight: 800; color: var(--accent); display: block; }
-        .stat-label { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
-        .btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; text-decoration: none; font-size: 0.95rem; transition: all 0.15s; }
-        .btn-primary { background: var(--accent); color: #fff; }
-        .btn-primary:hover { background: #4338ca; transform: translateY(-1px); }
-        .btn-outline { border: 1.5px solid var(--border); color: var(--text); }
-        .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PixelForge v1.0.0 — 2D Pixel Art &amp; Game Asset Agent Skill</title>
+  <meta name="description" content="Pure-Python 2D pixel art & game asset engine and AI agent skill. Multi-layer 4/8-direction walking characters, any resolution (8x8 to 64x64+), 2 to 60 frames, Wang/Blob autotiles, 12 procedural VFX, fake-3D sprite stacking, native .aseprite & Godot 4 .tres export.">
+  <meta property="og:title" content="PixelForge v1.0.0 — 2D Pixel Art & Game Asset Agent Skill">
+  <meta property="og:description" content="Layered 4/8-direction animated characters, seamless autotiles, procedural VFX, fake-3D sprite stacking, and native .aseprite / Godot / Unity / RPG Maker export.">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://agent-skill-pixel-art.vercel.app/">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%23181624'/%3E%3Crect x='2' y='2' width='6' height='6' fill='%232563eb'/%3E%3Crect x='8' y='2' width='6' height='6' fill='%2360a5fa'/%3E%3Crect x='2' y='8' width='6' height='6' fill='%231d4ed8'/%3E%3Crect x='8' y='8' width='6' height='6' fill='%23e2e8f0'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "PixelForge — Agent Skill Pixel Art",
+    "softwareVersion": "1.0.0",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Cross-platform",
+    "url": "https://agent-skill-pixel-art.vercel.app/",
+    "codeRepository": "https://github.com/ervareza/agent-skill-pixel-art",
+    "license": "https://opensource.org/licenses/MIT"
+  }
+  </script>
+  <style>
+    :root {
+      --paper: #f6f4ee;
+      --surface: #ffffff;
+      --stage: #151824;
+      --stage-alt: #1c2030;
+      --ink: #181624;
+      --muted: #525166;
+      --border: #d9d5c9;
+      --border-strong: #181624;
+      --cobalt: #2563eb;
+      --crimson: #dc2626;
+      --emerald: #059669;
+      --amber: #d97706;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Space Grotesk', system-ui, sans-serif;
+      background-color: var(--paper);
+      background-image: radial-gradient(rgba(24, 22, 36, 0.06) 1px, transparent 1px);
+      background-size: 20px 20px;
+      color: var(--ink);
+      line-height: 1.55;
+    }
+    code, pre, .mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
 
-        /* CONTAINER */
-        .container { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
-        
-        /* SECTION */
-        .section { padding: 4rem 0; border-bottom: 1px solid var(--border); }
-        .section-title { font-size: 1.75rem; font-weight: 700; margin-bottom: 0.5rem; }
-        .section-desc { color: var(--text-muted); margin-bottom: 2rem; }
-        .badge { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 999px; font-size: 0.75rem; font-weight: 600; background: var(--accent-light); color: var(--accent); margin-right: 0.5rem; }
-        
-        /* PIXEL GRID */
-        .pixel-grid {
-            display: flex;
-            gap: 1.5rem;
-            flex-wrap: wrap;
-            align-items: end;
-        }
-        .pixel-item {
-            text-align: center;
-        }
-        .pixel-item img {
-            image-rendering: pixelated;
-            background-image: linear-gradient(45deg, var(--checker-a) 25%, transparent 25%), 
-                              linear-gradient(-45deg, var(--checker-a) 25%, transparent 25%), 
-                              linear-gradient(45deg, transparent 75%, var(--checker-a) 75%), 
-                              linear-gradient(-45deg, transparent 75%, var(--checker-a) 75%);
-            background-size: 12px 12px;
-            background-position: 0 0, 0 6px, 6px -6px, -6px 0px;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-            padding: 8px;
-        }
-        .pixel-item .label { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.4rem; }
-        
-        /* DIRECTION GRID */
-        .dir-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
-            gap: 0.75rem;
-        }
-        .dir-grid .pixel-item img { width: 64px; height: 64px; }
-        
-        /* ACTION TABLE */
-        .action-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-            gap: 1rem;
-        }
-        .action-grid .pixel-item img { width: 96px; height: 96px; }
-        
-        /* CODE BLOCK */
-        .code-block {
-            background: var(--code-bg);
-            color: var(--code-text);
-            padding: 1rem 1.5rem;
-            border-radius: 10px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.8rem;
-            overflow-x: auto;
-            margin-top: 1.5rem;
-            line-height: 1.8;
-        }
-        .code-block .comment { color: #6c7086; }
-        
-        /* TILE GRID */
-        .tile-row {
-            display: flex;
-            gap: 0;
-        }
-        .tile-row img {
-            image-rendering: pixelated;
-            width: 64px;
-            height: 64px;
-            display: block;
-        }
-        
-        /* PALETTE GRID */
-        .palette-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 1rem;
-        }
-        .palette-card {
-            text-align: center;
-            padding: 1rem;
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            background: var(--surface);
-        }
-        .palette-card img { image-rendering: pixelated; width: 100%; max-width: 128px; border-radius: 4px; }
-        .palette-card .label { font-size: 0.75rem; font-weight: 600; margin-top: 0.5rem; color: var(--text); }
-        
-        /* FOOTER */
-        footer { text-align: center; padding: 3rem 2rem; color: var(--text-muted); font-size: 0.85rem; }
-        footer a { color: var(--accent); }
-        
-        @media (max-width: 768px) {
-            header h1 { font-size: 2rem; }
-            .palette-grid { grid-template-columns: repeat(2, 1fr); }
-            .dir-grid { grid-template-columns: repeat(4, 1fr); }
-        }
-    </style>
+    /* NAV */
+    nav {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(246, 244, 238, 0.92);
+      backdrop-filter: blur(8px);
+      border-bottom: 2px solid var(--border-strong);
+    }
+    .nav-inner {
+      max-width: 1200px; margin: 0 auto; padding: 0.75rem 1.5rem;
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+    }
+    .brand { display: flex; align-items: center; gap: 0.6rem; text-decoration: none; color: var(--ink); font-weight: 700; font-size: 1.05rem; letter-spacing: -0.02em; }
+    .brand-tag { background: var(--ink); color: #fff; font-size: 0.7rem; padding: 0.15rem 0.45rem; border-radius: 4px; font-family: 'JetBrains Mono', monospace; }
+    .nav-links { display: flex; gap: 1.1rem; flex-wrap: wrap; align-items: center; font-size: 0.85rem; font-weight: 600; }
+    .nav-links a { color: var(--ink); text-decoration: none; border-bottom: 2px solid transparent; padding-bottom: 2px; }
+    .nav-links a:hover, .nav-links a:focus-visible { border-bottom-color: var(--cobalt); color: var(--cobalt); }
+
+    /* LAYOUT */
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
+    section { padding: 4rem 0; border-bottom: 1.5px solid var(--border); }
+    .kicker { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--cobalt); margin-bottom: 0.5rem; display: block; }
+    h1 { font-size: clamp(2.2rem, 4.4vw, 3.4rem); line-height: 1.08; letter-spacing: -0.03em; margin-bottom: 1rem; }
+    h2 { font-size: clamp(1.5rem, 2.5vw, 2rem); letter-spacing: -0.02em; margin-bottom: 0.45rem; }
+    h3 { font-size: 0.95rem; font-family: 'JetBrains Mono', monospace; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin: 2rem 0 0.85rem; }
+    .lead { font-size: 1.08rem; color: var(--muted); max-width: 60ch; }
+
+    /* HERO SPLIT */
+    .hero { padding: 3.5rem 0 4rem; border-bottom: 2px solid var(--border-strong); }
+    .hero-grid { display: grid; grid-template-columns: 1.05fr 1.15fr; gap: 2.5rem; align-items: center; }
+    .stat-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; margin: 1.75rem 0; }
+    .stat-box { background: var(--surface); border: 1.5px solid var(--border-strong); border-radius: 8px; padding: 0.7rem 0.8rem; box-shadow: 3px 3px 0 var(--border-strong); }
+    .stat-val { font-size: 1.45rem; font-weight: 700; display: block; line-height: 1.1; }
+    .stat-lbl { font-size: 0.7rem; font-family: 'JetBrains Mono', monospace; color: var(--muted); text-transform: uppercase; }
+    .btn-row { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.45rem; padding: 0.65rem 1.2rem;
+      border-radius: 7px; font-weight: 600; font-size: 0.9rem; text-decoration: none; cursor: pointer;
+      border: 2px solid var(--border-strong); transition: transform 0.12s, box-shadow 0.12s;
+    }
+    .btn-primary { background: var(--ink); color: #fff; box-shadow: 3px 3px 0 var(--cobalt); }
+    .btn-primary:hover { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--cobalt); }
+    .btn-secondary { background: var(--surface); color: var(--ink); box-shadow: 3px 3px 0 var(--border-strong); }
+    .btn-secondary:hover { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--border-strong); }
+
+    /* PLAYABLE SANDBOX CARD */
+    .sandbox-card {
+      background: var(--surface); border: 2px solid var(--border-strong); border-radius: 12px;
+      box-shadow: 6px 6px 0 var(--border-strong); overflow: hidden;
+    }
+    .sandbox-top {
+      background: var(--ink); color: #fff; padding: 0.6rem 1rem;
+      display: flex; align-items: center; justify-content: space-between; font-size: 0.78rem; font-family: 'JetBrains Mono', monospace;
+    }
+    .sandbox-stage {
+      position: relative; background: var(--stage); display: flex; justify-content: center; align-items: center;
+      padding: 0.75rem; border-bottom: 2px solid var(--border-strong);
+    }
+    #arenaCanvas { image-rendering: pixelated; border-radius: 6px; border: 1px solid #2b3048; width: 100%; max-width: 520px; height: auto; aspect-ratio: 13 / 8; background: #1e2a38; }
+    .sandbox-controls { padding: 0.9rem 1rem; display: grid; grid-template-columns: auto 1fr; gap: 1rem; align-items: start; }
+    .dpad { display: grid; grid-template-columns: repeat(3, 34px); grid-template-rows: repeat(3, 34px); gap: 4px; }
+    .dpad button {
+      background: var(--paper); border: 1.5px solid var(--border-strong); border-radius: 5px;
+      font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 0.78rem; cursor: pointer; color: var(--ink);
+    }
+    .dpad button:hover, .dpad button.pressed { background: var(--cobalt); color: #fff; }
+    .layer-toggles { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .layer-chip {
+      display: inline-flex; align-items: center; gap: 0.3rem; font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem; background: var(--paper); border: 1.5px solid var(--border); border-radius: 5px;
+      padding: 0.22rem 0.5rem; cursor: pointer; user-select: none;
+    }
+    .layer-chip input { accent-color: var(--cobalt); }
+    .layer-chip.on { border-color: var(--ink); background: #eef2ff; }
+    .sandbox-foot { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; flex-wrap: wrap; margin-top: 0.65rem; font-size: 0.74rem; font-family: 'JetBrains Mono', monospace; color: var(--muted); }
+    .mini-btn { background: var(--surface); border: 1.5px solid var(--border-strong); border-radius: 5px; padding: 0.2rem 0.55rem; font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; font-weight: 600; cursor: pointer; }
+    .mini-btn.active { background: var(--emerald); color: #fff; border-color: var(--emerald); }
+
+    /* GALLERY CARDS */
+    .grid { display: grid; gap: 1rem; }
+    .g-4 { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+    .g-5 { grid-template-columns: repeat(auto-fill, minmax(135px, 1fr)); }
+    .g-6 { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
+    .g-8 { grid-template-columns: repeat(auto-fill, minmax(115px, 1fr)); }
+    .card {
+      background: var(--surface); border: 1.5px solid var(--border-strong); border-radius: 9px;
+      padding: 0.7rem; text-align: center; box-shadow: 3px 3px 0 rgba(24,22,36,0.12);
+    }
+    .sprite-well {
+      background: repeating-conic-gradient(var(--stage-alt) 0% 25%, var(--stage) 0% 50%) 0 0 / 12px 12px;
+      border-radius: 6px; padding: 0.65rem; display: flex; align-items: center; justify-content: center;
+      min-height: 110px; border: 1px solid #25293e;
+    }
+    .sprite-well img { image-rendering: pixelated; max-width: 100%; height: auto; display: block; }
+    .card-title { font-size: 0.8rem; font-weight: 700; margin-top: 0.5rem; }
+    .card-sub { font-size: 0.7rem; font-family: 'JetBrains Mono', monospace; color: var(--muted); }
+
+    /* CODE BLOCK */
+    .code-box {
+      background: #141724; color: #cbd5f5; border: 2px solid var(--border-strong); border-radius: 9px;
+      padding: 1rem 1.25rem; font-family: 'JetBrains Mono', monospace; font-size: 0.78rem;
+      overflow-x: auto; margin-top: 1.5rem; line-height: 1.75;
+    }
+    .code-box .cm { color: #717c9e; }
+    .code-box .kw { color: #7dd3fc; }
+
+    /* TABLES */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    .tool-list { background: var(--surface); border: 1.5px solid var(--border-strong); border-radius: 10px; padding: 1.2rem; }
+    .tool-list ul { list-style: none; font-size: 0.82rem; display: grid; gap: 0.45rem; }
+    .tool-list li code { background: var(--paper); border: 1px solid var(--border); padding: 0.1rem 0.35rem; border-radius: 4px; font-weight: 600; }
+
+    footer { padding: 3rem 0; text-align: center; font-size: 0.84rem; color: var(--muted); }
+    footer a { color: var(--cobalt); font-weight: 600; text-decoration: none; }
+
+    @media (max-width: 920px) {
+      .hero-grid, .two-col { grid-template-columns: 1fr; }
+      .stat-strip { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+    }
+  </style>
 </head>
 <body>
 
-<header>
-    <h1>Pixel Art <span>Agent Skill</span></h1>
-    <p class="subtitle">An autonomous AI agent skill for generating, auditing, and exporting flawless 2D pixel art game assets — from 16×16 icons to 1024×1024 cinematic scenes.</p>
-    <div class="stats">
-        <div class="stat"><span class="stat-number">730+</span><span class="stat-label">Total Assets</span></div>
-        <div class="stat"><span class="stat-number">88</span><span class="stat-label">Animated GIFs</span></div>
-        <div class="stat"><span class="stat-number">13</span><span class="stat-label">CLI Tools</span></div>
-        <div class="stat"><span class="stat-number">10</span><span class="stat-label">Palettes</span></div>
+<nav aria-label="Main navigation">
+  <div class="nav-inner">
+    <a href="#" class="brand">
+      <svg width="22" height="22" viewBox="0 0 16 16" aria-hidden="true">
+        <rect x="2" y="2" width="12" height="12" fill="#2563eb"/>
+        <rect x="4" y="4" width="4" height="4" fill="#60a5fa"/>
+        <rect x="8" y="8" width="4" height="4" fill="#1e3a8a"/>
+        <rect x="1" y="1" width="14" height="14" fill="none" stroke="#181624" stroke-width="2"/>
+      </svg>
+      PixelForge Skill <span class="brand-tag">v1.0.0</span>
+    </a>
+    <div class="nav-links">
+      <a href="#characters">Characters</a>
+      <a href="#matrix">Sizes &amp; Frames</a>
+      <a href="#tilesets">Tilesets</a>
+      <a href="#vfx">VFX</a>
+      <a href="#stacking">Fake-3D</a>
+      <a href="#assets">Items &amp; UI</a>
+      <a href="#palettes">16 Palettes</a>
+      <a href="changelog/index.html">Changelog</a>
+      <a href="https://github.com/ervareza/agent-skill-pixel-art" rel="noopener">GitHub</a>
     </div>
-    <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
-        <a href="https://github.com/ervareza/agent-skill-pixel-art" class="btn btn-primary">
-            <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
-            View on GitHub
-        </a>
-    </div>
-</header>
+  </div>
+</nav>
 
-<div class="container">
+<main>
+  <!-- HERO + INTERACTIVE LAYERED PLAYABLE SANDBOX -->
+  <div class="hero">
+    <div class="container hero-grid">
+      <div>
+        <span class="kicker">Pure-Python Pixel Art Engine &amp; AI Agent Skill</span>
+        <h1>Layered, Walkable 2D Game Assets — Built by Code.</h1>
+        <p class="lead">
+          Complete v1.0.0 rewrite distilled from the top open-source pixel art skills and engines. Generate rigged 4/8-direction characters at any resolution (<strong>8×8</strong> to <strong>64×64+</strong>) and any frame count (<strong>2</strong> to <strong>60 frames</strong>), seamless Wang/Blob autotiles, 12 procedural VFX, fake-3D sprite stacks, and export directly to <code>.aseprite</code>, Godot 4 <code>.tres</code>, Unity, Phaser, and RPG Maker.
+        </p>
+        <div class="stat-strip">
+          <div class="stat-box"><span class="stat-val">21</span><span class="stat-lbl">CLI Tools</span></div>
+          <div class="stat-box"><span class="stat-val">15</span><span class="stat-lbl">Rig Layers</span></div>
+          <div class="stat-box"><span class="stat-val">16</span><span class="stat-lbl">Palettes</span></div>
+          <div class="stat-box"><span class="stat-val">67/67</span><span class="stat-lbl">Tests Pass</span></div>
+        </div>
+        <div class="btn-row">
+          <a href="https://github.com/ervareza/agent-skill-pixel-art" class="btn btn-primary" rel="noopener">Install Skill on GitHub</a>
+          <a href="changelog/index.html" class="btn btn-secondary">Read v1.0.0 Changelog</a>
+        </div>
+      </div>
 
-    <!-- UC1 -->
-    <div class="section">
-        <span class="badge">16×16</span><span class="badge">Sweetie-16</span>
-        <h2 class="section-title">UC1: Micro Sandbox</h2>
-        <p class="section-desc">Retro game items and micro VFX. Static coins, idle sparkles, and explosive particle effects.</p>
-        <div class="pixel-grid">
-            <div class="pixel-item"><img src="examples/uc1_micro/coin_static.gif" width="64" height="64"><div class="label">Coin Static (2f, 4fps)</div></div>
-            <div class="pixel-item"><img src="examples/uc1_micro/sparkle_idle.gif" width="64" height="64"><div class="label">Sparkle Idle (4f, 6fps)</div></div>
-            <div class="pixel-item"><img src="examples/uc1_micro/explosion_vfx.gif" width="64" height="64"><div class="label">Explosion VFX (12f, 24fps)</div></div>
-            <div class="pixel-item"><img src="examples/uc1_micro/coin_sheet_4x.png" width="128" height="64"><div class="label">Coin Spritesheet (4×)</div></div>
-            <div class="pixel-item"><img src="examples/uc1_micro/vfx_sheet_4x.png" width="384" height="128"><div class="label">VFX Spritesheet (4×)</div></div>
+      <!-- LIVE PLAYABLE 4-DIR LAYERED WALK ARENA -->
+      <div class="sandbox-card" aria-label="Interactive 4-direction layered character walk playground">
+        <div class="sandbox-top">
+          <span>LIVE LAYERED WALK ARENA (32×32 · 8 FRAMES)</span>
+          <span id="arenaStatus">DIR: DOWN · 10 FPS</span>
         </div>
-        <div class="code-block">
-<span class="comment"># Audit → GIF → Atlas → Resize</span>
-$ batch_audit.py --dir static/ --grid 16 --max-colors 16
-$ gif_export.py --frames-dir vfx/ --fps 24 --output explosion_vfx.gif
-$ atlas_pack.py --frames-dir static/ --output coin_sheet.png --cols 2
-$ sprite_resize.py --input coin_sheet.png --output coin_sheet_4x.png --scale 4
+        <div class="sandbox-stage">
+          <canvas id="arenaCanvas" width="416" height="256"></canvas>
         </div>
-    </div>
-
-    <!-- UC2 -->
-    <div class="section">
-        <span class="badge">32×32</span><span class="badge">DB32</span><span class="badge">8-Way</span>
-        <h2 class="section-title">UC2: 8-Way Action Hero</h2>
-        <p class="section-desc">Complete character with 7 actions × 8 directions = 56 animated GIFs. Draw 5 directions, auto-mirror 3 with <code>sprite_mirror.py</code>.</p>
-        
-        <h3 style="font-size:1rem;margin-bottom:1rem;color:var(--text-muted);">Walk Cycle — All 8 Directions</h3>
-        <div class="dir-grid">
-            <div class="pixel-item"><img src="examples/uc2_hero/gifs/walk_north.gif"><div class="label">North</div></div>
-            <div class="pixel-item"><img src="examples/uc2_hero/gifs/walk_northeast.gif"><div class="label">NE</div></div>
-            <div class="pixel-item"><img src="examples/uc2_hero/gifs/walk_east.gif"><div class="label">East</div></div>
-            <div class="pixel-item"><img src="examples/uc2_hero/gifs/walk_southeast.gif"><div class="label">SE</div></div>
-            <div class="pixel-item"><img src="examples/uc2_hero/gifs/walk_south.gif"><div class="label">South</div></div>
-            <div class="pixel-item"><img src="examples/uc2_hero/gifs/walk_southwest.gif"><div class="label">SW</div></div>
-            <div class="pixel-item"><img src="examples/uc2_hero/gifs/walk_west.gif"><div class="label">West</div></div>
-            <div class="pixel-item"><img src="examples/uc2_hero/gifs/walk_northwest.gif"><div class="label">NW</div></div>
-        </div>
-        
-        <h3 style="font-size:1rem;margin:2rem 0 1rem;color:var(--text-muted);">All 7 Actions — East Direction</h3>
-        <div class="action-grid">
-            <div class="pixel-item"><img src="examples/uc2_hero/gifs/idle_east.gif"><div class="label">Idle (4f)</div></div>
-            <div class="pixel-item"><img src="examples/uc2_hero/gifs/walk_east.gif"><div class="label">Walk (6f)</div></div>
-            <div class="pixel-item"><img src="examples/uc2_hero/gifs/run_east.gif"><div class="label">Run (8f)</div></div>
-            <div class="pixel-item"><img src="examples/uc2_hero/gifs/jump_east.gif"><div class="label">Jump (4f)</div></div>
-            <div class="pixel-item"><img src="examples/uc2_hero/gifs/attack_east.gif"><div class="label">Attack (6f)</div></div>
-            <div class="pixel-item"><img src="examples/uc2_hero/gifs/hurt_east.gif"><div class="label">Hurt (3f)</div></div>
-            <div class="pixel-item"><img src="examples/uc2_hero/gifs/die_east.gif"><div class="label">Die (6f)</div></div>
-        </div>
-        <div class="code-block">
-<span class="comment"># Auto-mirror 3 directions from drawn 5</span>
-$ sprite_mirror.py --input-dir east/walk/ --output-dir west/walk/ --axis horizontal
-$ sprite_mirror.py --input-dir northeast/walk/ --output-dir northwest/walk/ --axis horizontal
-$ sprite_mirror.py --input-dir southeast/walk/ --output-dir southwest/walk/ --axis horizontal
-<span class="comment"># Export all 56 GIFs</span>
-$ gif_export.py --frames-dir east/run/ --fps 16 --output run_east.gif
-<span class="comment"># Pack spritesheets (56 total)</span>
-$ atlas_pack.py --frames-dir east/walk/ --output walk_east_sheet.png --cols 6
-        </div>
-    </div>
-
-    <!-- UC3 -->
-    <div class="section">
-        <span class="badge">64×64</span><span class="badge">Resurrect-64</span><span class="badge">4-Way</span>
-        <h2 class="section-title">UC3: HD Tileset & Spellcaster</h2>
-        <p class="section-desc">Procedural terrain tiles via <code>noise_generator.py</code> and <code>dither.py</code>, plus a 4-directional wizard with 5 combat actions.</p>
-        
-        <h3 style="font-size:1rem;margin-bottom:1rem;color:var(--text-muted);">Terrain Tiles (Procedural Noise + Dither)</h3>
-        <div class="pixel-grid">
-            <div class="pixel-item"><img src="examples/uc3_hd/tiles/grass.png" width="64" height="64"><div class="label">Grass</div></div>
-            <div class="pixel-item"><img src="examples/uc3_hd/tiles/water.png" width="64" height="64"><div class="label">Water</div></div>
-            <div class="pixel-item"><img src="examples/uc3_hd/tiles/stone.png" width="64" height="64"><div class="label">Stone</div></div>
-            <div class="pixel-item"><img src="examples/uc3_hd/tiles/sand.png" width="64" height="64"><div class="label">Sand</div></div>
-            <div class="pixel-item"><img src="examples/uc3_hd/tiles/lava.png" width="64" height="64"><div class="label">Lava</div></div>
-            <div class="pixel-item"><img src="examples/uc3_hd/tiles/sky_dither.png" width="64" height="64"><div class="label">Sky Dither</div></div>
-            <div class="pixel-item"><img src="examples/uc3_hd/tiles/night_dither.png" width="64" height="64"><div class="label">Night Dither</div></div>
-        </div>
-        
-        <h3 style="font-size:1rem;margin:2rem 0 1rem;color:var(--text-muted);">Wizard Cast — 4 Directions</h3>
-        <div class="dir-grid">
-            <div class="pixel-item"><img src="examples/uc3_hd/gifs/cast_down.gif" width="96" height="96"><div class="label">Down</div></div>
-            <div class="pixel-item"><img src="examples/uc3_hd/gifs/cast_up.gif" width="96" height="96"><div class="label">Up</div></div>
-            <div class="pixel-item"><img src="examples/uc3_hd/gifs/cast_left.gif" width="96" height="96"><div class="label">Left</div></div>
-            <div class="pixel-item"><img src="examples/uc3_hd/gifs/cast_right.gif" width="96" height="96"><div class="label">Right</div></div>
-        </div>
-        
-        <h3 style="font-size:1rem;margin:2rem 0 1rem;color:var(--text-muted);">All 5 Actions — Down Direction</h3>
-        <div class="action-grid">
-            <div class="pixel-item"><img src="examples/uc3_hd/gifs/idle_down.gif" width="96" height="96"><div class="label">Idle (4f)</div></div>
-            <div class="pixel-item"><img src="examples/uc3_hd/gifs/walk_down.gif" width="96" height="96"><div class="label">Walk (6f)</div></div>
-            <div class="pixel-item"><img src="examples/uc3_hd/gifs/attack_down.gif" width="96" height="96"><div class="label">Attack (6f)</div></div>
-            <div class="pixel-item"><img src="examples/uc3_hd/gifs/cast_down.gif" width="96" height="96"><div class="label">Cast (8f)</div></div>
-            <div class="pixel-item"><img src="examples/uc3_hd/gifs/hurt_down.gif" width="96" height="96"><div class="label">Hurt (3f)</div></div>
-        </div>
-        <div class="code-block">
-<span class="comment"># Procedural terrain generation</span>
-$ noise_generator.py --width 64 --height 64 --scale 16 --octaves 2 --palette resurrect-64.json --output grass.png
-$ noise_generator.py --width 64 --height 64 --scale 8 --octaves 1 --palette resurrect-64.json --output water.png
-$ dither.py --width 64 --height 64 --color1 '#2c2137' --color2 '#8295a3' --matrix 4 --output sky_dither.png
-<span class="comment"># Mirror wizard directions</span>
-$ sprite_mirror.py --input-dir right/cast/ --output-dir left/cast/ --axis horizontal
-        </div>
-    </div>
-
-    <!-- UC4 -->
-    <div class="section">
-        <span class="badge">128×128</span><span class="badge">Endesga-32</span><span class="badge">2-Way</span>
-        <h2 class="section-title">UC4: Side-Scrolling Boss Monster</h2>
-        <p class="section-desc">Giant boss sprite with idle breathing, jump slam, attack shockwave, and dramatic death dissolve. Upscaled to 256×256 with outline.</p>
-        <div class="pixel-grid">
-            <div class="pixel-item"><img src="examples/uc4_boss/gifs/idle_right.gif" width="192" height="192"><div class="label">Idle (4f, 6fps)</div></div>
-            <div class="pixel-item"><img src="examples/uc4_boss/gifs/jump_right.gif" width="192" height="192"><div class="label">Jump (6f, 12fps)</div></div>
-            <div class="pixel-item"><img src="examples/uc4_boss/gifs/attack_right.gif" width="192" height="192"><div class="label">Attack (6f, 14fps)</div></div>
-            <div class="pixel-item"><img src="examples/uc4_boss/gifs/die_right.gif" width="192" height="192"><div class="label">Die (8f, 8fps)</div></div>
-        </div>
-        <h3 style="font-size:1rem;margin:2rem 0 1rem;color:var(--text-muted);">Mirrored Left + Upscaled & Outlined</h3>
-        <div class="pixel-grid">
-            <div class="pixel-item"><img src="examples/uc4_boss/gifs/idle_left.gif" width="128" height="128"><div class="label">Left (mirrored)</div></div>
-            <div class="pixel-item"><img src="examples/uc4_boss/gifs/attack_left.gif" width="128" height="128"><div class="label">Attack Left</div></div>
-            <div class="pixel-item"><img src="examples/uc4_boss/boss_outlined.png" width="192" height="192" style="image-rendering:pixelated;"><div class="label">256×256 Outlined</div></div>
-        </div>
-        <div class="code-block">
-<span class="comment"># Mirror, resize, and outline</span>
-$ sprite_mirror.py --input-dir right/idle/ --output-dir left/idle/ --axis horizontal
-$ sprite_resize.py --input boss.png --output boss_256.png --scale 2
-$ outline_generator.py --input boss_256.png --output boss_outlined.png --color "#000000"
-        </div>
-    </div>
-
-    <!-- UC5 -->
-    <div class="section">
-        <span class="badge">1024×1024</span><span class="badge">Resurrect-64</span><span class="badge">Cinematic</span>
-        <h2 class="section-title">UC5: Cinematic Portal</h2>
-        <p class="section-desc">Massive 1-million pixel animation. 8 frames at 24fps, validated with <code>quality_audit.py</code> — zero orphan pixels, zero semi-transparency.</p>
-        <div class="pixel-grid" style="justify-content:center;">
-            <div class="pixel-item"><img src="examples/uc5_ultra/portal_cinematic.gif" width="400" height="400" style="image-rendering:pixelated;"><div class="label">Portal (8f, 24fps, 1024×1024)</div></div>
-        </div>
-        <div class="code-block">
-<span class="comment"># Quality audit on 1,048,576 pixels</span>
-$ quality_audit.py --image portal_00.png --grid 8 --max-colors 128
-<span class="comment"># Result: PASS — 0 orphans, 0 semi-transparent, 65 colors</span>
-$ gif_export.py --frames-dir frames/ --fps 24 --output portal_cinematic.gif
-$ atlas_pack.py --frames-dir frames/ --output portal_sheet.png --cols 4
-<span class="comment"># Sheet size: 4096×2048!</span>
-        </div>
-    </div>
-
-    <!-- UC6 -->
-    <div class="section">
-        <span class="badge">10 Palettes</span><span class="badge">palette_remap</span><span class="badge">export_indexed</span>
-        <h2 class="section-title">UC6: The Palette Multiverse</h2>
-        <p class="section-desc">Same wizard sprite, automatically recolored to all 10 built-in game palettes using <code>palette_remap.py</code> + <code>export_indexed.py</code>.</p>
-        <div class="palette-grid">
-            <div class="palette-card"><img src="examples/uc6_palettes/wizard_sweetie-16_4x.png"><div class="label">Sweetie-16</div></div>
-            <div class="palette-card"><img src="examples/uc6_palettes/wizard_pico-8_4x.png"><div class="label">PICO-8</div></div>
-            <div class="palette-card"><img src="examples/uc6_palettes/wizard_gameboy_4x.png"><div class="label">GameBoy</div></div>
-            <div class="palette-card"><img src="examples/uc6_palettes/wizard_db32_4x.png"><div class="label">DB32</div></div>
-            <div class="palette-card"><img src="examples/uc6_palettes/wizard_endesga-32_4x.png"><div class="label">Endesga-32</div></div>
-            <div class="palette-card"><img src="examples/uc6_palettes/wizard_resurrect-64_4x.png"><div class="label">Resurrect-64</div></div>
-            <div class="palette-card"><img src="examples/uc6_palettes/wizard_nes_4x.png"><div class="label">NES</div></div>
-            <div class="palette-card"><img src="examples/uc6_palettes/wizard_snes_4x.png"><div class="label">SNES</div></div>
-            <div class="palette-card"><img src="examples/uc6_palettes/wizard_cga_4x.png"><div class="label">CGA</div></div>
-            <div class="palette-card"><img src="examples/uc6_palettes/wizard_commodore-64_4x.png"><div class="label">Commodore 64</div></div>
-        </div>
-        <div class="code-block">
-<span class="comment"># Remap to every palette</span>
-$ palette_remap.py --image wizard.png --palette palettes/pico-8.json --output wizard_pico-8.png
-$ export_indexed.py --input wizard_pico-8.png --output wizard_pico-8_indexed.png --max-colors 16
-$ sprite_resize.py --input wizard_pico-8.png --output wizard_pico-8_4x.png --scale 4
-<span class="comment"># Extract palette from existing sprite</span>
-$ palette_extract.py --image wizard.png --max-colors 16 --output wizard_extracted.json
-        </div>
-    </div>
-
-    <!-- UC7 -->
-    <div class="section" style="border-bottom:none;">
-        <span class="badge">13 Tools</span><span class="badge">3 Templates</span><span class="badge">7 References</span>
-        <h2 class="section-title">UC7: Full Toolkit</h2>
-        <p class="section-desc">Every script, template, and reference used in this showcase.</p>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;">
-            <div>
-                <h3 style="font-size:1rem;margin-bottom:0.75rem;">13 CLI Scripts</h3>
-                <ul style="list-style:none;font-size:0.85rem;line-height:2;">
-                    <li>✅ <code>init_workspace.py</code> — Project scaffolding</li>
-                    <li>✅ <code>quality_audit.py</code> — Single-file QA</li>
-                    <li>✅ <code>batch_audit.py</code> — Directory-wide QA</li>
-                    <li>✅ <code>atlas_pack.py</code> — Spritesheet packer</li>
-                    <li>✅ <code>gif_export.py</code> — Animated GIF export</li>
-                    <li>✅ <code>sprite_mirror.py</code> — Direction mirroring</li>
-                    <li>✅ <code>sprite_resize.py</code> — Nearest-neighbor resize</li>
-                    <li>✅ <code>outline_generator.py</code> — Outline addition</li>
-                    <li>✅ <code>noise_generator.py</code> — Procedural terrain</li>
-                    <li>✅ <code>dither.py</code> — Bayer dithering</li>
-                    <li>✅ <code>palette_remap.py</code> — Color remapping</li>
-                    <li>✅ <code>palette_extract.py</code> — Color extraction</li>
-                    <li>✅ <code>export_indexed.py</code> — Indexed PNG export</li>
-                </ul>
+        <div class="sandbox-controls">
+          <div class="dpad" role="group" aria-label="Directional pad">
+            <span></span>
+            <button type="button" data-dir="up" aria-label="Walk Up">W</button>
+            <span></span>
+            <button type="button" data-dir="left" aria-label="Walk Left">A</button>
+            <button type="button" data-dir="down" aria-label="Walk Down">S</button>
+            <button type="button" data-dir="right" aria-label="Walk Right">D</button>
+          </div>
+          <div>
+            <div style="font-size:0.72rem;font-family:'JetBrains Mono',monospace;font-weight:700;margin-bottom:0.4rem;">TOGGLE LIVE RIG LAYERS (PAPER-DOLL):</div>
+            <div class="layer-toggles" id="layerToggles"></div>
+            <div class="sandbox-foot">
+              <label>FPS: <input type="range" id="fpsSlider" min="4" max="30" value="10" style="width:80px;vertical-align:middle;"> <span id="fpsVal">10</span></label>
+              <button type="button" id="patrolBtn" class="mini-btn active">Auto Patrol: ON</button>
             </div>
-            <div>
-                <h3 style="font-size:1rem;margin-bottom:0.75rem;">3 HTML Templates</h3>
-                <ul style="list-style:none;font-size:0.85rem;line-height:2;">
-                    <li>🖼️ <code>sprite_sheet.html</code> — Animation viewer</li>
-                    <li>🗺️ <code>tilemap_preview.html</code> — Tile painter</li>
-                    <li>🎨 <code>palette_viewer.html</code> — Color browser</li>
-                </ul>
-                <h3 style="font-size:1rem;margin:1.5rem 0 0.75rem;">7 Reference Guides</h3>
-                <ul style="list-style:none;font-size:0.85rem;line-height:2;">
-                    <li>📖 Sprite Conventions</li>
-                    <li>📖 Animation Principles</li>
-                    <li>📖 Tileset Rules</li>
-                    <li>📖 Isometric Guide</li>
-                    <li>📖 Color Theory</li>
-                    <li>📖 UI Elements</li>
-                    <li>📖 Particle Effects</li>
-                </ul>
-            </div>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 
-</div>
+  <!-- SECTION 1: CHARACTERS (4-DIR, 8-DIR, 8 ACTIONS, 9 ARCHETYPES) -->
+  <section id="characters">
+    <div class="container">
+      <span class="kicker">01 · Layered Character Rig &amp; Directional Animation</span>
+      <h2>True 4-Way &amp; 8-Way Walking Characters</h2>
+      <p class="lead">Shared landmark rows across all directions (zero turning bob), North view with zero face, darker far limbs for depth separation, and unified selective hue-shifted outlines — exported with intact layers to native <code>.aseprite</code> and Godot 4 <code>.tres</code>.</p>
+
+      <h3>4-Direction Hero Walk Cycle (32×32, 8 Frames, Endesga-32)</h3>
+      <div class="grid g-4">
+        <div class="card"><div class="sprite-well"><img src="examples/characters/hero_32/gifs/walk_down.gif" alt="Hero walking down" width="128" height="128"></div><div class="card-title">Down (South)</div><div class="card-sub">Front 2-eye view</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/characters/hero_32/gifs/walk_left.gif" alt="Hero walking left" width="128" height="128"></div><div class="card-title">Left (West)</div><div class="card-sub">True profile + light</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/characters/hero_32/gifs/walk_right.gif" alt="Hero walking right" width="128" height="128"></div><div class="card-title">Right (East)</div><div class="card-sub">Articulated stride</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/characters/hero_32/gifs/walk_up.gif" alt="Hero walking up" width="128" height="128"></div><div class="card-title">Up (North)</div><div class="card-sub">Back hair + cape</div></div>
+      </div>
+
+      <h3>All 8 Biomechanical Actions — Right Direction</h3>
+      <div class="grid g-8">
+        <div class="card"><div class="sprite-well"><img src="examples/characters/hero_32/gifs/idle_right.gif" alt="Idle" width="104" height="104"></div><div class="card-title">Idle</div><div class="card-sub">Breath + blink</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/characters/hero_32/gifs/walk_right.gif" alt="Walk" width="104" height="104"></div><div class="card-title">Walk</div><div class="card-sub">Contact-Pass</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/characters/hero_32/gifs/run_right.gif" alt="Run" width="104" height="104"></div><div class="card-title">Run</div><div class="card-sub">Lean + flight</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/characters/hero_32/gifs/jump_right.gif" alt="Jump" width="104" height="104"></div><div class="card-title">Jump</div><div class="card-sub">Squash + arc</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/characters/hero_32/gifs/attack_right.gif" alt="Attack" width="104" height="104"></div><div class="card-title">Attack</div><div class="card-sub">Slash smear</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/characters/hero_32/gifs/cast_right.gif" alt="Cast" width="104" height="104"></div><div class="card-title">Cast</div><div class="card-sub">Arcane glow</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/characters/hero_32/gifs/hurt_right.gif" alt="Hurt" width="104" height="104"></div><div class="card-title">Hurt</div><div class="card-sub">Recoil flash</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/characters/hero_32/gifs/die_right.gif" alt="Die" width="104" height="104"></div><div class="card-title">Die</div><div class="card-sub">Collapse</div></div>
+      </div>
+
+      <h3>8-Direction Action Turnaround — Knight (32×32)</h3>
+      <div class="grid g-8">
+        <div class="card"><div class="sprite-well"><img src="examples/characters/knight_8dir/gifs/walk_down.gif" alt="Knight South" width="96" height="96"></div><div class="card-title">S</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/characters/knight_8dir/gifs/walk_se.gif" alt="Knight SE" width="96" height="96"></div><div class="card-title">SE (3/4)</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/characters/knight_8dir/gifs/walk_right.gif" alt="Knight East" width="96" height="96"></div><div class="card-title">E</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/characters/knight_8dir/gifs/walk_ne.gif" alt="Knight NE" width="96" height="96"></div><div class="card-title">NE (3/4)</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/characters/knight_8dir/gifs/walk_up.gif" alt="Knight North" width="96" height="96"></div><div class="card-title">N</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/characters/knight_8dir/gifs/walk_nw.gif" alt="Knight NW" width="96" height="96"></div><div class="card-title">NW (3/4)</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/characters/knight_8dir/gifs/walk_left.gif" alt="Knight West" width="96" height="96"></div><div class="card-title">W</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/characters/knight_8dir/gifs/walk_sw.gif" alt="Knight SW" width="96" height="96"></div><div class="card-title">SW (3/4)</div></div>
+      </div>
+
+      <h3>All 9 Built-In Archetypes &amp; Paper-Doll Equipment Presets</h3>
+      <div class="grid g-5">
+        <div class="card"><div class="sprite-well"><img src="examples/characters/archetypes/hero_down.gif" alt="Hero" width="96" height="96"></div><div class="card-title">Hero</div><div class="card-sub">Sword + Cape</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/characters/archetypes/knight_down.gif" alt="Knight" width="96" height="96"></div><div class="card-title">Knight</div><div class="card-sub">Helm + Shield</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/characters/archetypes/mage_down.gif" alt="Mage" width="96" height="96"></div><div class="card-title">Mage</div><div class="card-sub">Hat + Staff</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/characters/archetypes/ranger_down.gif" alt="Ranger" width="96" height="96"></div><div class="card-title">Ranger</div><div class="card-sub">Hood + Bow</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/characters/archetypes/rogue_down.gif" alt="Rogue" width="96" height="96"></div><div class="card-title">Rogue</div><div class="card-sub">Dagger + Cape</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/characters/archetypes/villager_down.gif" alt="Villager" width="96" height="96"></div><div class="card-title">Villager</div><div class="card-sub">Cozy NPC</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/characters/archetypes/skeleton_down.gif" alt="Skeleton" width="96" height="96"></div><div class="card-title">Skeleton</div><div class="card-sub">Ribcage + Shield</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/characters/archetypes/goblin_down.gif" alt="Goblin" width="96" height="96"></div><div class="card-title">Goblin</div><div class="card-sub">Ears + Dagger</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/characters/archetypes/slime_down.gif" alt="Slime" width="96" height="96"></div><div class="card-title">Slime</div><div class="card-sub">Squash Hop</div></div>
+      </div>
+
+      <div class="code-box">
+<span class="cm"># Generate 4-dir hero with intact layers, native .aseprite, Godot 4 .tres, RPG Maker 3x4, &amp; GIFs</span>
+$ python scripts/character_gen.py --archetype hero --size 32 --dirs 4 --actions idle,walk,run,attack --frames 8 --fps 10 \
+    --output-dir ./hero --aseprite --export-layers --godot --rpgmaker --gif --preview --json
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 2: ARBITRARY RESOLUTIONS & FRAME COUNTS -->
+  <section id="matrix">
+    <div class="container">
+      <span class="kicker">02 · Resolution-Tier Proportions &amp; Continuous Kinematic Phase</span>
+      <h2>Any Pixel Size (8×8, 9×9, …, 64×64) &amp; Any Frame Count (2–60 Frames)</h2>
+      <p class="lead">Anatomy adapts cleanly by pixel budget (micro 8–11px without cramped outlines, classic 12–20px chibi, 24–32px indie RPG, 48–64px+ hi-bit). Animations sample continuous gait curves so 2, 3, 4, 5, 8, 12, 24, or 60 frames all loop seamlessly.</p>
+
+      <h3>Multi-Resolution Walk Matrix</h3>
+      <div class="grid g-5">
+        <div class="card"><div class="sprite-well"><img src="examples/characters/resolutions/hero_8x8.gif" alt="8x8 walk" width="96" height="96"></div><div class="card-title">8×8</div><div class="card-sub">Micro tier</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/characters/resolutions/hero_9x9.gif" alt="9x9 walk" width="96" height="96"></div><div class="card-title">9×9</div><div class="card-sub">Odd-grid micro</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/characters/resolutions/hero_12x12.gif" alt="12x12 walk" width="96" height="96"></div><div class="card-title">12×12</div><div class="card-sub">Compact chibi</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/characters/resolutions/hero_16x16.gif" alt="16x16 walk" width="96" height="96"></div><div class="card-title">16×16</div><div class="card-sub">Classic 8/16-bit</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/characters/resolutions/hero_16x24.gif" alt="16x24 walk" width="64" height="96"></div><div class="card-title">16×24</div><div class="card-sub">JRPG tall cell</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/characters/resolutions/hero_24x24.gif" alt="24x24 walk" width="96" height="96"></div><div class="card-title">24×24</div><div class="card-sub">Modern chibi</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/characters/resolutions/hero_32x32.gif" alt="32x32 walk" width="96" height="96"></div><div class="card-title">32×32</div><div class="card-sub">Indie standard</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/characters/resolutions/hero_48x48.gif" alt="48x48 walk" width="96" height="96"></div><div class="card-title">48×48</div><div class="card-sub">RPG Maker / HD</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/characters/resolutions/hero_64x64.gif" alt="64x64 walk" width="96" height="96"></div><div class="card-title">64×64</div><div class="card-sub">Hi-bit tactical</div></div>
+      </div>
+
+      <h3>Arbitrary Frame Count &amp; FPS Ladder (32×32)</h3>
+      <div class="grid g-8">
+        <div class="card"><div class="sprite-well"><img src="examples/characters/frame_counts/walk_2f_4fps.gif" alt="2 frames" width="96" height="96"></div><div class="card-title">2 Frames</div><div class="card-sub">4 FPS · NES</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/characters/frame_counts/walk_3f_6fps.gif" alt="3 frames" width="96" height="96"></div><div class="card-title">3 Frames</div><div class="card-sub">6 FPS · RPGM</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/characters/frame_counts/walk_4f_8fps.gif" alt="4 frames" width="96" height="96"></div><div class="card-title">4 Frames</div><div class="card-sub">8 FPS · Classic</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/characters/frame_counts/walk_5f_10fps.gif" alt="5 frames" width="96" height="96"></div><div class="card-title">5 Frames</div><div class="card-sub">10 FPS · Custom</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/characters/frame_counts/walk_8f_12fps.gif" alt="8 frames" width="96" height="96"></div><div class="card-title">8 Frames</div><div class="card-sub">12 FPS · Fluid</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/characters/frame_counts/walk_12f_16fps.gif" alt="12 frames" width="96" height="96"></div><div class="card-title">12 Frames</div><div class="card-sub">16 FPS · Hi-Bit</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/characters/frame_counts/walk_24f_24fps.gif" alt="24 frames" width="96" height="96"></div><div class="card-title">24 Frames</div><div class="card-sub">24 FPS · Cinema</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/characters/frame_counts/walk_60f_50fps.gif" alt="60 frames" width="96" height="96"></div><div class="card-title">60 Frames</div><div class="card-sub">Ultra Smooth</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 3: TILESETS, AUTOTILES & ISOMETRIC -->
+  <section id="tilesets">
+    <div class="container">
+      <span class="kicker">03 · Toroidal Seamless Terrain, Autotiles &amp; 2:1 Isometric</span>
+      <h2>Seamless Tilesets, Wang 16 / Blob 47 Autotiles &amp; Isometric Blocks</h2>
+      <p class="lead">True 4-edge toroidal periodic FBM noise and toroidal Voronoi cobblestones guarantee zero visible seams. Export 16-tile Wang or 47-tile Godot/RPG Blob autotile sheets with bitmask JSON, animated liquid loops, and 2:1 isometric blocks.</p>
+
+      <h3>Seamless Terrain &amp; Animated Loops</h3>
+      <div class="grid g-6">
+        <div class="card"><div class="sprite-well"><img src="examples/tilesets/grass_64.png" alt="Grass" width="64" height="64"></div><div class="card-title">Grass</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/tilesets/dirt_64.png" alt="Dirt" width="64" height="64"></div><div class="card-title">Dirt</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/tilesets/cobblestone_64.png" alt="Cobblestone" width="64" height="64"></div><div class="card-title">Cobblestone</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/tilesets/brick_64.png" alt="Brick" width="64" height="64"></div><div class="card-title">Brick</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/tilesets/wood_64.png" alt="Wood" width="64" height="64"></div><div class="card-title">Wood Planks</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/tilesets/dungeon_64.png" alt="Dungeon" width="64" height="64"></div><div class="card-title">Dungeon</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/tilesets/sand_64.png" alt="Sand" width="64" height="64"></div><div class="card-title">Sand</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/tilesets/snow_64.png" alt="Snow" width="64" height="64"></div><div class="card-title">Snow</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/tilesets/water_anim.gif" alt="Animated Water" width="64" height="64"></div><div class="card-title">Water (6f)</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/tilesets/lava_anim.gif" alt="Animated Lava" width="64" height="64"></div><div class="card-title">Lava (6f)</div></div>
+      </div>
+
+      <h3>Autotile Sheets (Wang 16 &amp; Blob 47) + 2:1 Isometric Blocks</h3>
+      <div class="grid g-4">
+        <div class="card"><div class="sprite-well"><img src="examples/tilesets/grass_wang16.png" alt="Grass Wang 16" width="128" height="128"></div><div class="card-title">Grass Wang 16</div><div class="card-sub">N/E/S/W bitmask</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/tilesets/stone_wang16.png" alt="Stone Wang 16" width="128" height="128"></div><div class="card-title">Stone Wang 16</div><div class="card-sub">Toroidal Voronoi</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/tilesets/iso_grass.png" alt="Isometric Grass" width="128" height="96"></div><div class="card-title">Iso Grass 2:1</div><div class="card-sub">64×48 cube</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/tilesets/iso_brick.png" alt="Isometric Brick" width="128" height="96"></div><div class="card-title">Iso Brick 2:1</div><div class="card-sub">Shaded walls</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 4: 12 PROCEDURAL VFX -->
+  <section id="vfx">
+    <div class="container">
+      <span class="kicker">04 · Seeded Procedural Pixel VFX Engine</span>
+      <h2>12 Game-Ready Pixel Art VFX</h2>
+      <p class="lead">Deterministic seeded effects with band-edge dithering, crisp silhouettes, zero semi-transparent AA, and custom palette snapping at any resolution and frame count.</p>
+      <div class="grid g-6" style="margin-top:1.5rem;">
+        <div class="card"><div class="sprite-well"><img src="examples/vfx/explosion.gif" alt="Explosion" width="104" height="104"></div><div class="card-title">Explosion</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/vfx/fire.gif" alt="Fire" width="104" height="104"></div><div class="card-title">Fire Loop</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/vfx/smoke.gif" alt="Smoke" width="104" height="104"></div><div class="card-title">Smoke</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/vfx/slash.gif" alt="Slash" width="104" height="104"></div><div class="card-title">Melee Slash</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/vfx/sparkle.gif" alt="Sparkle" width="104" height="104"></div><div class="card-title">Sparkle</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/vfx/magic_orb.gif" alt="Magic Orb" width="104" height="104"></div><div class="card-title">Magic Orb</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/vfx/lightning.gif" alt="Lightning" width="104" height="104"></div><div class="card-title">Lightning</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/vfx/water_splash.gif" alt="Water Splash" width="104" height="104"></div><div class="card-title">Water Splash</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/vfx/heal_aura.gif" alt="Heal Aura" width="104" height="104"></div><div class="card-title">Heal Aura</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/vfx/hit_impact.gif" alt="Hit Impact" width="104" height="104"></div><div class="card-title">Hit Impact</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/vfx/portal.gif" alt="Portal" width="104" height="104"></div><div class="card-title">Portal</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/vfx/coin_spin.gif" alt="Coin Spin" width="104" height="104"></div><div class="card-title">Coin Spin</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 5: FAKE-3D SPRITE STACKING -->
+  <section id="stacking">
+    <div class="container">
+      <span class="kicker">05 · Fake-3D Rotatable Sprite Stacking</span>
+      <h2>360° Stacked Slice Turntables</h2>
+      <p class="lead">Horizontal 2D voxel slice strips rendered with symmetric <code>(w-1)*0.5</code> pivots, camera-pitch squash, ground shadows, and a unified post-stack 1px outline.</p>
+      <div class="grid g-5" style="margin-top:1.5rem;">
+        <div class="card"><div class="sprite-well"><img src="examples/sprite_stack/car_turntable.gif" alt="Rally Car 3D Stack" width="128" height="128"></div><div class="card-title">Rally Car</div><div class="card-sub">12 slices · 360°</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/sprite_stack/crate_turntable.gif" alt="Crate 3D Stack" width="128" height="128"></div><div class="card-title">Cargo Crate</div><div class="card-sub">12 slices · 360°</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/sprite_stack/tree_turntable.gif" alt="Tree 3D Stack" width="128" height="128"></div><div class="card-title">Voxel Tree</div><div class="card-sub">16 slices · 360°</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/sprite_stack/tower_turntable.gif" alt="Tower 3D Stack" width="128" height="128"></div><div class="card-title">Watch Tower</div><div class="card-sub">16 slices · 360°</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/sprite_stack/chest_turntable.gif" alt="Chest 3D Stack" width="128" height="128"></div><div class="card-title">Loot Chest</div><div class="card-sub">12 slices · 360°</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 6: ITEMS, ZZSPRITE & UI -->
+  <section id="assets">
+    <div class="container">
+      <span class="kicker">06 · RPG Items, ZzSprite Procedural Creatures &amp; 9-Slice UI</span>
+      <h2>Complete 2D Game Asset Factory</h2>
+
+      <h3>10 RPG Items &amp; Weapons (16×16)</h3>
+      <div class="grid g-5">
+        <div class="card"><div class="sprite-well"><img src="examples/assets/item_sword_4x.png" alt="Sword" width="64" height="64"></div><div class="card-title">Sword</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/assets/item_axe_4x.png" alt="Battle Axe" width="64" height="64"></div><div class="card-title">Battle Axe</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/assets/item_staff_4x.png" alt="Magic Staff" width="64" height="64"></div><div class="card-title">Arcane Staff</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/assets/item_potion_4x.png" alt="Potion" width="64" height="64"></div><div class="card-title">Potion</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/assets/item_gem_4x.png" alt="Emerald Gem" width="64" height="64"></div><div class="card-title">Emerald Gem</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/assets/item_chest_4x.png" alt="Chest" width="64" height="64"></div><div class="card-title">Chest</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/assets/item_shield_4x.png" alt="Shield" width="64" height="64"></div><div class="card-title">Kite Shield</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/assets/item_key_4x.png" alt="Key" width="64" height="64"></div><div class="card-title">Gold Key</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/assets/item_heart_4x.png" alt="Heart" width="64" height="64"></div><div class="card-title">Heart</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/assets/item_coin_4x.png" alt="Coin" width="64" height="64"></div><div class="card-title">Gold Coin</div></div>
+      </div>
+
+      <h3>ZzSprite Procedural Creatures &amp; 9-Slice UI Components</h3>
+      <div class="grid g-6">
+        <div class="card"><div class="sprite-well"><img src="examples/assets/zzsprite_1_4x.png" alt="ZzSprite 1" width="64" height="64"></div><div class="card-title">Seed #101</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/assets/zzsprite_2_4x.png" alt="ZzSprite 2" width="64" height="64"></div><div class="card-title">Seed #204</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/assets/zzsprite_3_4x.png" alt="ZzSprite 3" width="64" height="64"></div><div class="card-title">Seed #307</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/assets/ui_panel_9slice.png" alt="9-Slice Panel" width="96" height="96"></div><div class="card-title">9-Slice Panel</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/assets/ui_health_bar.gif" alt="Health Bar" width="128" height="36"></div><div class="card-title">Health Bar</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/assets/ui_button_3state.gif" alt="3-State Button" width="128" height="54"></div><div class="card-title">3-State Button</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 7: 16-PALETTE MULTIVERSE -->
+  <section id="palettes">
+    <div class="container">
+      <span class="kicker">07 · Perceptual Color Matching &amp; Indexed PNG Export</span>
+      <h2>The 16-Palette Multiverse</h2>
+      <p class="lead">The same 32×32 hero automatically remapped using perceptual redmean distance and exported as alpha-preserving indexed 8-bit PNGs across all 16 built-in palettes.</p>
+      <div class="grid g-8" style="margin-top:1.5rem;">
+        <div class="card"><div class="sprite-well"><img src="examples/palettes/hero_endesga-32_4x.png" alt="Endesga-32" width="96" height="96"></div><div class="card-title">Endesga-32</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/palettes/hero_pico-8_4x.png" alt="PICO-8" width="96" height="96"></div><div class="card-title">PICO-8</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/palettes/hero_sweetie-16_4x.png" alt="Sweetie-16" width="96" height="96"></div><div class="card-title">Sweetie-16</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/palettes/hero_db32_4x.png" alt="DB32" width="96" height="96"></div><div class="card-title">DB32</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/palettes/hero_resurrect-64_4x.png" alt="Resurrect-64" width="96" height="96"></div><div class="card-title">Resurrect-64</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/palettes/hero_aap-64_4x.png" alt="AAP-64" width="96" height="96"></div><div class="card-title">AAP-64</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/palettes/hero_lospec-500_4x.png" alt="Lospec-500" width="96" height="96"></div><div class="card-title">Lospec-500</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/palettes/hero_fantasy-24_4x.png" alt="Fantasy-24" width="96" height="96"></div><div class="card-title">Fantasy-24</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/palettes/hero_cyberpunk-16_4x.png" alt="Cyberpunk-16" width="96" height="96"></div><div class="card-title">Cyberpunk-16</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/palettes/hero_pastel-16_4x.png" alt="Pastel-16" width="96" height="96"></div><div class="card-title">Pastel-16</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/palettes/hero_nes_4x.png" alt="NES" width="96" height="96"></div><div class="card-title">NES (56)</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/palettes/hero_snes_4x.png" alt="SNES" width="96" height="96"></div><div class="card-title">SNES (64)</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/palettes/hero_gameboy_4x.png" alt="GameBoy" width="96" height="96"></div><div class="card-title">GameBoy (4)</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/palettes/hero_cga_4x.png" alt="CGA" width="96" height="96"></div><div class="card-title">IBM CGA</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/palettes/hero_commodore-64_4x.png" alt="C64" width="96" height="96"></div><div class="card-title">C64</div></div>
+        <div class="card"><div class="sprite-well"><img src="examples/palettes/hero_onebit_4x.png" alt="1-Bit" width="96" height="96"></div><div class="card-title">1-Bit</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 8: FULL TOOLKIT & ENGINE EXPORTS -->
+  <section style="border-bottom:none;">
+    <div class="container">
+      <span class="kicker">08 · Complete Production Suite</span>
+      <h2>21 CLI Tools, 10 Craft Guides &amp; Native Engine Exports</h2>
+      <div class="two-col" style="margin-top:1.5rem;">
+        <div class="tool-list">
+          <h3 style="margin-top:0;">Core Generators &amp; Layering</h3>
+          <ul>
+            <li><code>pixel_studio.py</code> — Unified master CLI + preset/palette inspector</li>
+            <li><code>character_gen.py</code> — Multi-layer 1/2/4/8-dir characters (8px..64px+, 2..60f)</li>
+            <li><code>layer_compose.py</code> — Layer toggle, opacity, blend modes &amp; <code>.aseprite</code> export</li>
+            <li><code>tileset_gen.py</code> — Seamless terrain, Wang 16, Blob 47, animated &amp; isometric</li>
+            <li><code>vfx_gen.py</code> — 12 seeded procedural pixel art VFX generators</li>
+            <li><code>asset_gen.py</code> — 10 RPG items, ZzSprite creatures &amp; 5 UI components</li>
+            <li><code>sprite_stack.py</code> — Fake-3D slice strips &amp; 360° turntables</li>
+            <li><code>sprite_clean.py</code> — Deterministic messy/AI PNG cleanup pipeline</li>
+          </ul>
+        </div>
+        <div class="tool-list">
+          <h3 style="margin-top:0;">Post-Processing, QA &amp; Engine Export</h3>
+          <ul>
+            <li><code>atlas_pack.py</code> — Aseprite JSON, Phaser, Unity, Godot 4 <code>.tres</code>, <code>.aseprite</code></li>
+            <li><code>quality_audit.py</code> &amp; <code>batch_audit.py</code> — AA, orphans, jaggies, seamless, palette QA</li>
+            <li><code>outline_generator.py</code> — Outside, inset, selective (<code>selout</code>) &amp; rim-light</li>
+            <li><code>gif_export.py</code> — Transparent animated GIF (1..60 FPS, nearest scaling)</li>
+            <li><code>export_indexed.py</code> — Alpha-preserving indexed 8-bit PNG</li>
+            <li><code>palette_remap.py</code> &amp; <code>palette_extract.py</code> — Perceptual remapping &amp; extraction</li>
+            <li><code>dither.py</code> &amp; <code>noise_generator.py</code> — Bayer 2/4/8, band-edge, toroidal FBM/Voronoi</li>
+            <li><code>sprite_resize.py</code>, <code>sprite_mirror.py</code>, <code>init_workspace.py</code></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
 
 <footer>
-    <p>Built with ❤️ by <a href="https://github.com/ervareza">ervareza</a> · Powered by Google Antigravity IDE · MIT License</p>
+  <div class="container">
+    <p><strong>PixelForge v1.0.0</strong> · Built by <a href="https://github.com/ervareza" rel="noopener">ervareza</a> · <a href="changelog/index.html">Changelog</a> · MIT License</p>
+  </div>
 </footer>
 
+<script>
+// Live Interactive 4-Dir Layered Walk Playground (loads real generated paper-doll layer PNGs!)
+(function () {
+  const canvas = document.getElementById('arenaCanvas');
+  const ctx = canvas.getContext('2d');
+  const statusEl = document.getElementById('arenaStatus');
+  const togglesEl = document.getElementById('layerToggles');
+  const fpsSlider = document.getElementById('fpsSlider');
+  const fpsVal = document.getElementById('fpsVal');
+  const patrolBtn = document.getElementById('patrolBtn');
+
+  const LAYER_DEFS = [
+    { key: 'shadow',     file: '00_shadow.png',     label: 'Shadow',   on: true },
+    { key: 'cape_back',  file: '01_cape_back.png',  label: 'Cape',     on: true },
+    { key: 'arm_far',    file: '03_arm_far.png',    label: 'Far Arm',  on: true },
+    { key: 'leg_far',    file: '04_leg_far.png',    label: 'Far Leg',  on: true },
+    { key: 'torso',      file: '05_torso.png',      label: 'Torso',    on: true },
+    { key: 'leg_near',   file: '06_leg_near.png',   label: 'Near Leg', on: true },
+    { key: 'head',       file: '07_head.png',       label: 'Head',     on: true },
+    { key: 'hair_front', file: '08_hair_front.png', label: 'Hair',     on: true },
+    { key: 'arm_near',   file: '10_arm_near.png',   label: 'Near Arm', on: true },
+    { key: 'weapon',     file: '11_weapon.png',     label: 'Sword',    on: true },
+    { key: 'outline',    file: '14_outline.png',    label: 'Outline',  on: true },
+  ];
+
+  const tileImg = new Image();
+  tileImg.src = 'examples/tilesets/grass_16.png';
+
+  const layerImgs = {};
+  LAYER_DEFS.forEach(ld => {
+    const im = new Image();
+    im.src = 'examples/characters/hero_32/layers/' + ld.file;
+    layerImgs[ld.key] = im;
+
+    const lbl = document.createElement('label');
+    lbl.className = 'layer-chip on';
+    const cb = document.createElement('input');
+    cb.type = 'checkbox'; cb.checked = ld.on;
+    cb.addEventListener('change', () => { ld.on = cb.checked; lbl.classList.toggle('on', ld.on); });
+    lbl.appendChild(cb);
+    lbl.appendChild(document.createTextNode(ld.label));
+    togglesEl.appendChild(lbl);
+  });
+
+  // Fallback full sheet if any layer is still loading
+  const fallbackImg = new Image();
+  fallbackImg.src = 'examples/characters/hero_32/hero_walk_4dir.png';
+
+  const DIR_ROWS = { down: 0, left: 1, right: 2, up: 3 };
+  let px = 176, py = 96, dir = 'right', frame = 0, lastFrameTs = 0;
+  let autoPatrol = true, patrolLeg = 0;
+  const keys = {};
+  let heldBtnDir = null, tapDir = null, tapUntil = 0;
+
+  fpsSlider.addEventListener('input', () => { fpsVal.textContent = fpsSlider.value; });
+  patrolBtn.addEventListener('click', () => {
+    autoPatrol = !autoPatrol;
+    patrolBtn.textContent = autoPatrol ? 'Auto Patrol: ON' : 'Auto Patrol: OFF';
+    patrolBtn.classList.toggle('active', autoPatrol);
+  });
+
+  window.addEventListener('keydown', e => {
+    const k = e.key.toLowerCase();
+    if (['w','a','s','d','arrowup','arrowdown','arrowleft','arrowright'].includes(k)) {
+      keys[k] = true;
+      autoPatrol = false;
+      patrolBtn.textContent = 'Auto Patrol: OFF';
+      patrolBtn.classList.remove('active');
+    }
+  });
+  window.addEventListener('keyup', e => { keys[e.key.toLowerCase()] = false; });
+
+  document.querySelectorAll('.dpad button[data-dir]').forEach(btn => {
+    const start = () => {
+      heldBtnDir = btn.dataset.dir;
+      dir = btn.dataset.dir;
+      btn.classList.add('pressed');
+      autoPatrol = false; patrolBtn.textContent = 'Auto Patrol: OFF'; patrolBtn.classList.remove('active');
+    };
+    const end = () => { heldBtnDir = null; btn.classList.remove('pressed'); };
+    btn.addEventListener('mousedown', start);
+    btn.addEventListener('click', () => {
+      dir = btn.dataset.dir;
+      tapDir = btn.dataset.dir;
+      tapUntil = performance.now() + 260;
+      autoPatrol = false; patrolBtn.textContent = 'Auto Patrol: OFF'; patrolBtn.classList.remove('active');
+    });
+    btn.addEventListener('touchstart', e => { e.preventDefault(); start(); });
+    window.addEventListener('mouseup', end);
+    window.addEventListener('touchend', end);
+  });
+
+  const PATROL_WP = [
+    { x: 290, y: 80,  d: 'right' },
+    { x: 290, y: 150, d: 'down'  },
+    { x: 64,  y: 150, d: 'left'  },
+    { x: 64,  y: 80,  d: 'up'    },
+  ];
+
+  function tick(ts) {
+    let vx = 0, vy = 0;
+    const activeBtn = heldBtnDir || (performance.now() < tapUntil ? tapDir : null);
+    if (keys['a'] || keys['arrowleft'] || activeBtn === 'left') vx -= 1;
+    if (keys['d'] || keys['arrowright'] || activeBtn === 'right') vx += 1;
+    if (keys['w'] || keys['arrowup'] || activeBtn === 'up') vy -= 1;
+    if (keys['s'] || keys['arrowdown'] || activeBtn === 'down') vy += 1;
+
+    if (autoPatrol) {
+      const wp = PATROL_WP[patrolLeg];
+      const dx = wp.x - px, dy = wp.y - py;
+      if (Math.hypot(dx, dy) < 4) {
+        patrolLeg = (patrolLeg + 1) % PATROL_WP.length;
+      } else {
+        vx = Math.abs(dx) > 2 ? Math.sign(dx) : 0;
+        vy = Math.abs(dy) > 2 ? Math.sign(dy) : 0;
+        dir = wp.d;
+      }
+    }
+
+    const moving = vx !== 0 || vy !== 0;
+    const fps = +fpsSlider.value;
+    if (moving) {
+      if (!autoPatrol) {
+        if (Math.abs(vx) >= Math.abs(vy)) dir = vx < 0 ? 'left' : 'right';
+        else dir = vy < 0 ? 'up' : 'down';
+      }
+      const speed = 1.45 * (fps / 10);
+      const m = Math.hypot(vx, vy) || 1;
+      px = Math.max(8, Math.min(canvas.width - 72, px + (vx / m) * speed));
+      py = Math.max(8, Math.min(canvas.height - 72, py + (vy / m) * speed));
+      if (ts - lastFrameTs >= 1000 / fps) { frame = (frame + 1) % 8; lastFrameTs = ts; }
+    } else {
+      frame = 0;
+    }
+
+    ctx.imageSmoothingEnabled = false;
+    // Draw tiled seamless grass ground
+    if (tileImg.complete && tileImg.naturalWidth > 0) {
+      for (let ty = 0; ty < canvas.height; ty += 32) {
+        for (let tx = 0; tx < canvas.width; tx += 32) {
+          ctx.drawImage(tileImg, 0, 0, 16, 16, tx, ty, 32, 32);
+        }
+      }
+    } else {
+      ctx.fillStyle = '#366e46'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+
+    // Draw hero compositing every enabled paper-doll layer bottom-to-top!
+    const sx = frame * 32, sy = DIR_ROWS[dir] * 32;
+    let drewAnyLayer = false;
+    LAYER_DEFS.forEach(ld => {
+      if (!ld.on) return;
+      const im = layerImgs[ld.key];
+      if (im && im.complete && im.naturalWidth > 0) {
+        ctx.drawImage(im, sx, sy, 32, 32, Math.round(px), Math.round(py), 64, 64);
+        drewAnyLayer = true;
+      }
+    });
+    if (!drewAnyLayer && fallbackImg.complete && fallbackImg.naturalWidth > 0) {
+      ctx.drawImage(fallbackImg, sx, sy, 32, 32, Math.round(px), Math.round(py), 64, 64);
+    }
+
+    statusEl.textContent = `DIR: ${dir.toUpperCase()} · F${frame + 1}/8 · ${fps} FPS`;
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+})();
+</script>
 </body>
 </html>

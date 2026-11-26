@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Changelog — PixelForge v1.0.0</title>
+  <meta name="description" content="Release history and changelog for PixelForge (agent-skill-pixel-art).">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%23181624'/%3E%3Crect x='2' y='2' width='6' height='6' fill='%232563eb'/%3E%3Crect x='8' y='2' width='6' height='6' fill='%2360a5fa'/%3E%3Crect x='2' y='8' width='6' height='6' fill='%231d4ed8'/%3E%3Crect x='8' y='8' width='6' height='6' fill='%23e2e8f0'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root { --paper:#f6f4ee; --surface:#ffffff; --ink:#181624; --muted:#525166; --border:#d9d5c9; --cobalt:#2563eb; --emerald:#059669; --amber:#d97706; }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    body {
+      font-family:'Space Grotesk',system-ui,sans-serif;
+      background-color:var(--paper);
+      background-image:radial-gradient(rgba(24,22,36,0.06) 1px,transparent 1px);
+      background-size:20px 20px;
+      color:var(--ink); line-height:1.6;
+    }
+    code { font-family:'JetBrains Mono',monospace; background:var(--paper); border:1px solid var(--border); padding:0.1rem 0.35rem; border-radius:4px; font-size:0.84em; }
+    nav { background:rgba(246,244,238,0.95); border-bottom:2px solid var(--ink); padding:0.75rem 1.5rem; }
+    .nav-inner { max-width:900px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; }
+    .nav-inner a { color:var(--ink); text-decoration:none; font-weight:700; }
+    .nav-inner a:hover { color:var(--cobalt); }
+    main { max-width:900px; margin:0 auto; padding:3rem 1.5rem 5rem; }
+    h1 { font-size:2.4rem; letter-spacing:-0.03em; margin-bottom:0.4rem; }
+    .sub { color:var(--muted); margin-bottom:2.5rem; }
+    .release {
+      background:var(--surface); border:2px solid var(--ink); border-radius:12px;
+      box-shadow:5px 5px 0 var(--ink); padding:2rem; margin-bottom:2rem;
+    }
+    .rel-head { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:0.75rem; border-bottom:1.5px solid var(--border); padding-bottom:1rem; margin-bottom:1.25rem; }
+    .ver { font-family:'JetBrains Mono',monospace; font-size:1.35rem; font-weight:700; background:var(--ink); color:#fff; padding:0.25rem 0.7rem; border-radius:6px; }
+    .date { font-family:'JetBrains Mono',monospace; font-size:0.85rem; color:var(--muted); }
+    .group { margin-bottom:1.35rem; }
+    .group h3 {
+      display:inline-block; font-family:'JetBrains Mono',monospace; font-size:0.75rem;
+      text-transform:uppercase; letter-spacing:0.08em; padding:0.2rem 0.55rem; border-radius:4px; margin-bottom:0.7rem;
+    }
+    .tag-added { background:#dcfce7; color:#166534; }
+    .tag-changed { background:#dbeafe; color:#1e40af; }
+    .tag-fixed { background:#fef3c7; color:#92400e; }
+    ul { padding-left:1.25rem; display:grid; gap:0.45rem; font-size:0.95rem; }
+  </style>
+</head>
+<body>
+<nav>
+  <div class="nav-inner">
+    <a href="../index.html">&larr; Back to PixelForge Showcase</a>
+    <a href="https://github.com/ervareza/agent-skill-pixel-art" rel="noopener">GitHub</a>
+  </div>
+</nav>
+
+<main>
+  <h1>Changelog</h1>
+  <p class="sub">Synced with <code>CHANGELOG.md</code> following Keep a Changelog &amp; Semantic Versioning.</p>
+
+  <article class="release" id="v1.0.0">
+    <div class="rel-head">
+      <span class="ver">v1.0.0</span>
+      <span class="date">2026-11-26</span>
+    </div>
+
+    <div class="group">
+      <h3 class="tag-added">Added</h3>
+      <ul>
+        <li><strong>Pure-Python PixelForge Engine (<code>skills/pixel-art/engine/</code>)</strong> — Ground-up modular pixel art engine (<code>color.py</code>, <code>canvas.py</code>, <code>character.py</code>, <code>tileset.py</code>, <code>vfx.py</code>, <code>assets.py</code>, <code>exporters.py</code>, <code>qa.py</code>) synthesized from 17 top-starred open-source pixel art skills and studios.</li>
+        <li><strong>True 15-Layer Character Rig &amp; Paper-Doll System</strong> — Dedicated bottom-to-top layers (<code>shadow</code>, <code>cape_back</code>, <code>hair_back</code>, <code>arm_far</code>, <code>leg_far</code>, <code>torso</code>, <code>leg_near</code>, <code>head</code>, <code>hair_front</code>, <code>headgear</code>, <code>arm_near</code>, <code>weapon</code>, <code>shield</code>, <code>vfx</code>, <code>outline</code>) with blend modes, opacity, linked cels, and per-layer PNG sheet export.</li>
+        <li><strong>True 1/2/4/8-Direction Walk &amp; Combat Animator</strong> — Shared landmark rows across all directions (zero turning bob), North view with zero face, darker far limbs, 8 actions (<code>idle</code>, <code>walk</code>, <code>run</code>, <code>jump</code>, <code>attack</code>, <code>cast</code>, <code>hurt</code>, <code>die</code>), 9 archetypes (<code>hero</code>, <code>knight</code>, <code>mage</code>, <code>ranger</code>, <code>rogue</code>, <code>villager</code>, <code>skeleton</code>, <code>goblin</code>, <code>slime</code>).</li>
+        <li><strong>Arbitrary Pixel Resolutions &amp; Arbitrary Frame Counts</strong> — Resolution-tier-aware proportions supporting <code>8×8</code>, <code>9×9</code>, <code>12×12</code>, <code>16×16</code>, <code>16×24</code>, <code>24×24</code>, <code>32×32</code>, <code>48×48</code>, <code>64×64</code>, <code>128×128+</code> and continuous-phase sampling for <code>2</code>, <code>3</code>, <code>4</code>, <code>5</code>, <code>6</code>, <code>8</code>, <code>12</code>, <code>24</code>, <code>60</code> frames (1–60 FPS).</li>
+        <li><strong>Seamless Toroidal Terrain &amp; Autotile Generator</strong> — 11 terrain presets, 16-tile Wang &amp; 47-tile Blob autotiles, animated water/lava loops, and 2:1 isometric blocks.</li>
+        <li><strong>12 Seeded Procedural Pixel VFX</strong> — <code>explosion</code>, <code>fire</code>, <code>smoke</code>, <code>slash</code>, <code>sparkle</code>, <code>magic_orb</code>, <code>lightning</code>, <code>water_splash</code>, <code>heal_aura</code>, <code>hit_impact</code>, <code>portal</code>, <code>coin_spin</code>.</li>
+        <li><strong>Game Items, ZzSprite Creatures, 9-Slice UI &amp; Fake-3D Sprite Stacking</strong> — 10 RPG items/weapons, symmetrical procedural creature generator, 5 UI components, and 360° fake-3D stacked slice turntables.</li>
+        <li><strong>Native Binary <code>.aseprite</code> Writer &amp; Universal Engine Exporters</strong> — Exports valid Aseprite v1.3 files with layers/tags/palette, Godot 4 <code>.tres</code> SpriteFrames, Aseprite/Phaser/Unity JSON, RPG Maker 3×4, LPC 64×64, transparent GIFs, and alpha-preserving indexed PNGs.</li>
+        <li><strong>8 New CLI Scripts &amp; 6 New Palettes</strong> — 21 total CLI scripts (including <code>pixel_studio.py</code>, <code>character_gen.py</code>, <code>layer_compose.py</code>, <code>tileset_gen.py</code>, <code>vfx_gen.py</code>, <code>asset_gen.py</code>, <code>sprite_stack.py</code>, <code>sprite_clean.py</code>) and 16 curated palettes (added <code>aap-64</code>, <code>lospec-500</code>, <code>fantasy-24</code>, <code>cyberpunk-16</code>, <code>pastel-16</code>, <code>onebit</code>).</li>
+        <li><strong>Interactive Playable 4-Dir Walk Arena &amp; <code>/changelog</code> Page</strong> — Live WASD/D-pad layered character sandbox on <code>index.html</code>, upgraded HTML5 templates (including <code>turntable_viewer.html</code>), and 67-test <code>pytest</code> suite.</li>
+      </ul>
+    </div>
+
+    <div class="group">
+      <h3 class="tag-changed">Changed</h3>
+      <ul>
+        <li>Complete ground-up v1.0.0 reboot on a unified <code>main</code> branch, replacing legacy placeholder examples with verified, game-ready multi-layer assets.</li>
+        <li>Upgraded <code>SKILL.md</code> and expanded reference knowledge base to 10 guides (added <code>layering_and_rigging.md</code>, <code>sprite_stacking.md</code>, <code>critique_and_qa.md</code>).</li>
+      </ul>
+    </div>
+
+    <div class="group">
+      <h3 class="tag-fixed">Fixed</h3>
+      <ul>
+        <li><code>export_indexed.py</code> no longer destroys alpha transparency into solid black when quantizing RGBA PNGs to 8-bit indexed mode.</li>
+        <li><code>outline_generator.py</code> now properly implements <code>--inset</code> plus new <code>--mode selout</code> and <code>--rim-light</code> passes.</li>
+        <li><code>noise_generator.py</code> now uses true 4-edge toroidal wrapping so generated terrain tiles have zero visible seams.</li>
+        <li><code>quality_audit.py</code> defaults to <code>--grid 1</code> so odd/non-power-of-two resolutions like <code>9×9</code> and <code>12×12</code> audit cleanly, and adds jaggies/doubles, clipping, palette conformance, and seamlessness checks.</li>
+      </ul>
+    </div>
+  </article>
+</main>
+</body>
+</html>

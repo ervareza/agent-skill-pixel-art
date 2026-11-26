@@ -1,0 +1,9 @@
+{
+  "name": "cyberpunk-16",
+  "description": "Neon synthwave & sci-fi 16-color palette for cyberpunk characters, UI, and glowing VFX.",
+  "max_colors": 16,
+  "colors": [
+    "#0D0917", "#1B1536", "#31235E", "#5A338F", "#9B44C9", "#FF3CA6", "#FF85C8", "#00F5D4",
+    "#00B4D8", "#0077B6", "#FFE66D", "#FF9F1C", "#FF4D4D", "#3D4C6E", "#8B9BB4", "#F0F6FF"
+  ]
+}

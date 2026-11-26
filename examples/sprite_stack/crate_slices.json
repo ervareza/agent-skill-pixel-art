@@ -1,0 +1,12 @@
+{
+  "preset": "crate",
+  "slice_width": 16,
+  "slice_height": 16,
+  "slice_count": 12,
+  "strip_size": [
+    192,
+    16
+  ],
+  "recommended_squash": 0.75,
+  "recommended_spacing": 1.0
+}

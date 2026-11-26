@@ -1,394 +1,187 @@
 ---
 name: pixel-art
-description: "Use this skill whenever the user wants to create, edit, audit, or export 2D pixel art assets. This includes: generating sprite sheets, character walk cycles, tilesets, autotile maps, UI elements, particle effects, isometric art, or any retro-style low-resolution raster graphics. Triggers include: any mention of 'pixel art', 'sprite', 'tileset', 'autotile', '16x16', '32x32', 'retro game art', 'game sprites', 'sprite sheet', 'palette', 'NES colors', 'PICO-8', 'GameBoy palette', 'isometric', 'particle effect', 'pixel UI', or requests to produce game-ready PNG assets with strict color limits and no anti-aliasing. Also use when auditing existing pixel art for quality issues (orphan pixels, semi-transparent artifacts, palette violations), resizing sprites, extracting palettes, mirroring frames, adding outlines, generating noise textures, creating dithered gradients, or exporting animated GIFs. Do NOT use for vector art, SVG illustrations, 3D models, photo editing, or high-resolution digital painting."
+description: "Complete 2D pixel art & game asset engine and agent skill (PixelForge v1.0.0). Use whenever the user wants to create, layer, animate, clean, audit, or export 2D pixel art game assets: multi-directional walking/running/combat characters (1/2/4/8-dir, any size 8x8/9x9/12x12/16x16/24x24/32x32/48x48/64x64/WxH, any frame count 2..60 frames & 1..60 FPS) with paper-doll layer rigs, seamless terrain tiles, 16-tile Wang & 47-tile Blob autotiles, animated water/lava, 2:1 isometric blocks, procedural pixel VFX (fire, explosion, slash, lightning, magic, smoke, portal), game items & weapons, ZzSprite procedural creatures, 9-slice UI panels/bars/buttons, fake-3D sprite stacking turntables, AI-art pixel cleanup, native .aseprite binary export, Godot 4 .tres SpriteFrames, Unity/Phaser/Aseprite JSON, RPG Maker 3x4, transparent GIFs, or pixel art quality audits."
 license: MIT
 ---
 
-# 2D Pixel Art Asset Creation
+# PixelForge — 2D Pixel Art & Game Asset Agent Skill (v1.0.0)
 
-Create game-ready 2D pixel art assets — sprites, tilesets, autotiles, UI elements, particle effects, and isometric art — with strict pixel-grid alignment, palette enforcement, quality auditing, and game engine export.
+Build production-ready, layered, animated 2D pixel art game assets deterministically in pure Python (Pillow only — zero Aseprite binary or diffusion model required), inspect every frame visually with your own eyes, pass automated pixel-art QA, and export directly into **Aseprite (`.aseprite`)**, **Godot 4 (`.tres`)**, **Unity**, **Phaser 3**, **RPG Maker MV/MZ**, **LPC**, **GIF**, and **Indexed PNG**.
 
-**Core Pipeline**: `Design Brief → Style Selection → Spec Lock → Generate Assets → Quality Audit → Post-process → Pack & Export`
+**The Quality Loop (MANDATORY — NEVER SKIP):**
+`Design Brief → Palette Lock → Layer Rig → Generate / Author → Render Contact Sheet & LOOK → Critique & QA Audit → Refine → Export`
 
 > [!CAUTION]
-> ## 🚨 Global Execution Discipline (MANDATORY)
->
-> 1. **PALETTE FIRST** — Select or extract a palette BEFORE generating any pixel. Every pixel MUST use only colors from the locked palette.
-> 2. **SPEC LOCK RE-READ** — Before generating EACH asset, re-read the palette and size constraints. AI memory drifts during long sessions.
-> 3. **SEQUENTIAL GENERATION** — Generate assets one at a time. Finish, audit, fix, then move to next.
-> 4. **NO ANTI-ALIASING** — Every pixel must be fully opaque (alpha=255) or fully transparent (alpha=0). Zero exceptions.
-> 5. **AUDIT BEFORE EXPORT** — Never export an asset that hasn't passed `quality_audit.py`.
+> ## Global Pixel-Art Craft Discipline
+> 1. **PALETTE & RAMP FIRST** — Lock a palette (or build hue-shifted ramps via `hue_ramp()`) before drawing. Shadows cool toward blue/purple; highlights warm toward yellow/cream. Never shade by just moving a brightness slider.
+> 2. **RIG BEFORE ANIMATING** — Keep characters split into animatable layers (`shadow`, `cape_back`, `hair_back`, `arm_far`, `leg_far`, `torso`, `leg_near`, `head`, `hair_front`, `headgear`, `arm_near`, `weapon`, `shield`, `vfx`, `outline`). Baking everything flat destroys editability and paper-doll equipment swaps.
+> 3. **SHARED LANDMARK ROWS ACROSS DIRECTIONS** — Head top, eyes, shoulders, belt, hip, and foot baseline (`ground_y`) MUST stay identical across Down, Left, Right, Up, and diagonals so the character never bobs when turning. **North (Up) view NEVER has a face.**
+> 4. **ZERO ANTI-ALIASING** — Every pixel is either opaque (`alpha=255`) or transparent (`alpha=0`). Nearest-neighbor scaling ONLY (`Image.Resampling.NEAREST`).
+> 5. **LOOK AT THE CONTACT SHEET, NOT JUST THE GIF** — Vision tools only see frame 1 of a GIF. Always inspect a labeled contact sheet (`doc.preview_image()` or `--preview`) + run `quality_audit.py` before shipping.
 
 ---
 
-## Scripts Available
+## Quick Decision Tree
 
-| Script | What it does |
-|---|---|
-| `scripts/init_workspace.py` | Creates project directories and asset manifest |
-| `scripts/quality_audit.py` | Audits a PNG for anti-aliasing, orphan pixels, palette violations, grid alignment |
-| `scripts/batch_audit.py` | Audits ALL PNGs in a directory at once for mass QA |
-| `scripts/palette_remap.py` | Remaps image colors to a target palette using nearest-color matching |
-| `scripts/palette_extract.py` | Extracts the color palette from an existing image with frequency analysis |
-| `scripts/atlas_pack.py` | Packs multiple sprite frames into a single sprite sheet with JSON metadata |
-| `scripts/export_indexed.py` | Converts RGBA PNGs to indexed 8-bit PNGs with optional color reduction |
-| `scripts/sprite_resize.py` | Resizes pixel art with nearest-neighbor ONLY (no blurring) |
-| `scripts/sprite_mirror.py` | Mirrors sprites horizontally or vertically (single or batch) |
-| `scripts/gif_export.py` | Converts sprite sheets or frame directories to animated GIFs |
-| `scripts/outline_generator.py` | Adds 1px outline around opaque pixels for readability |
-| `scripts/dither.py` | Generates ordered dithered gradients using Bayer matrix |
-| `scripts/noise_generator.py` | Generates procedural noise textures for terrain |
-
-**Always run scripts with `--help` first** to see usage.
+```
+What game asset does the user want?
+├── Animated Character (4-dir / 8-dir / side-scroller / RPG / paper-doll layers)
+│     1. Read references/layering_and_rigging.md + references/animation_principles.md
+│     2. Run scripts/character_gen.py with exact --size (8|9|12|16|24|32|48|64|WxH),
+│        --dirs (1|2|4|8), --actions (idle,walk,run,jump,attack,cast,hurt,die),
+│        --frames (2..60), --fps (1..60), --aseprite --export-layers --gif --godot --rpgmaker --preview
+│     3. Inspect *_preview.png visually + audit with scripts/quality_audit.py
+│
+├── Custom Hand-Authored Pixel Art (Python DSL / ASCII grids / multi-layer build script)
+│     1. Import `SpriteDocument`, `hue_ramp`, `ColorRamp` from `engine`
+│     2. Build silhouette first → flat color masses → shifted-shape shading (`only="opaque"`)
+│        → `rim_light()` → `selout()` (selective hue-shifted outline)
+│     3. Inspect `doc.preview_image(scale=6)` and `doc.ascii_view()` → iterate 2-3x
+│     4. Export via `engine.exporters` (`.aseprite`, spritesheet + JSON, `.tres`, GIF)
+│
+├── Tileset / Autotile / Animated Terrain / Isometric 2:1
+│     1. Read references/tileset_rules.md (or references/isometric_guide.md)
+│     2. Run scripts/tileset_gen.py (--mode single | wang16 | blob47 | animated | isometric)
+│     3. Verify 4-edge seamless wrap via scripts/quality_audit.py --check-seamless
+│
+├── Pixel Art VFX (Explosion, Fire, Smoke, Slash, Lightning, Magic, Portal, Splash, Heal)
+│     1. Read references/particle_effects.md
+│     2. Run scripts/vfx_gen.py --type <vfx> --size WxH --frames N --fps F --gif --aseprite
+│
+├── Game Items, Weapons, Procedural Monsters (ZzSprite), or 9-Slice UI
+│     1. Read references/ui_elements.md
+│     2. Run scripts/asset_gen.py --category item|zzsprite|ui --type <name> --size WxH
+│
+├── Fake-3D Rotatable Sprite Stacking (Cars, Props, Trees, Towers, Turntables)
+│     1. Read references/sprite_stacking.md
+│     2. Run scripts/sprite_stack.py --preset car|crate|tree|tower|chest (or --strip) --slices N --frames 16 --gif
+│
+├── Clean Messy / AI-Generated PNG into Strict Pixel Art
+│     1. Read references/critique_and_qa.md
+│     2. Run scripts/sprite_clean.py --input raw.png --output clean.png --strip-checker --palette endesga-32
+│
+└── Layer Editing / Post-Processing / Batch QA
+      -scripts/layer_compose.py (toggle/opacity/blend/split/merge -> .aseprite)
+      -scripts/outline_generator.py (--mode outside|inset|selout --rim-light)
+      -scripts/palette_remap.py / palette_extract.py / export_indexed.py / atlas_pack.py / gif_export.py
+      -scripts/quality_audit.py / batch_audit.py
+```
 
 ---
 
-## Style Presets
+## Complete Toolkit (21 CLI Scripts — All Support `--help` and `--json`)
 
-Before generating ANY pixel art, select a style preset. This determines canvas size, color budget, and shading technique.
+Master dispatcher: `python scripts/pixel_studio.py <command> [args]` (run `pixel_studio.py info` to list all presets & palettes).
 
-| Style | Canvas Size | Colors Per Sprite | Shading | Use Case |
-|---|---|---|---|---|
-| **NES Classic** | 16×16 / 32×32 | 3-4 (excl. transparency) | Flat / 2-tone | Classic 8-bit console |
-| **SNES Retro** | 32×32 / 64×64 | 8-15 | 2-tone / 3-tone | 16-bit era games |
-| **Modern Pixel** | 32×32 / 64×64 | 16-31 | 3-tone / cel-shaded | Contemporary indie |
-| **Minimalist** | 8×8 / 16×16 | 2-4 | Flat only | Ultra-simple, game jams |
-| **Dense Detail** | 64×64 / 128×128 | 24-48 | Dithered / textured | Rich, detailed worlds |
-| **High-Res Pixel** | 256×256 / 512×512 | 64-96 | Full shading | Illustration-grade |
-| **Cinematic Pixel** | 1024×1024+ | 128-256 | Full shading + dither | Print/billboard quality |
-
-**Recommendation logic**:
-- User says "NES", "8-bit", "retro" → NES Classic at 16×16
-- User says "SNES", "16-bit" → SNES Retro at 32×32
-- User says "indie", "modern" → Modern Pixel at 32×32 or 64×64
-- User says "detailed", "boss", "large" → Dense Detail at 64×64+
-- User says "HD pixel art" → High-Res Pixel at 256×256+
-- No preference → Default Modern Pixel at 32×32
-
----
-
-## Pixel Art Generation Guidelines
-
-### Core Principles
-
-- **Pixel-perfect**: Every pixel is intentional; no sub-pixel rendering
-- **Palette adherence**: Every pixel color MUST be from the declared palette
-- **Readable silhouette**: Assets must be recognizable at target size
-- **Consistent lighting**: Light source top-right across ALL assets in a project
-- **Edge quality**: Outlines (if used) must be consistent width and color
-
-### Shading & Depth Techniques
-
-| Technique | When to Use | How |
+### Asset Generation & Layer Engine
+| Script | Purpose | Key Flags |
 |---|---|---|
-| **Flat shading** | Minimalist, ≤16×16 | Single color per surface |
-| **2-tone shading** | NES style, 16×16-32×32 | Base + 1 shadow |
-| **3-tone shading** | SNES/Modern, 32×32+ | Base + shadow + highlight |
-| **Dithered shading** | Retro texture, limited palette | Bayer pattern for smooth gradients |
-| **Cel shading** | Clean modern style | Hard shadow edges, flat color regions |
-| **Selective outline** | Any style | Dark outline on light areas, light on dark |
+| `character_gen.py` | Multi-layer 1/2/4/8-dir animated characters (9 archetypes, paper-doll gear) | `--archetype`, `--size`, `--dirs`, `--actions`, `--frames`, `--fps`, `--weapon`, `--headgear`, `--shield`, `--aseprite`, `--export-layers`, `--godot`, `--rpgmaker`, `--gif`, `--preview` |
+| `layer_compose.py` | Compose, hide/show, opacity, blend modes, split layers, export `.aseprite` | `--project`/`--layers`, `--hide`, `--show-only`, `--opacity`, `--blend`, `--aseprite`, `--split-dir` |
+| `tileset_gen.py` | Seamless terrain, 16-tile Wang & 47-tile Blob autotiles, animated water/lava, 2:1 isometric | `--terrain`, `--size`, `--mode`, `--frames`, `--fps`, `--palette`, `--gif` |
+| `vfx_gen.py` | 12 seeded procedural VFX (explosion, fire, smoke, slash, sparkle, magic_orb, lightning, water_splash, heal_aura, hit_impact, portal, coin_spin) | `--type`, `--size`, `--frames`, `--fps`, `--palette`, `--seed`, `--gif`, `--aseprite` |
+| `asset_gen.py` | 10 RPG items/weapons, ZzSprite procedural creatures, 5 UI components (9-slice, bars, 3-state buttons) | `--category`, `--type`, `--size`, `--style`, `--seed`, `--gif` |
+| `sprite_stack.py` | Fake-3D sprite stacking slice strips & 360° rotatable turntables | `--preset`/`--strip`, `--slices`, `--frames`, `--squash`, `--spacing`, `--gif` |
+| `sprite_clean.py` | AI/messy PNG cleanup (auto-scale detect, strip checker, harden alpha, despeckle, dedupe, dehalo, palette snap) | `--input`, `--output`, `--scale`, `--strip-checker`, `--palette`, `--max-colors` |
+| `pixel_studio.py` | Unified master CLI dispatcher + `info` & `palettes` inspection | `info`, `palettes`, `<subcommand>` |
 
-**Shading direction** (top-right light, bottom-left shadow):
-```
-Highlight (top-right edges)
-    ╲
-     ┌──────┐
-     │ BASE │
-     │      │
-     └──────┘
-              ╲
-        Shadow (bottom-left edges)
-```
-
-### Per-Sprite Color Budget
-
-| Style | Max Colors (excl. transparency) |
-|---|---|
-| NES Classic | 3 |
-| Minimalist | 3 |
-| SNES Retro | 15 |
-| Modern Pixel | 31 |
-| Dense Detail | 47 |
-| High-Res Pixel | 95 |
+### Post-Processing, Packing & Quality Assurance
+| Script | Purpose | Key Flags |
+|---|---|---|
+| `quality_audit.py` | Single PNG QA: AA, orphans, palette conformance, near-dups, jaggies/doubles, clipping, seamless wrap | `--image`, `--grid` (default `1`), `--max-colors`, `--palette`, `--ignore-orphans`, `--check-seamless` |
+| `batch_audit.py` | Directory-wide recursive QA | `--dir`, `--grid`, `--max-colors`, `--palette`, `--ignore-orphans` |
+| `atlas_pack.py` | Pack frame PNGs into sheet + Aseprite/Phaser/Unity/simple JSON + optional Godot `.tres` & `.aseprite` | `--frames-dir`, `--output`, `--cols`, `--padding`, `--format`, `--godot`, `--aseprite` |
+| `gif_export.py` | Crisp transparent animated GIF (1..60 FPS, nearest-neighbor scaling) | `--sheet`/`--frames-dir`, `--fps`, `--scale`, `--bg`, `--output` |
+| `outline_generator.py` | Add 1px outside, inset, or selective (`selout`) outline + optional `--rim-light` | `--input`, `--output`, `--mode`, `--inset`, `--rim-light`, `--color` |
+| `palette_remap.py` | Perceptual redmean color remapping to any built-in palette name or JSON (+ optional Bayer dither) | `--image`, `--palette`, `--output`, `--dither` |
+| `palette_extract.py` | Extract color palette with pixel frequency analysis | `--image`, `--max-colors`, `--output` |
+| `export_indexed.py` | Convert RGBA PNG to indexed 8-bit PNG while **preserving alpha transparency** | `--input`, `--output`, `--max-colors` |
+| `dither.py` | Ordered Bayer (2×2 / 4×4 / 8×8) & Codixel band-edge (`--strip`) dithering | `--width`, `--height`, `--color1`, `--color2`, `--matrix`, `--axis`, `--strip` |
+| `noise_generator.py` | Guaranteed 4-edge seamless toroidal FBM Value noise & Toroidal Voronoi | `--width`, `--height`, `--type`, `--scale`, `--cells`, `--palette` |
+| `sprite_resize.py` | Nearest-neighbor integer scaling ONLY | `--input`, `--output`, `--scale` |
+| `sprite_mirror.py` | Horizontal / vertical mirroring (single or batch) | `--input`/`--input-dir`, `--axis` |
+| `init_workspace.py` | Scaffold standard 10-folder PixelForge game asset workspace | `--dir`, `--name` |
 
 ---
 
-## 🧱 Tile Generation Standards (MANDATORY)
+## Python Engine API (For Custom Authoring Scripts)
 
-> Tiles are the most common asset type and the easiest to make look "fake". ALL 9 rules must be satisfied for EVERY tile.
+For bespoke art beyond presets, write a clean Python build script importing from `engine/`:
 
-### 1. Canvas & Format
-- **Default size**: match project canvas (16×16 / 32×32 / 64×64)
-- **Format**: RGB (no transparency for ground tiles), RGBA for overlays
-- **Palette**: Strict quantization to declared palette
-
-### 2. NO Obvious Geometric Patterns ⛔
-The #1 cause of "fake-looking" tiles. Forbidden in repeatable terrain:
-
-| ❌ Anti-pattern | ✅ Replace with |
-|---|---|
-| Centered cross / star / plus | Random off-center features |
-| 4 equal quadrants | Voronoi 8-15 irregular cells |
-| Regular sine waves | Low-frequency value noise |
-| Horizontal stripe layers | Diagonal/random color blobs |
-| Symmetric corner motifs | Single asymmetric accent |
-| Straight diagonal cracks | Random walk segments |
-
-### 3. Multi-Tier Color Distribution
-Each pixel sampled by probability:
-- **70%** main color (palette base)
-- **15%** dark accent (-1 palette step)
-- **10%** light accent (+1 palette step)
-- **5%** emphasis color (rare highlight/feature)
-
-### 4. Low-Frequency Value Noise (Required for natural tiles)
-Use value noise with cosine interpolation for natural color variation:
 ```python
-import math, random
-def cos_lerp(a, b, t):
-    f = (1 - math.cos(t * math.pi)) / 2
-    return a * (1 - f) + b * f
+import sys; sys.path.insert(0, "skills/pixel-art")
+from engine import SpriteDocument, ColorRamp, hue_ramp
+from engine.exporters import export_aseprite, export_spritesheet, export_gif
 
-nodes = [[random.uniform(-1, 1) for _ in range(gw)] for _ in range(gh)]
-# CRITICAL: wrap edges for seamless tiling
-for row in nodes: row[gw-1] = row[0]
-nodes[gh-1] = list(nodes[0])
-# Cosine-lerp at each pixel for smooth noise
-```
-**Recommended scales**: Main blob 8-16px per node, detail 3-6px per node, combine 2 octaves.
+body = ColorRamp.from_base("slime", "#38B764", steps=4)
+doc = SpriteDocument(32, 32, palette="endesga-32", default_fps=8)
+doc.ensure_rig_layers(["shadow", "body", "eyes", "outline"])
 
-### 5. Seamless Tiling (4-Edge Wrap) ⛔
-Tiles MUST repeat without visible seams:
-- Use modulo coordinates: `img.putpixel((x % W, y % H), color)`
-- Wrap noise nodes: last row/col equals first
-- **Test**: Place 2×2 instances side-by-side; no visible borders
+for fi, squash in enumerate((0, 2, -1, 1)):
+    if fi > 0:
+        doc.add_frame(copy=False)
+    doc.layer("shadow").ellipse(8, 26, 23, 29, "#181425")
+    doc.layer("body").ellipse(6 - squash, 12 + squash, 25 + squash, 27, body.shadow)
+    doc.ellipse(6 - squash, 11 + squash, 24 + squash, 25, body.mid, only="opaque")
+    doc.ellipse(9, 14 + squash, 14, 17 + squash, body.highlight, only="opaque")
+    doc.layer("eyes").rect(11, 19 + squash, 12, 20 + squash, "#181425")
+    doc.rect(19, 19 + squash, 20, 20 + squash, "#181425")
+    doc.layer("outline").selout("#181425", composite_mode=True)
 
-### 6. Sparse Feature Points (≤1% of pixels)
-Cracks, veins, moss, droplets:
-- Random-walk paths for cracks (short, never straight)
-- Scattered points (not clustered, not aligned)
-- Total feature pixels ≤1% of canvas area
-
-### 7. Low-Noise Visual Coherence
-Terrain tiles must feel calm and continuous:
-- **No salt-and-pepper noise** or snow-like white speckles
-- **No white/near-white** for ground tiles (use warm ochre, muted gray instead)
-- **Prefer broad color regions** over per-pixel randomness
-- **Keep hard pixel edges**; do not blur or anti-alias
-
-### 8. Edge Color Continuity
-Edges within ±1 palette step of interior:
-- ❌ Black border around tile (creates grid effect when tiled)
-- ❌ Drastically different color in 1-pixel border
-- ✅ Same color distribution on edges as interior
-
-### 9. Mandatory Tile Validation
-Before declaring done:
-- [ ] 2×2 grid → no visible seams
-- [ ] Adjacent tiles → color transition feels natural
-- [ ] No symmetric features (rotate 90° / flip → looks different)
-- [ ] Quantized to exact palette
-- [ ] Feature density ≤1%
-- [ ] No visible white speckle noise at game scale
-
----
-
-## Sprite Templates
-
-### Character Sprites
-
-| Template | Facing | Actions | Frames/Action | Recommended Size |
-|---|---|---|---|---|
-| `character_simple` | side-only | idle, walk | 3-4 | 16×16, 32×32 |
-| `character_4dir` | 4-dir | walk | 4 per direction | 32×32, 64×64 |
-| `character_rpg` | 4-dir | idle, walk, attack, hurt, die | 3-6 per action | 32×32, 64×64 |
-| `character_platformer` | side-only | idle, run, jump, attack, hurt | 3-6 per action | 32×32, 64×64 |
-| `character_full` | 4-dir | idle, walk, run, jump, fall, attack, hurt, die, cast | 3-8 per action | 64×64, 128×128 |
-
-### Common Actions & Frame Counts
-
-| Action | Frames | FPS | Description |
-|---|---|---|---|
-| `idle` | 2-4 | 6-8 | Standing breathing / subtle motion |
-| `walk` | 4-6 | 8-12 | Slow-paced walking cycle |
-| `run` | 6-8 | 12-16 | Fast running cycle |
-| `jump` | 4-6 | 12-16 | Jump ascent + peak |
-| `fall` | 2-4 | 12-16 | Falling / descent |
-| `attack` | 4-6 | 12-16 | Melee / ranged attack |
-| `hurt` | 2-3 | 8-12 | Taking damage reaction |
-| `die` | 4-6 | 6-10 | Death animation |
-| `cast` | 4-6 | 8-12 | Magic / skill casting |
-| `interact` | 2-4 | 8-12 | Opening chest / picking up |
-| `climb` | 4-6 | 8-12 | Ladder / wall climbing |
-| `crouch` | 2-3 | 8-12 | Crouching / sneaking |
-| `roll` | 4-6 | 12-16 | Dodge roll |
-| `swim` | 4-6 | 8-12 | Swimming cycle |
-
-**Frame naming**: `<asset>_<action>_<frame>.png` (e.g., `player_idle_0.png`, `player_walk_3.png`)
-
-### Other Asset Templates
-
-| Category | Templates |
-|---|---|
-| **Tiles** | `tile_basic` (single), `tile_autotile_9` (9-slice), `tile_autotile_47` (bitmask), `tile_animated` (N frames) |
-| **Items** | `item_single` (1 icon), `item_animated` (spinning coin, floating potion, 4-8 frames) |
-| **UI** | `ui_button_3state` (normal/hover/pressed), `ui_9slice` (scalable panel), `ui_bar` (health/mana) |
-| **Effects** | `effect_burst` (one-shot, 4-8 frames), `effect_loop` (fire/smoke/aura, 4-8 frames) |
-| **Backgrounds** | `bg_parallax_layer` (wide, horizontally tileable), `bg_full` (full screen 16:9 or 4:3) |
-
----
-
-## Banned Features Blacklist
-
-The following are FORBIDDEN in generated pixel art:
-
-| Banned Feature | Reason |
-|---|---|
-| Anti-aliasing | Breaks pixel-perfect aesthetic |
-| Sub-pixel rendering | Not possible at pixel scale |
-| Gradient fills | Use dithering instead |
-| Partial opacity (1-254 alpha) | Pixel art = fully opaque or fully transparent |
-| Blur effects | Breaks crisp edges |
-| Bezier curves | Pixels are axis-aligned |
-| Vector scaling artifacts | Must be pixel-perfect at declared size |
-| Colors outside declared palette | Violates palette consistency |
-
----
-
-## Decision Tree
-
-```
-User task → What type of pixel art?
-    ├─ Single sprite/icon (≤64×64)
-    │     1. Select style preset (see table above)
-    │     2. Read palettes/*.json to pick a color palette
-    │     3. Create the sprite as a PNG at the target resolution
-    │     4. Run: python scripts/quality_audit.py <image> --json
-    │     5. Fix any reported issues, re-audit until clean
-    │
-    ├─ Character sprite sheet (walk cycle, attack, etc.)
-    │     1. Select style preset and character template
-    │     2. Read references/sprite_conventions.md + references/animation_principles.md
-    │     3. Create individual frames as separate PNGs
-    │     4. Run: python scripts/atlas_pack.py --frames-dir <dir> --output sheet.png --cols 4 --json
-    │     5. Run: python scripts/quality_audit.py sheet.png --json
-    │     6. Optional: python scripts/gif_export.py --sheet sheet.png --frame-width W --frame-height H --fps 8 --output preview.gif --json
-    │
-    ├─ 8-way character sheet (from 5 directions)
-    │     1. Draw 5 directions: S, SW, W, NW, N
-    │     2. Run: python scripts/sprite_mirror.py --input-dir ./east_frames/ --output-dir ./west_frames/ --axis horizontal --json
-    │     3. Pack all directions into atlas
-    │
-    ├─ Tileset / Autotile map
-    │     1. Read the Tile Generation Standards section above (9 mandatory rules)
-    │     2. Read references/tileset_rules.md for grid and autotile conventions
-    │     3. Create tiles following the 9 rules
-    │     4. Run: python scripts/quality_audit.py <tileset> --json
-    │     5. Preview: open templates/tilemap_preview.html
-    │
-    ├─ Isometric art
-    │     1. Read references/isometric_guide.md for projection, stacking, depth
-    │     2. Use 2:1 pixel ratio (64×32 diamonds for standard tiles)
-    │     3. Consistent lighting: top-right source
-    │
-    ├─ UI elements (health bars, buttons, dialogs)
-    │     1. Read references/ui_elements.md for 9-slice, bar styles, button states
-    │     2. Create at target resolution, use 9-slice for scalable panels
-    │
-    ├─ Particle effects (explosion, fire, smoke)
-    │     1. Read references/particle_effects.md for spawn patterns and timing
-    │     2. Create frame-by-frame, pack into atlas
-    │
-    ├─ Palette remap (recolor existing art)
-    │     1. Run: python scripts/palette_remap.py --image <input> --palette palettes/<name>.json --output <out> --json
-    │
-    ├─ Extract palette from reference art
-    │     1. Run: python scripts/palette_extract.py --image <ref> --max-colors 16 --output palettes/custom.json --json
-    │
-    ├─ Resize for export
-    │     1. Run: python scripts/sprite_resize.py --input <img> --output <out> --scale 2 --json
-    │
-    ├─ Add outline for readability
-    │     1. Run: python scripts/outline_generator.py --input <img> --output <out> --color "#1A1A2E" --json
-    │
-    ├─ Generate terrain texture
-    │     1. Run: python scripts/noise_generator.py --width 64 --height 64 --palette palettes/pico-8.json --output terrain.png --json
-    │
-    └─ Batch QA before release
-          1. Run: python scripts/batch_audit.py --dir <sprites_folder> --grid 16 --max-colors 16 --json
+doc.tag("bounce", 1, 4)
+doc.preview_image(scale=6, grid=True).save("preview.png")   # LOOK at this!
+export_aseprite(doc, "slime.aseprite")
+export_spritesheet(doc, "slime_sheet.png", cols=4)
+export_gif([doc.composite(i+1) for i in range(4)], "slime.gif", durations_ms=120, scale=4)
 ```
 
 ---
 
-## Palette References
+## Resolution & Frame-Count Flexibility
 
-Palette JSON files live in `palettes/`. Each file contains `name`, `colors` array (hex strings), and `max_colors`:
+PixelForge natively adapts anatomy, proportions, line weights, and gait kinematics across ANY canvas size and frame budget:
 
-Available palettes: `pico-8.json` (16), `gameboy.json` (4), `nes.json` (56), `snes.json` (64), `endesga-32.json` (32), `resurrect-64.json` (64), `sweetie-16.json` (16), `db32.json` (32), `cga.json` (4), `commodore-64.json` (16), `lospec-500.json` (32)
-
-**Palette selection guide**:
-| Palette | Colors | Best For |
+| Resolution Tier | Examples | Anatomy & Outline Strategy |
 |---|---|---|
-| PICO-8 | 16 | Game jams, tiny games, fantasy console |
-| Sweetie-16 | 16 | Cute/chibi, pastel worlds |
-| GameBoy | 4 | Monochrome retro |
-| DB32 | 32 | General indie (most versatile) |
-| Endesga-32 | 32 | Vibrant colorful worlds |
-| Resurrect-64 | 64 | Complex detailed environments |
-| NES | 56 | Classic 8-bit console hardware |
-| SNES | 64 | 16-bit era games |
-| CGA | 4 | PC retro |
-| Commodore-64 | 16 | C64-style games |
+| **Micro** (`8–11px`) | `8×8`, `9×9`, `10×10` | No interior outlines; pure silhouette + value contrast; crisp 1×1 directional eyes |
+| **Small Chibi** (`12–20px`) | `12×12`, `16×16`, `16×24` | 42% chibi head; crisp 1px outer selective outline; Pokémon/Stardew walk readability |
+| **Standard Indie** (`21–40px`) | `24×24`, `32×32`, `24×32` | 3–3.5 heads; 3-tone hue-shifted shading; belt/buckle/cape/weapon layers; far limbs darker |
+| **Hi-Bit Detailed** (`41–128px+`) | `48×48`, `64×64`, `96×96`, `128×128` | 4–5 head heroic proportions; detailed headgear, armor highlights, articulated limbs |
 
-## Template Reference
-
-The `templates/` directory contains interactive HTML tools:
-
-- `templates/sprite_sheet.html` — Sprite sheet viewer with animation playback, zoom, frame navigation
-- `templates/tilemap_preview.html` — Tilemap painter: select tiles, paint on grid, random fill
-- `templates/palette_viewer.html` — Palette comparison tool with swatch display and color picker
-
-## Further Reading
-
-- [Sprite Conventions](references/sprite_conventions.md) — Frame sizes, animation timing, directional layouts
-- [Animation Principles](references/animation_principles.md) — 12 Disney principles applied to pixel art
-- [Tileset Rules](references/tileset_rules.md) — Grid sizes, Wang autotile bitmasks, terrain transitions
-- [Isometric Guide](references/isometric_guide.md) — 2:1 projection, tile stacking, depth sorting
-- [Color Theory](references/color_theory.md) — Palette design, contrast ratios, hue ramps
-- [UI Elements](references/ui_elements.md) — Health bars, buttons, dialog boxes, 9-slice panels
-- [Particle Effects](references/particle_effects.md) — Explosions, fire, smoke, sparkles, magic VFX
-
-## Troubleshooting
-
-| Problem | Cause | Fix |
+| Frame Budget | Best Use | Kinematic Sampling |
 |---|---|---|
-| Blurry after resize | Used bilinear/bicubic | Use `sprite_resize.py` (nearest-neighbor only) |
-| Visible seams in tileset | Tiles don't wrap | Follow Tile Generation Standards rule 5 |
-| Colors look wrong in-game | Exported as RGBA | Use `export_indexed.py` |
-| Animation looks choppy | Not enough frames | Min 4 frames for walk, read animation_principles.md |
-| Sprite hard to see | No outline, low contrast | Use `outline_generator.py` |
-| Too many colors | No palette enforcement | Run `palette_remap.py` before export |
-| Tiles look fake | Geometric patterns | Follow Tile Generation Standards rule 2 |
-| Colors drift between assets | Memory drift | Re-read palette before EACH asset |
+| `2` frames | 8-bit micro walk / idle blink | Left stride ↔ Right stride |
+| `3` frames | RPG Maker MV/MZ classic 3×4 | Step L → Neutral Pass → Step R |
+| `4` frames | Pokémon / Stardew / game jam | Contact L → Pass → Contact R → Pass |
+| `5–6` frames | Action RPG compact smooth loop | Smooth phase interpolation + uneven timing |
+| `8` frames | Fluid standard (Williams gait) | Contact → Down → Pass → Up (×2 mirrored) |
+| `12–24` frames | Hi-bit smooth animation (Owlboy / Dead Cells) | Silky gait + delayed head bob + billowing cape |
+| `60` frames | Ultra-high FPS showcase / slow-mo | Continuous kinematic phase sampling at 60 FPS |
 
-## Engine-Specific Tips
+---
 
-### Godot 4
-- Import PNGs with `Texture2D` filter mode set to **Nearest**
-- Use `AnimatedSprite2D` with atlas from `atlas_pack.py` JSON metadata
-- Tileset: import to `TileSet` resource, set tile size to match grid
+## 16 Built-In Curated Palettes (`palettes/*.json`)
 
-### Unity
-- Set texture import as **Point (no filter)**, **Sprite Mode: Multiple**
-- Slice with Automatic or Grid mode matching your frame dimensions
-- Set **Pixels Per Unit** to match your tile size (16 for 16×16 tiles)
+`onebit` (2) · `gameboy` (4) · `cga` (16) · `commodore-64` (16) · `pico-8` (16) · `sweetie-16` (16) · `cyberpunk-16` (16) · `pastel-16` (16) · `fantasy-24` (24) · `db32` (32) · `endesga-32` (32) · `lospec-500` (32) · `nes` (56) · `snes` (64) · `resurrect-64` (64) · `aap-64` (64)
 
-### Defold
-- Set texture sampling to **Nearest**
-- Import atlas JSON metadata as tile source
-- Use `go.property` for palette switching at runtime
+---
 
-### RPG Maker MV/MZ
-- Tile size: 48×48 (RPG Maker standard)
-- Sprite sheets: 12 frames per character (3 frames × 4 directions)
-- Use `atlas_pack.py` with `--cols 3` for RPG Maker format
+## Reference Knowledge Base (`references/`)
+
+- [Layering & Rigging](references/layering_and_rigging.md) — Standard character rig, paper-doll swaps, blend modes, linked cels, `.aseprite`
+- [Sprite Conventions](references/sprite_conventions.md) — Proportions by size (8px..128px), 4/8-dir turnarounds, shared landmark rows
+- [Animation Principles](references/animation_principles.md) — Contact-down-pass-up walk/run tables, top-down animation, non-uniform timing
+- [Color Theory](references/color_theory.md) — Hue-shifted ramps, selective outlines (`selout`), rim light, band-edge dithering
+- [Tileset Rules](references/tileset_rules.md) — 9 mandatory tile rules, toroidal noise/Voronoi, Wang 16 & Blob 47 bitmasks
+- [Isometric Guide](references/isometric_guide.md) — 2:1 pixel ratio diamonds, wall shading, painter's depth sorting
+- [Sprite Stacking](references/sprite_stacking.md) — Fake-3D 4-view carving, symmetric pivots `(w-1)*0.5`, post-stack outlines
+- [UI Elements](references/ui_elements.md) — 9-slice panels, dynamic health bars, 3-state buttons, dialogs
+- [Particle Effects](references/particle_effects.md) — Seeded VFX, two-buffer glow, hit-stop & anticipation timing
+- [Critique & QA](references/critique_and_qa.md) — Cold-read pixel critic rubric, jaggies/doubles/banding, hybrid AI cleanup pipeline
+
+## Interactive HTML5 Templates (`templates/`)
+
+- `templates/sprite_sheet.html` — Sprite sheet inspector + **WASD/Arrow 4-dir & 8-dir playable walk tester** + onion skin + 1–60 FPS
+- `templates/tilemap_preview.html` — Interactive tilemap painter + 2×2 seamless check
+- `templates/palette_viewer.html` — All 16 palettes + hue-ramp builder + contrast ratio checker
+- `templates/turntable_viewer.html` — 360° fake-3D sprite stacking turntable & slice scanner

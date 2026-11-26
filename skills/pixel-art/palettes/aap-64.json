@@ -1,0 +1,15 @@
+{
+  "name": "aap-64",
+  "description": "Adigun A. Polack 64-color master pixel art palette. Balanced ramps for characters, fantasy environments, and UI.",
+  "max_colors": 64,
+  "colors": [
+    "#060608", "#141013", "#3B1725", "#73172D", "#B4202A", "#DF3E23", "#FA6A0A", "#F9A31B",
+    "#FFD541", "#FFFC40", "#D6F264", "#9CDB43", "#59C135", "#14A02E", "#1A7A3E", "#24523B",
+    "#122020", "#143464", "#285CC4", "#249FDE", "#20D6C7", "#A6FCDB", "#FFFFFF", "#FEF3C0",
+    "#FAD6B8", "#F5A097", "#E86A73", "#BC4A9B", "#793A80", "#403353", "#242234", "#221C1A",
+    "#322B28", "#71413B", "#BB7547", "#DBA463", "#F4D29C", "#DAE0EA", "#B3B9D1", "#8B93AF",
+    "#6D758D", "#4A5462", "#333941", "#422433", "#5B3138", "#8E5252", "#BA756A", "#E9B5A3",
+    "#E3E6FF", "#B9BFFB", "#849BE4", "#588DBE", "#477D85", "#23674E", "#328464", "#5DAF8D",
+    "#92DCBA", "#CDF7E2", "#E4D2AA", "#C7B08B", "#A08662", "#796755", "#5A4E44", "#423934"
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "preset": "tower",
+  "slice_width": 18,
+  "slice_height": 18,
+  "slice_count": 16,
+  "strip_size": [
+    288,
+    18
+  ],
+  "recommended_squash": 0.75,
+  "recommended_spacing": 1.0
+}

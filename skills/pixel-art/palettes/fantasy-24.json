@@ -1,0 +1,10 @@
+{
+  "name": "fantasy-24",
+  "description": "Curated 24-color RPG fantasy palette with cohesive warm/cool hue-shifted ramps.",
+  "max_colors": 24,
+  "colors": [
+    "#1F1827", "#34263B", "#523B52", "#7C5A68", "#B28582", "#E2BFA6", "#F7E5CA", "#D94E4E",
+    "#E8854D", "#F2C75C", "#7BC253", "#3B8C52", "#21524B", "#2D6B8C", "#4FA6C9", "#9AE2F2",
+    "#4A437A", "#7B69B5", "#C49AE6", "#A6633C", "#6E3B28", "#47251E", "#7C8C99", "#BCCAD6"
+  ]
+}

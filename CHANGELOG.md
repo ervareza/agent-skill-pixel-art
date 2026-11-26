@@ -2,82 +2,28 @@
 
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/).
+The format is based on [Keep a Changelog](https://keepachangelog.com/), and this project adheres to [Semantic Versioning](https://semver.org/).
 
-## [v5.0.0] - 2026-07-22
-
-### Added
-- **730+ example assets** generated fresh from zero using manual CLI execution
-- **88 animated GIFs** covering all use cases, all animation types, all directions
-- **56 spritesheets** for the 8-way hero character (7 actions × 8 directions)
-- **7 procedural terrain tiles** via `noise_generator.py` and `dither.py`
-- **10 palette variants** via `palette_remap.py` + `export_indexed.py` + `palette_extract.py`
-- **White-theme HTML showcase** (`index.html`) — clean, minimalist, responsive
-- **`CONTRIBUTING.md`** — contributor guidelines
-- **`CODE_OF_CONDUCT.md`** — community standards
-- **Vercel deployment** — live showcase at agent-skill-pixel-art.vercel.app
-- **GitHub public repository** with badges, description, and homepage link
-
-### Changed
-- **README.md** completely rewritten with the new exhaustive gallery
-- **All 13/13 CLI scripts** demonstrated and validated
-- **All 10/10 palettes** used in examples
-
-### Removed
-- All old example assets (replaced with fresh generation)
-
-## [v4.1.0] - 2025-07-22
+## [v1.0.0] - 2026-11-26
 
 ### Added
-- **8 new CLI scripts:** `sprite_resize.py`, `gif_export.py`, `palette_extract.py`, `batch_audit.py`, `sprite_mirror.py`, `outline_generator.py`, `dither.py`, `noise_generator.py`
-- **6 new palettes:** `sweetie-16.json`, `db32.json`, `cga.json`, `commodore-64.json`, `snes.json`
-- **2 new HTML templates:** `tilemap_preview.html` (interactive tilemap painter), `palette_viewer.html` (palette comparison tool)
-- **4 new reference docs:** `particle_effects.md`, `ui_elements.md`, `isometric_guide.md`, `animation_principles.md`
-- `requirements.txt` for pip install
+- **Pure-Python PixelForge Engine (`skills/pixel-art/engine/`)** — Ground-up modular pixel art & game asset engine (`color.py`, `canvas.py`, `character.py`, `tileset.py`, `vfx.py`, `assets.py`, `exporters.py`, `qa.py`) synthesized from 17 top-starred open-source pixel art skills and studios.
+- **15-Layer Character Rig & Paper-Doll System** — Bottom-to-top rig (`shadow`, `cape_back`, `hair_back`, `arm_far`, `leg_far`, `torso`, `leg_near`, `head`, `hair_front`, `headgear`, `arm_near`, `weapon`, `shield`, `vfx`, `outline`) with blend modes (`normal`, `multiply`, `screen`, `add`, `overlay`), opacity, linked cels, and per-layer PNG sheet export.
+- **True 1/2/4/8-Direction Animated Characters** — Shared landmark rows across all directions (zero turning bob), North view with zero face, darker far limbs, 8 biomechanical actions (`idle`, `walk`, `run`, `jump`, `attack`, `cast`, `hurt`, `die`), and 9 archetypes (`hero`, `knight`, `mage`, `ranger`, `rogue`, `villager`, `skeleton`, `goblin`, `slime`).
+- **Arbitrary Pixel Resolutions & Frame Counts** — Resolution-tier proportions supporting `8×8`, `9×9`, `12×12`, `16×16`, `16×24`, `24×24`, `32×32`, `48×48`, `64×64`, `128×128+` and continuous kinematic phase sampling for `2`, `3`, `4`, `5`, `6`, `8`, `12`, `24`, `60` frames at `1–60 FPS`.
+- **Seamless Toroidal Terrain & Autotile Engine** — 11 terrain presets, 16-tile Wang & 47-tile Blob autotiles with bitmask JSON, animated water/lava loops, and 2:1 isometric blocks.
+- **12 Seeded Procedural Pixel Art VFX** — `explosion`, `fire`, `smoke`, `slash`, `sparkle`, `magic_orb`, `lightning`, `water_splash`, `heal_aura`, `hit_impact`, `portal`, `coin_spin`.
+- **Game Items, ZzSprite Creatures, 9-Slice UI & Fake-3D Sprite Stacking** — 10 RPG items/weapons, symmetrical procedural creature generator, 5 UI components (9-slice panel, dynamic health bar, 3-state button, inventory slot, cursor), and 360° fake-3D stacked slice turntables.
+- **Native `.aseprite` Binary Writer & Universal Game Engine Exporters** — Valid Aseprite v1.3 files preserving layers/cels/tags/palette, Godot 4 `.tres` `SpriteFrames`, Aseprite/Phaser/Unity JSON, RPG Maker MV/MZ 3×4, LPC 64×64, transparent GIFs, and alpha-preserving indexed 8-bit PNGs.
+- **8 New CLI Scripts & 6 New Palettes** — 21 CLI tools (`pixel_studio.py`, `character_gen.py`, `layer_compose.py`, `tileset_gen.py`, `vfx_gen.py`, `asset_gen.py`, `sprite_stack.py`, `sprite_clean.py` + 13 upgraded tools) and 16 curated palettes (`aap-64`, `lospec-500`, `fantasy-24`, `cyberpunk-16`, `pastel-16`, `onebit`).
+- **Interactive Playable 4-Dir Walk Arena & `/changelog` Page** — Live WASD/Arrow/D-pad layered character sandbox in `index.html`, new `templates/turntable_viewer.html`, upgraded `templates/sprite_sheet.html`, and 67-test `pytest` suite (`tests/test_engine.py`).
 
 ### Changed
-- **SKILL.md** expanded: 15-branch decision tree, troubleshooting table, engine-specific tips (Godot 4, Unity, Defold)
-- **README.md** completely rewritten: 5 real-world usage examples, complete script reference, palette table, engine integration guides, installation for Antigravity/Claude/Codex
+- Complete ground-up v1.0.0 reboot on a single clean `main` branch, replacing legacy placeholder examples with verified, game-ready multi-layer showcase assets.
+- Rewrote `SKILL.md` and expanded craft reference docs to 10 guides (added `layering_and_rigging.md`, `sprite_stacking.md`, `critique_and_qa.md`).
 
 ### Fixed
-- `tilemap_preview.html` was referenced in SKILL.md but didn't exist — now implemented
-- Pillow deprecation warnings (`getdata()` → `px.load()`)
-- RGBA quantization bug in `export_indexed.py`
-- NES palette `max_colors` mismatch (was 54, actual 56)
-
-## [v4.0.0] - 2025-07-22
-
-### Changed
-- **Complete rewrite** following Anthropic official skill conventions (studied from `anthropics/skills` repo)
-- Renamed skill from `chromamatrix-core` to `pixel-art` (kebab-case, like official skills)
-- Renamed all directories to standard names: `scripts/`, `palettes/`, `templates/`, `references/` (matching `anthropics/skills` patterns)
-- Rewrote `SKILL.md` with proper YAML frontmatter (`name`, `description`, `license`), decision tree, gotchas section, and reference links
-- Rewrote `README.md` to follow Anthropic's clean documentation style
-- All Python scripts now follow the Anthropic CLI pattern: `argparse`, `--help`, `--json`, clean exit codes
-
-### Added
-- `scripts/init_workspace.py` — workspace directory initializer
-- `scripts/quality_audit.py` — pixel art quality auditor (AA, orphans, palette, grid)
-- `scripts/palette_remap.py` — color remapper using Euclidean RGB distance
-- `scripts/atlas_pack.py` — sprite frame packer with JSON metadata
-- `scripts/export_indexed.py` — RGBA to indexed 8-bit PNG converter
-- `palettes/pico-8.json` — PICO-8 16-color palette
-- `palettes/gameboy.json` — Game Boy 4-color palette
-- `palettes/nes.json` — NES 54-color hardware palette
-- `palettes/endesga-32.json` — ENDESGA 32-color palette
-- `palettes/resurrect-64.json` — Resurrect 64-color palette
-- `templates/sprite_sheet.html` — interactive sprite sheet viewer
-- `references/sprite_conventions.md` — frame sizes, animations, directional layouts
-- `references/tileset_rules.md` — grid sizes, Wang autotile, terrain transitions
-- `references/color_theory.md` — hue ramps, contrast, dithering, palette design
-- `LICENSE.txt` inside skill folder
-
-### Removed
-- `chromamatrix-core/` directory and all contents
-- `ManifestVault/`, `PixelProtocols/`, `RenderOrchestrators/`, `RasterBlueprints/`, `SynthesisFlow/` — replaced with standard naming
-- `CONTRIBUTING.md`, `DEVELOPER_GUIDE.md`, `SECURITY.md`, `.env.example`, `index.html` — unnecessary for a skill package
-
-## [v3.0.0] - 2025-07-21
-
-### Added
-- Initial ChromaMatrix Core rebranding (superseded by v4.0.0)
+- `export_indexed.py` now preserves alpha transparency cleanly via a dedicated transparent index instead of destroying alpha through RGB conversion.
+- `outline_generator.py` now honors `--inset` and supports directional selective outlines (`--mode selout`) and `--rim-light`.
+- `noise_generator.py` now uses true 4-edge toroidal wrapping so terrain textures tile seamlessly.
+- `quality_audit.py` defaults to `--grid 1` (supporting odd sizes like `9×9` and `12×12`) and adds jaggies/doubles, clipping, palette conformance, and seamlessness verification.

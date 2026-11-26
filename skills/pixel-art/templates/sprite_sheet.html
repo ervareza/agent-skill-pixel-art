@@ -3,72 +3,203 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sprite Sheet Viewer</title>
+<title>PixelForge Sprite Studio & Walk-Test Workbench</title>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: #1a1a2e; color: #e0e0e0; font-family: monospace; display: flex; flex-direction: column; align-items: center; padding: 2rem; min-height: 100vh; }
-  h1 { font-size: 1.2rem; margin-bottom: 1rem; color: #7fdbca; }
-  .controls { display: flex; gap: 1rem; margin-bottom: 1.5rem; align-items: center; flex-wrap: wrap; justify-content: center; }
-  label { font-size: 0.85rem; }
-  input[type="file"] { font-size: 0.8rem; }
-  input[type="number"] { width: 60px; padding: 0.25rem; background: #16213e; color: #e0e0e0; border: 1px solid #0f3460; font-family: monospace; }
-  button { padding: 0.4rem 0.8rem; background: #0f3460; color: #e0e0e0; border: 1px solid #533483; cursor: pointer; font-family: monospace; font-size: 0.8rem; }
-  button:hover { background: #533483; }
-  .canvas-wrap { background: repeating-conic-gradient(#2a2a3e 0% 25%, #1e1e30 0% 50%) 0 0 / 16px 16px; border: 2px solid #533483; image-rendering: pixelated; }
-  canvas { image-rendering: pixelated; display: block; }
-  .info { margin-top: 1rem; font-size: 0.75rem; color: #83769c; text-align: center; }
+  :root { --bg:#0e1018; --panel:#161926; --border:#272c42; --accent:#6366f1; --cyan:#22d3ee; --text:#e6e8f0; --muted:#8892b0; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:var(--bg); color:var(--text); font-family:ui-monospace,SFMono-Regular,Menlo,monospace; padding:1.5rem; min-height:100vh; }
+  h1 { font-size:1.15rem; color:var(--cyan); margin-bottom:1rem; text-align:center; letter-spacing:0.03em; }
+  .grid-layout { display:grid; grid-template-columns:300px 1fr; gap:1.25rem; max-width:1200px; margin:0 auto; }
+  .panel { background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:1rem; }
+  .panel h2 { font-size:0.85rem; text-transform:uppercase; color:var(--muted); margin-bottom:0.75rem; letter-spacing:0.08em; }
+  .ctrl { display:flex; flex-direction:column; gap:0.55rem; font-size:0.8rem; }
+  .row { display:flex; gap:0.5rem; align-items:center; justify-content:space-between; }
+  input[type="number"], select { background:#0d0f18; color:var(--text); border:1px solid var(--border); border-radius:5px; padding:0.25rem 0.45rem; width:90px; font-family:inherit; }
+  input[type="file"] { font-size:0.72rem; width:100%; color:var(--muted); }
+  button { background:#232842; color:var(--text); border:1px solid #394066; border-radius:6px; padding:0.4rem 0.7rem; cursor:pointer; font-family:inherit; font-size:0.78rem; }
+  button:hover { background:var(--accent); border-color:var(--accent); }
+  button.active { background:var(--accent); color:#fff; }
+  .stage-wrap { display:flex; flex-direction:column; gap:1rem; }
+  .arena-box { position:relative; background:repeating-conic-gradient(#1f2336 0% 25%, #181b2b 0% 50%) 0 0 / 16px 16px; border:1px solid var(--border); border-radius:8px; display:flex; align-items:center; justify-content:center; min-height:360px; overflow:hidden; }
+  canvas { image-rendering:pixelated; display:block; }
+  .hint { font-size:0.74rem; color:var(--muted); text-align:center; }
+  .pill { display:inline-block; background:#232842; color:var(--cyan); padding:0.15rem 0.45rem; border-radius:4px; font-size:0.72rem; }
+  @media (max-width:860px) { .grid-layout { grid-template-columns:1fr; } }
 </style>
 </head>
 <body>
-<h1>Sprite Sheet Viewer</h1>
-<div class="controls">
-  <label>Sheet: <input type="file" id="fileInput" accept=".png,.gif,.bmp"></label>
-  <label>Frame W: <input type="number" id="fw" value="32" min="1"></label>
-  <label>Frame H: <input type="number" id="fh" value="32" min="1"></label>
-  <label>Scale: <input type="number" id="scale" value="4" min="1" max="16"></label>
-  <label>FPS: <input type="number" id="fps" value="8" min="1" max="60"></label>
-  <button id="playBtn">▶ Play</button>
-  <button id="prevBtn">◀</button>
-  <button id="nextBtn">▶</button>
+<h1>PixelForge — Sprite Sheet Studio &amp; Playable Walk-Test Workbench</h1>
+<div class="grid-layout">
+  <div class="panel">
+    <h2>Sheet &amp; Playback</h2>
+    <div class="ctrl">
+      <label>Sprite Sheet PNG:<input type="file" id="fileInput" accept=".png,.webp,.gif"></label>
+      <label>Metadata JSON (opt):<input type="file" id="jsonInput" accept=".json"></label>
+      <div class="row"><label>Frame W</label><input type="number" id="fw" value="32" min="1"></div>
+      <div class="row"><label>Frame H</label><input type="number" id="fh" value="32" min="1"></div>
+      <div class="row"><label>Scale</label><input type="number" id="scale" value="4" min="1" max="16"></div>
+      <div class="row"><label>FPS (1-60)</label><input type="number" id="fps" value="10" min="1" max="60"></div>
+      <div class="row"><label>Mode</label>
+        <select id="mode">
+          <option value="inspect">Frame Inspector</option>
+          <option value="walk4">Playable 4-Dir Arena</option>
+          <option value="walk8">Playable 8-Dir Arena</option>
+        </select>
+      </div>
+      <div class="row"><label>Row (Dir/Action)</label><input type="number" id="rowIdx" value="0" min="0"></div>
+      <div class="row"><label>Onion Skin</label><input type="checkbox" id="onion"></div>
+      <div class="row"><label>Pixel Grid</label><input type="checkbox" id="showGrid"></div>
+      <div class="row" style="margin-top:0.4rem;">
+        <button id="playBtn" class="active">Pause</button>
+        <button id="prevBtn">&lt; Prev</button>
+        <button id="nextBtn">Next &gt;</button>
+      </div>
+      <div class="hint" id="info" style="margin-top:0.6rem;text-align:left;">Load any sprite sheet (or press WASD / Arrows in Playable Arena mode).</div>
+    </div>
+  </div>
+
+  <div class="stage-wrap">
+    <div class="panel">
+      <div class="row" style="margin-bottom:0.6rem;">
+        <h2 style="margin:0;">Live Canvas</h2>
+        <div><span class="pill" id="dirBadge">DIR: DOWN</span> <span class="pill" id="frameBadge">F 1/1</span></div>
+      </div>
+      <div class="arena-box"><canvas id="c" width="512" height="360"></canvas></div>
+      <p class="hint" style="margin-top:0.6rem;">4-Dir row order: Row 0 = Down, Row 1 = Left, Row 2 = Right, Row 3 = Up &nbsp;|&nbsp; Controls: <b>W A S D</b> or <b>Arrow Keys</b></p>
+    </div>
+  </div>
 </div>
-<div class="canvas-wrap"><canvas id="c"></canvas></div>
-<div class="info" id="info">Load a sprite sheet to begin</div>
 
 <script>
 const $ = id => document.getElementById(id);
 const canvas = $('c'), ctx = canvas.getContext('2d');
-let img = null, frame = 0, cols = 1, rows = 1, total = 1, playing = false, timer = null;
+let img = null, playing = true, frame = 0, lastTick = 0;
+let px = 240, py = 160, curDirRow = 0;
+const keys = {};
+
+window.addEventListener('keydown', e => {
+  keys[e.key.toLowerCase()] = true;
+  if (['arrowup','arrowdown','arrowleft','arrowright',' '].includes(e.key.toLowerCase())) e.preventDefault();
+});
+window.addEventListener('keyup', e => { keys[e.key.toLowerCase()] = false; });
 
 $('fileInput').addEventListener('change', e => {
-  const file = e.target.files[0]; if (!file) return;
-  const reader = new FileReader();
-  reader.onload = ev => { img = new Image(); img.onload = () => { frame = 0; update(); }; img.src = ev.target.result; };
-  reader.readAsDataURL(file);
+  const f = e.target.files[0]; if (!f) return;
+  const r = new FileReader();
+  r.onload = ev => { img = new Image(); img.onload = () => { frame = 0; updateInfo(); }; img.src = ev.target.result; };
+  r.readAsDataURL(f);
 });
 
-function update() {
-  if (!img) return;
-  const fw = +$('fw').value, fh = +$('fh').value, s = +$('scale').value;
-  cols = Math.floor(img.width / fw); rows = Math.floor(img.height / fh);
-  total = cols * rows; if (total < 1) total = 1;
-  frame = ((frame % total) + total) % total;
-  canvas.width = fw * s; canvas.height = fh * s;
-  ctx.imageSmoothingEnabled = false;
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  const sx = (frame % cols) * fw, sy = Math.floor(frame / cols) * fh;
-  ctx.drawImage(img, sx, sy, fw, fh, 0, 0, fw * s, fh * s);
-  $('info').textContent = `Frame ${frame + 1}/${total} | ${fw}×${fh} | ${cols}c × ${rows}r | ${s}× scale`;
+$('jsonInput').addEventListener('change', e => {
+  const f = e.target.files[0]; if (!f) return;
+  const r = new FileReader();
+  r.onload = ev => {
+    try {
+      const m = JSON.parse(ev.target.result);
+      const fs = m.meta?.frameSize || (Array.isArray(m.frames) ? m.frames[0]?.frame : null);
+      if (fs) { $('fw').value = fs.w || 32; $('fh').value = fs.h || 32; }
+      updateInfo();
+    } catch {}
+  };
+  r.readAsText(f);
+});
+
+$('playBtn').onclick = () => { playing = !playing; $('playBtn').textContent = playing ? 'Pause' : 'Play'; $('playBtn').classList.toggle('active', playing); };
+$('prevBtn').onclick = () => { playing = false; $('playBtn').textContent = 'Play'; frame--; draw(); };
+$('nextBtn').onclick = () => { playing = false; $('playBtn').textContent = 'Play'; frame++; draw(); };
+
+function getGrid() {
+  const fw = Math.max(1, +$('fw').value), fh = Math.max(1, +$('fh').value);
+  const cols = img ? Math.max(1, Math.floor(img.width / fw)) : 1;
+  const rows = img ? Math.max(1, Math.floor(img.height / fh)) : 1;
+  return { fw, fh, cols, rows };
 }
 
-$('prevBtn').onclick = () => { frame--; update(); };
-$('nextBtn').onclick = () => { frame++; update(); };
-$('playBtn').onclick = () => {
-  playing = !playing;
-  $('playBtn').textContent = playing ? '⏸ Pause' : '▶ Play';
-  if (playing) { timer = setInterval(() => { frame++; update(); }, 1000 / +$('fps').value); }
-  else { clearInterval(timer); }
-};
-['fw','fh','scale','fps'].forEach(id => $(id).addEventListener('change', () => { if (playing) { clearInterval(timer); timer = setInterval(() => { frame++; update(); }, 1000 / +$('fps').value); } update(); }));
+function updateInfo() {
+  const { fw, fh, cols, rows } = getGrid();
+  $('info').textContent = img
+    ? `Sheet: ${img.width}x${img.height} | Cell: ${fw}x${fh} | ${cols} cols x ${rows} rows`
+    : 'Load a sprite sheet PNG to inspect or test-walk.';
+}
+
+const DIR_NAMES_4 = ['DOWN', 'LEFT', 'RIGHT', 'UP'];
+const DIR_NAMES_8 = ['DOWN', 'SE', 'RIGHT', 'NE', 'UP', 'NW', 'LEFT', 'SW'];
+
+function draw(ts = 0) {
+  const { fw, fh, cols, rows } = getGrid();
+  const s = Math.max(1, +$('scale').value);
+  const fps = Math.max(1, Math.min(60, +$('fps').value));
+  const mode = $('mode').value;
+  const dt = ts - lastTick;
+
+  if (mode === 'inspect') {
+    if (playing && dt >= 1000 / fps) { frame = (frame + 1) % cols; lastTick = ts; }
+    frame = ((frame % cols) + cols) % cols;
+    const row = Math.max(0, Math.min(rows - 1, +$('rowIdx').value));
+    canvas.width = fw * s; canvas.height = fh * s;
+    ctx.imageSmoothingEnabled = false;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    if (img) {
+      if ($('onion').checked && cols > 1) {
+        const prevF = (frame - 1 + cols) % cols;
+        ctx.globalAlpha = 0.3;
+        ctx.drawImage(img, prevF * fw, row * fh, fw, fh, 0, 0, fw * s, fh * s);
+        ctx.globalAlpha = 1.0;
+      }
+      ctx.drawImage(img, frame * fw, row * fh, fw, fh, 0, 0, fw * s, fh * s);
+    }
+    if ($('showGrid').checked && s >= 3) {
+      ctx.strokeStyle = 'rgba(255,255,255,0.14)'; ctx.lineWidth = 1;
+      for (let x = 0; x <= fw; x++) { ctx.beginPath(); ctx.moveTo(x*s,0); ctx.lineTo(x*s,fh*s); ctx.stroke(); }
+      for (let y = 0; y <= fh; y++) { ctx.beginPath(); ctx.moveTo(0,y*s); ctx.lineTo(fw*s,y*s); ctx.stroke(); }
+    }
+    $('dirBadge').textContent = `ROW: ${row}`;
+    $('frameBadge').textContent = `F ${frame + 1}/${cols}`;
+  } else {
+    canvas.width = 560; canvas.height = 360;
+    ctx.imageSmoothingEnabled = false;
+    // Tile floor grid
+    ctx.fillStyle = '#1b2838'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.strokeStyle = 'rgba(99,102,241,0.15)';
+    for (let x = 0; x < canvas.width; x += 32) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,canvas.height); ctx.stroke(); }
+    for (let y = 0; y < canvas.height; y += 32) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(canvas.width,y); ctx.stroke(); }
+
+    let vx = 0, vy = 0;
+    if (keys['arrowleft'] || keys['a']) vx -= 1;
+    if (keys['arrowright'] || keys['d']) vx += 1;
+    if (keys['arrowup'] || keys['w']) vy -= 1;
+    if (keys['arrowdown'] || keys['s']) vy += 1;
+    const moving = vx !== 0 || vy !== 0;
+
+    if (moving) {
+      const mag = Math.hypot(vx, vy);
+      px = Math.max(0, Math.min(canvas.width - fw * s, px + (vx / mag) * 2.4));
+      py = Math.max(0, Math.min(canvas.height - fh * s, py + (vy / mag) * 2.4));
+      if (mode === 'walk4') {
+        if (Math.abs(vx) > Math.abs(vy)) curDirRow = vx < 0 ? 1 : 2;
+        else curDirRow = vy < 0 ? 3 : 0;
+      } else {
+        const ang = Math.atan2(vy, vx); // 0=E, PI/2=S
+        const sector = Math.round(((ang - Math.PI / 2) / (Math.PI / 4))) & 7;
+        // Map S=0, SW=7, W=6, NW=5, N=4, NE=3, E=2, SE=1
+        const map8 = [0, 7, 6, 5, 4, 3, 2, 1];
+        curDirRow = map8[sector];
+      }
+      if (dt >= 1000 / fps) { frame = (frame + 1) % cols; lastTick = ts; }
+    } else {
+      frame = 0;
+    }
+    const row = Math.min(rows - 1, curDirRow);
+    if (img) {
+      ctx.drawImage(img, frame * fw, row * fh, fw, fh, Math.round(px), Math.round(py), fw * s, fh * s);
+    }
+    const names = mode === 'walk8' ? DIR_NAMES_8 : DIR_NAMES_4;
+    $('dirBadge').textContent = `DIR: ${names[row] || row}`;
+    $('frameBadge').textContent = `F ${frame + 1}/${cols}`;
+  }
+  requestAnimationFrame(draw);
+}
+requestAnimationFrame(draw);
 </script>
 </body>
 </html>

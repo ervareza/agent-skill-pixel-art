@@ -1,0 +1,150 @@
+{
+  "frames": [
+    {
+      "filename": "ui_health_bar_sheet_000.png",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 48,
+        "h": 12
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 48,
+        "h": 12
+      },
+      "sourceSize": {
+        "w": 48,
+        "h": 12
+      },
+      "duration": 350
+    },
+    {
+      "filename": "ui_health_bar_sheet_001.png",
+      "frame": {
+        "x": 48,
+        "y": 0,
+        "w": 48,
+        "h": 12
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 48,
+        "h": 12
+      },
+      "sourceSize": {
+        "w": 48,
+        "h": 12
+      },
+      "duration": 350
+    },
+    {
+      "filename": "ui_health_bar_sheet_002.png",
+      "frame": {
+        "x": 96,
+        "y": 0,
+        "w": 48,
+        "h": 12
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 48,
+        "h": 12
+      },
+      "sourceSize": {
+        "w": 48,
+        "h": 12
+      },
+      "duration": 350
+    },
+    {
+      "filename": "ui_health_bar_sheet_003.png",
+      "frame": {
+        "x": 144,
+        "y": 0,
+        "w": 48,
+        "h": 12
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 48,
+        "h": 12
+      },
+      "sourceSize": {
+        "w": 48,
+        "h": 12
+      },
+      "duration": 350
+    },
+    {
+      "filename": "ui_health_bar_sheet_004.png",
+      "frame": {
+        "x": 192,
+        "y": 0,
+        "w": 48,
+        "h": 12
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 48,
+        "h": 12
+      },
+      "sourceSize": {
+        "w": 48,
+        "h": 12
+      },
+      "duration": 350
+    }
+  ],
+  "meta": {
+    "app": "PixelForge Engine",
+    "version": "1.0.0",
+    "image": "ui_health_bar_sheet.png",
+    "format": "RGBA8888",
+    "size": {
+      "w": 240,
+      "h": 12
+    },
+    "frameSize": {
+      "w": 48,
+      "h": 12
+    },
+    "columns": 5,
+    "rows": 1,
+    "padding": 0,
+    "scale": "1",
+    "layers": [
+      {
+        "name": "main",
+        "visible": true,
+        "opacity": 255,
+        "blend_mode": "normal",
+        "locked": false,
+        "group": ""
+      }
+    ],
+    "frameTags": [
+      {
+        "name": "health_levels",
+        "from": 0,
+        "to": 4,
+        "direction": "forward"
+      }
+    ]
+  }
+}

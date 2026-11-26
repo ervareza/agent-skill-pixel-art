@@ -1,0 +1,14 @@
+{
+  "ui_type": "panel_9slice",
+  "style": "fantasy",
+  "size": [
+    48,
+    48
+  ],
+  "nine_slice_margins": {
+    "left": 8,
+    "right": 8,
+    "top": 8,
+    "bottom": 8
+  }
+}
